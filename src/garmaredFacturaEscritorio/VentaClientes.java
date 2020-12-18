@@ -89,14 +89,14 @@ public class VentaClientes {
 	 */
 	public VentaClientes(ServiceDTO sesion) {
 		sesionGlobal = sesion;
-		initialize();
+		initialize(sesion.getNombreEmpresa());
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		frame = new JFrame("Clientes");
+	private void initialize(String nombre) {
+		frame = new JFrame("Clientes de la empresa " + nombre);
 		frame.setBounds(100, 100, 450, 485);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -285,7 +285,7 @@ public class VentaClientes {
 				//grabamos los datos
 				accion= accClientes.grabarCliente(cliente);
 				if (accion) {
-					initialize();
+					initialize(nombre);
 					JOptionPane.showMessageDialog(null, "Cliente dado de alta correctamente");
 				}else {
 					JOptionPane.showMessageDialog(null, "Error en el alta de cliente");
@@ -301,7 +301,7 @@ public class VentaClientes {
 				if (JOptionPane.OK_OPTION == confirmado) {
 					accion = accClientes.deleteCliente(idCliente);
 					if (accion) {
-						initialize();
+						initialize(nombre);
 						JOptionPane.showMessageDialog(null, "Cliente borrado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "Error en el borrado del cliente");
@@ -321,7 +321,7 @@ public class VentaClientes {
 					cliente=llenaCamposDto();
 					accion = accClientes.updateCliente(cliente);
 					if (accion) {
-						initialize();
+						initialize(nombre);
 						JOptionPane.showMessageDialog(null, "Cliente modificado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "error al modificar el cliente");
@@ -354,7 +354,7 @@ public class VentaClientes {
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize();
+				initialize(nombre);
 			}
 		});
 		btnLimpiar.setBounds(335, 55, 89, 23);
@@ -369,13 +369,14 @@ public class VentaClientes {
 						activaCampos();
 					}else {
 						cliente = new ClientesDTO();
+						cliente.setIdEmpresa(sesionGlobal.getIdEmpresa());
 						cliente.setIdCliente(0);
 						cliente.setNombre(nomBuscado);
 						cliente = accClientes.buscaCliente(cliente);
 						if (cliente.getIdCliente().equals(0)) {
 							JOptionPane.showMessageDialog(null, "Cliente no encontrado");	
 						} else {
-							initialize();
+							initialize(nombre);
 							llenaCamposPantalla(cliente);
 							lblError.setText("");
 						}
@@ -496,6 +497,7 @@ public class VentaClientes {
 	private  ClientesDTO llenaCamposDto(){
 		//llenamos el DTO de clientes con los datos de pantalla
 		cliente = new ClientesDTO();
+		cliente.setIdEmpresa(sesionGlobal.getIdEmpresa());
 		cliente.setIdCliente(idCliente);
 		cliente.setDireccion(textDireccion.getText());
 		cliente.setCif(textCif.getText());

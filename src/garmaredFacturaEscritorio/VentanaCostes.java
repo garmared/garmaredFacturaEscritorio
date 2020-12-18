@@ -1,24 +1,24 @@
 package garmaredFacturaEscritorio;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import acciones.dto.CostesDTO;
 import acciones.dto.ServiceDTO;
 import acciones.service.impl.accionesCostesImpl;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 public class VentanaCostes {
 
 	private JFrame frame;
 	static ServiceDTO sesionGlobal;
+	
 	private JTextField textCoste;
 	private Boolean accion;
 	private CostesDTO costes;
@@ -46,14 +46,14 @@ public class VentanaCostes {
 	 */
 	public VentanaCostes(ServiceDTO control) {
 		sesionGlobal = control;
-		initialize();
+		initialize(control.getNombreEmpresa());
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		frame = new JFrame("Costes");
+	private void initialize(String nombre) {
+		frame = new JFrame("Costes de la empresa " + nombre);
 		frame.setBounds(100, 100, 450, 300);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,9 +81,9 @@ public class VentanaCostes {
 				//llenamos el DTO de costes
 				
 				coste = textCoste.getText();
-			
+							
 				//grabamos los datos.
-				accion= accCostes.grabarCoste(coste);
+				accion= accCostes.grabarCoste(coste,costes.getIdEmpresa());
 				if (accion) {
 					lblError.setText("Coste dado de alta correctamente");
 				}else {
@@ -101,7 +101,7 @@ public class VentanaCostes {
 				if (JOptionPane.OK_OPTION == confirmado) {
 					accion = accCostes.deleteCoste(idCoste);
 					if (accion) {
-						initialize();
+						initialize(sesionGlobal.getNombreEmpresa());
 						JOptionPane.showMessageDialog(null, "Coste borrado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "Error en el borrado del coste");
@@ -121,9 +121,10 @@ public class VentanaCostes {
 				if (JOptionPane.OK_OPTION == confirmado) {
 					costes.setDescripcion(textCoste.getText());
 					costes.setIdCoste(idCoste);
+					
 					accion = accCostes.updateCoste(costes);
 					if (accion) {
-						initialize();
+						initialize(sesionGlobal.getNombreEmpresa());
 						JOptionPane.showMessageDialog(null, "Coste modificado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "error al modificar el coste");
@@ -148,7 +149,7 @@ public class VentanaCostes {
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize();
+				initialize(sesionGlobal.getNombreEmpresa());
 			}
 		});
 		btnLimpiar.setBounds(317, 68, 89, 23);
@@ -162,11 +163,12 @@ public class VentanaCostes {
 					if (buscado != "" && !(buscado.isEmpty())) {
 						costes = new CostesDTO();
 						costes.setDescripcion(buscado);
+						costes.setIdEmpresa(sesionGlobal.getIdEmpresa());
 						costes = accCostes.buscaCoste(costes);
 						if (costes.getIdCoste().equals(0)) {
 							JOptionPane.showMessageDialog(null, "Coste no encontrado");	
 						} else {
-							initialize();
+							initialize(sesionGlobal.getNombreEmpresa());
 							textCoste.setText(costes.getDescripcion());
 							idCoste=costes.getIdCoste();
 						}

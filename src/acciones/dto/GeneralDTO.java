@@ -3,8 +3,16 @@ package acciones.dto;
 public class GeneralDTO {
 
 	private String nombre, cif, direccion, poblacion, provincia, personaContacto, mail, web, observaciones,activo;
-	private Integer cp, telefono1, telefono2, telefono3;
+	private Integer cp, telefono1, telefono2, telefono3, idEmpresa;
 	
+
+	public Integer getIdEmpresa() {
+		return idEmpresa;
+	}
+
+	public void setIdEmpresa(Integer idEmpresa) {
+		this.idEmpresa = idEmpresa;
+	}
 
 	public String getNombre() {
 		return nombre;

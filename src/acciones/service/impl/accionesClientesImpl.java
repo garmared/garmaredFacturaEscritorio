@@ -19,7 +19,7 @@ public class accionesClientesImpl implements accionesClientes{
 			Connection connection=null;
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
-		    PreparedStatement stmt = connection.prepareStatement("INSERT INTO clientes VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		    PreparedStatement stmt = connection.prepareStatement("INSERT INTO clientes VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			stmt.setString(1, entrada.getCif());
 			stmt.setString(2,entrada.getNombre());
 			stmt.setString(3,entrada.getDireccion());
@@ -37,6 +37,7 @@ public class accionesClientesImpl implements accionesClientes{
 			stmt.setString(15,entrada.getModaPago());
 			stmt.setString(16,entrada.getObservaciones());
 			stmt.setString(17,entrada.getActivo());
+			stmt.setInt(18,entrada.getIdEmpresa());
 			
 			stmt.executeUpdate();
 			stmt.close();
@@ -85,7 +86,7 @@ public class accionesClientesImpl implements accionesClientes{
 			ResultSet result =null;	
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");
-			String peticion = "SELECT * FROM clientes WHERE Nombre = '"+cliente.getNombre()+"'";
+			String peticion = "SELECT * FROM clientes WHERE Nombre = '"+cliente.getNombre()+"' AND id_empresa = "+cliente.getIdEmpresa()+"";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			//result.next();
@@ -108,6 +109,7 @@ public class accionesClientesImpl implements accionesClientes{
 				salida.setModaPago(result.getString("modo_pago"));
 				salida.setObservaciones(result.getString("observaciones"));
 				salida.setActivo(result.getString("activo"));
+				salida.setIdEmpresa(result.getInt("id_empresa"));
 				return salida;
 			} else {
 				salida.setIdCliente(0);

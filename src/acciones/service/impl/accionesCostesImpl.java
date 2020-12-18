@@ -12,15 +12,16 @@ import acciones.dto.ObjetoJComboBox;
 
 //definicion de todas las acciones que tenemos en la aplicacion
 public class accionesCostesImpl implements accionesCostes{
-	public Boolean grabarCoste(String coste) {
+	public Boolean grabarCoste(String coste, int empresa) {
 		// TODO Auto-generated method stub
 		try {
 			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
 			Connection connection=null;
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
-			PreparedStatement stmt = connection.prepareStatement("INSERT INTO costes VALUES(NULL,?)");
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO costes VALUES(NULL,?,?)");
 			stmt.setString(1, coste);
+			stmt.setInt(2, empresa);
 			stmt.executeUpdate();
 		
 			stmt.close();
@@ -67,13 +68,14 @@ public class accionesCostesImpl implements accionesCostes{
 			ResultSet result =null;	
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");
-			String peticion = "SELECT * FROM costes WHERE descripcion = '"+costes.getDescripcion()+"'";
+			String peticion = "SELECT * FROM costes WHERE descripcion = '"+costes.getDescripcion()+"' AND id_empresa = "+costes.getIdEmpresa()+"";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			//result.next();
 			if (result.next()){
 				salida.setIdCoste(result.getInt("id_coste"));
 				salida.setDescripcion(result.getString("descripcion"));
+				salida.setIdEmpresa(result.getInt("id_empresa"));
 				return salida;
 			} else {
 				salida.setIdCoste(0);

@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -85,7 +86,8 @@ public class VentanaLogin {
 				
 				labelError.setText(" ");
 				if ((usuario.isEmpty() == true) || (password.isEmpty() == true)) {
-					labelError.setText("Usuraio o clave no informados");
+					JOptionPane.showMessageDialog(null, "Usuraio o clave no informados");
+					//labelError.setText("Usuraio o clave no informados");
 				}else {
 					control.setAcceso(accService.controlLogin(usuario, password));
 					if (control.getAcceso() > 0) {
@@ -93,7 +95,10 @@ public class VentanaLogin {
 						textUser.setText(" ");
 						textPassword.setText(null);
 						VentanaPrincipal menu = new VentanaPrincipal(control);
-					} else {labelError.setText("Usuario no autorizado");}
+					} else {
+						//labelError.setText("Usuario no autorizado");
+						JOptionPane.showMessageDialog(null, "Usuario no autorizado");
+					}
 				}
 			}
 		});

@@ -1,6 +1,6 @@
 package acciones.dto;
 
-public class CostesDTO {
+public class CostesDTO extends GeneralDTO {
 
 	private String descripcion;
 	private Integer idCoste;

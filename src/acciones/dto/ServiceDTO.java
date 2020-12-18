@@ -2,7 +2,8 @@ package acciones.dto;
 
 public class ServiceDTO{
 
-	private Integer altoVentana, anchoVentana, acceso;
+	private Integer altoVentana, anchoVentana, acceso, idEmpresa;
+	private String nombreEmpresa;
 
 	public Integer getAltoVentana() {
 		return altoVentana;
@@ -36,6 +37,22 @@ public class ServiceDTO{
 
 	public void setAcceso(Integer acceso) {
 		this.acceso = acceso;
+	}
+
+	public Integer getIdEmpresa() {
+		return idEmpresa;
+	}
+
+	public void setIdEmpresa(Integer idEmpresa) {
+		this.idEmpresa = idEmpresa;
+	}
+
+	public String getNombreEmpresa() {
+		return nombreEmpresa;
+	}
+
+	public void setNombreEmpresa(String nombreEmpresa) {
+		this.nombreEmpresa = nombreEmpresa;
 	}
 	
 	

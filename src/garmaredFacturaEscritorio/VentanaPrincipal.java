@@ -2,22 +2,28 @@ package garmaredFacturaEscritorio;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
+import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
+import acciones.service.impl.accionesEmpresasImpl;
+import acciones.service.impl.accionesUsuariosImpl;
 
 public class VentanaPrincipal implements ActionListener{
 	JFrame ventana;
 	JMenu opcion1, opcion2,opcion3;
-	JMenuItem Sopcion1, Sopcion2, Sopcion3, Sopcion4,Sopcion5,Sopcion6,Sopcion7,Sopcion8,Sopcion9;
+	JMenuItem Sopcion1, Sopcion2, Sopcion3, Sopcion4,Sopcion5,Sopcion6,Sopcion7,Sopcion8,Sopcion9,Sopcion10;
 	//JMenuItem sub1,sub2,sub3;
 	JMenuBar menubar;
 	ServiceDTO control;
+	accionesEmpresasImpl accEmpresas = new accionesEmpresasImpl();
 	static int sesion; //variable para pasar el tipo de sesion que estamos utilizando (gestion o usuario) al resto de pantallas.
 	
 	public void CrearMenu() {
@@ -29,12 +35,13 @@ public class VentanaPrincipal implements ActionListener{
 		
 		Sopcion1 = new JMenuItem("Clientes");
 		Sopcion2 = new JMenuItem("Proveedores");
-		Sopcion3 = new JMenuItem("Empresas");
+		Sopcion3 = new JMenuItem("Gestión Empresas");
 		Sopcion4 = new JMenuItem("Costes");
 		Sopcion5 = new JMenuItem("Proyectos");
 		Sopcion6 = new JMenuItem("Facturas");
 		Sopcion7 = new JMenuItem("Cambio sesi\u00F3n");
 		Sopcion9 = new JMenuItem("Conceptos");
+		Sopcion10 = new JMenuItem("Selecci\u00F3n empresa");
 		
 
 		menubar.add(opcion1);
@@ -48,18 +55,18 @@ public class VentanaPrincipal implements ActionListener{
 		opcion2.add(Sopcion5);
 		opcion2.add(Sopcion6);
 				
-		opcion3.add(Sopcion3);
+		opcion3.add(Sopcion10);
 		opcion3.add(Sopcion7);
 		opcion3.add(Sopcion9);
 		
 		Sopcion1.addActionListener(this);
 		Sopcion2.addActionListener(this);
-		Sopcion3.addActionListener(this);
 		Sopcion4.addActionListener(this);
 		Sopcion5.addActionListener(this);
 		Sopcion6.addActionListener(this);
 		Sopcion7.addActionListener(this);
 		Sopcion9.addActionListener(this);
+		Sopcion10.addActionListener(this);
 		
 	}
 	
@@ -68,9 +75,11 @@ public class VentanaPrincipal implements ActionListener{
 				
 		Sopcion8 = new JMenuItem("Usuarios");
 					
+		opcion3.add(Sopcion3);
 		opcion3.add(Sopcion7);
 		opcion3.add(Sopcion8);
 		
+		Sopcion3.addActionListener(this);
 		Sopcion7.addActionListener(this);
 		Sopcion8.addActionListener(this);
 		
@@ -89,6 +98,10 @@ public class VentanaPrincipal implements ActionListener{
 		
 	public VentanaPrincipal(ServiceDTO entrada) {
 		control = entrada;
+		if (entrada.getNombreEmpresa() == null) {
+			seleccionEmpresa(entrada);
+		}
+		
 		if (entrada.getAcceso() == 1) {
 			CrearMenuAdministracion();
 		} else {
@@ -96,6 +109,16 @@ public class VentanaPrincipal implements ActionListener{
 		}
 		CrearVentana();
 		
+	}
+
+	private void seleccionEmpresa(ServiceDTO entrada) {
+		//mostramos las empresas disponibles para seleccionar la que se quiere utilizar para trabajar
+		ArrayList<ObjetoJComboBox> cadena = accEmpresas.consultaEmpresas("E");
+		Object nomBuscado = JOptionPane.showInputDialog(null,"Selecciona la empresa con la que deseas operar:","",JOptionPane.PLAIN_MESSAGE,null,cadena.toArray(),null);
+		JOptionPane.showMessageDialog(null, nomBuscado, "A partir de ahora trabajaremos con ", JOptionPane.INFORMATION_MESSAGE);
+		entrada.setNombreEmpresa(nomBuscado.toString());
+		entrada.setIdEmpresa(accEmpresas.buscaId(nomBuscado.toString(), "E"));
+		System.out.println(entrada.getIdEmpresa());
 	}
 
 	@Override
@@ -137,6 +160,9 @@ public class VentanaPrincipal implements ActionListener{
 				break;
 			case "Cambio sesi\u00F3n":
 				ventana.setVisible(false);
+				break;
+			case "Selecci\u00F3n empresa":
+				seleccionEmpresa(control);
 				break;
 		}
 	}
