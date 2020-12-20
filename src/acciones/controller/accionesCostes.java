@@ -7,7 +7,7 @@ import acciones.dto.ObjetoJComboBox;
 
 public interface accionesCostes {
 	// accion para grabar costes
-	public Boolean grabarCoste(String coste, int empresa);
+	public Boolean grabarCoste(CostesDTO coste);
 	// accion para recuperar la lista de los costes de la base de datos (identificador y descripcion)
 	public ArrayList<ObjetoJComboBox> consultaCostes();
 	// accion para obtener los datos de un coste a partir de la descripcion

@@ -12,7 +12,7 @@ import acciones.dto.ObjetoJComboBox;
 
 //definicion de todas las acciones que tenemos en la aplicacion
 public class accionesCostesImpl implements accionesCostes{
-	public Boolean grabarCoste(String coste, int empresa) {
+	public Boolean grabarCoste(CostesDTO coste) {
 		// TODO Auto-generated method stub
 		try {
 			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
@@ -20,8 +20,8 @@ public class accionesCostesImpl implements accionesCostes{
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
 			PreparedStatement stmt = connection.prepareStatement("INSERT INTO costes VALUES(NULL,?,?)");
-			stmt.setString(1, coste);
-			stmt.setInt(2, empresa);
+			stmt.setString(1, coste.getDescripcion());
+			stmt.setInt(2, coste.getIdEmpresa());
 			stmt.executeUpdate();
 		
 			stmt.close();
@@ -206,7 +206,5 @@ public class accionesCostesImpl implements accionesCostes{
 			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
 			return null;
 		}
-	}
-
-		
+	}		
 }

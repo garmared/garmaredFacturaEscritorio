@@ -32,8 +32,11 @@ public class VentanaCostes {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaCostes window = new VentanaCostes(sesionGlobal);
-					window.frame.setVisible(true);
+					if (sesionGlobal != null) {
+						VentanaCostes window = new VentanaCostes(sesionGlobal);
+						window.frame.setVisible(true);
+					} 
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -46,7 +49,11 @@ public class VentanaCostes {
 	 */
 	public VentanaCostes(ServiceDTO control) {
 		sesionGlobal = control;
-		initialize(control.getNombreEmpresa());
+		//initialize(control.getNombreEmpresa());
+		if (control.getNombreEmpresa()!= null) {
+			initialize(control.getNombreEmpresa());
+		}else initialize("empresa");
+		
 	}
 
 	/**
@@ -79,15 +86,15 @@ public class VentanaCostes {
 				String coste;
 				accion = false;
 				//llenamos el DTO de costes
-				
-				coste = textCoste.getText();
-							
+				costes = new CostesDTO();
+				costes.setDescripcion(textCoste.getText());
+				costes.setIdEmpresa(sesionGlobal.getIdEmpresa());
 				//grabamos los datos.
-				accion= accCostes.grabarCoste(coste,costes.getIdEmpresa());
+				accion= accCostes.grabarCoste(costes);
 				if (accion) {
-					lblError.setText("Coste dado de alta correctamente");
+					JOptionPane.showMessageDialog(null, "Coste dado de alta correctamente");
 				}else {
-					lblError.setText("Error en el alta de costes");
+					JOptionPane.showMessageDialog(null, "Error en el alta de costes");
 				}
 			}
 		});
