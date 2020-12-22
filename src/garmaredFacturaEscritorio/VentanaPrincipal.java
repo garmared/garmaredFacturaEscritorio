@@ -2,6 +2,7 @@ package garmaredFacturaEscritorio;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -30,18 +31,30 @@ public class VentanaPrincipal implements ActionListener{
 		menubar = new JMenuBar();
 		
 		opcion1 = new JMenu("Ficheros");
+		opcion1.setMnemonic(KeyEvent.VK_F);
 		opcion2 = new JMenu("Gesti\u00F3n");
+		opcion2.setMnemonic(KeyEvent.VK_G);
 		opcion3 = new JMenu("Administraci\u00F3n");
+		opcion3.setMnemonic(KeyEvent.VK_A);
 		
 		Sopcion1 = new JMenuItem("Clientes");
+		Sopcion1.setMnemonic(KeyEvent.VK_C);
 		Sopcion2 = new JMenuItem("Proveedores");
+		Sopcion2.setMnemonic(KeyEvent.VK_P);
 		Sopcion3 = new JMenuItem("Gestión Empresas");
+		Sopcion3.setMnemonic(KeyEvent.VK_G);
 		Sopcion4 = new JMenuItem("Costes");
+		Sopcion4.setMnemonic(KeyEvent.VK_O);
 		Sopcion5 = new JMenuItem("Proyectos");
+		Sopcion5.setMnemonic(KeyEvent.VK_R);
 		Sopcion6 = new JMenuItem("Facturas");
+		Sopcion6.setMnemonic(KeyEvent.VK_F);
 		Sopcion7 = new JMenuItem("Cambio sesi\u00F3n");
+		Sopcion7.setMnemonic(KeyEvent.VK_M);
 		Sopcion9 = new JMenuItem("Conceptos");
+		Sopcion9.setMnemonic(KeyEvent.VK_N);
 		Sopcion10 = new JMenuItem("Selecci\u00F3n empresa");
+		Sopcion10.setMnemonic(KeyEvent.VK_S);
 		
 
 		menubar.add(opcion1);
@@ -74,6 +87,7 @@ public class VentanaPrincipal implements ActionListener{
 		CrearMenu();
 				
 		Sopcion8 = new JMenuItem("Usuarios");
+		Sopcion8.setMnemonic(KeyEvent.VK_U);
 					
 		opcion3.add(Sopcion3);
 		opcion3.add(Sopcion7);
@@ -113,7 +127,7 @@ public class VentanaPrincipal implements ActionListener{
 
 	private void seleccionEmpresa(ServiceDTO entrada) {
 		//mostramos las empresas disponibles para seleccionar la que se quiere utilizar para trabajar
-		ArrayList<ObjetoJComboBox> cadena = accEmpresas.consultaEmpresas("E");
+		ArrayList<ObjetoJComboBox> cadena = accEmpresas.listadoEmpresas();
 		Object nomBuscado = JOptionPane.showInputDialog(null,"Selecciona la empresa con la que deseas operar:","",JOptionPane.PLAIN_MESSAGE,null,cadena.toArray(),null);
 		JOptionPane.showMessageDialog(null, nomBuscado, "A partir de ahora trabajaremos con ", JOptionPane.INFORMATION_MESSAGE);
 		entrada.setNombreEmpresa(nomBuscado.toString());

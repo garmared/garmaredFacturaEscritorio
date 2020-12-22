@@ -44,13 +44,13 @@ public class accionesClientesImpl implements accionesClientes{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en grabarCliente: "+ex.getMessage().toString());
 			return false;
 		}
 		
 	}
 	
-	public ArrayList<ObjetoJComboBox> consultaClientes() {
+	public ArrayList<ObjetoJComboBox> consultaClientes(int empresa) {
 		try {
 			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
 			Connection connection=null;
@@ -59,7 +59,7 @@ public class accionesClientesImpl implements accionesClientes{
 			
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");
-			String peticion = "SELECT id_cliente, Nombre FROM clientes ORDER BY Nombre";
+			String peticion = "SELECT id_cliente, Nombre FROM clientes WHERE id_empresa = "+empresa+" ORDER BY Nombre";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next());{
@@ -72,7 +72,7 @@ public class accionesClientesImpl implements accionesClientes{
 				
 			return salida;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en consultaClientes: "+ex.getMessage().toString());
 			return null;
 		}	
 	}
@@ -116,7 +116,7 @@ public class accionesClientesImpl implements accionesClientes{
 				return salida;
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaCliente: "+ex.getMessage().toString());
 			return null;
 		}	
 	}
@@ -134,7 +134,7 @@ public class accionesClientesImpl implements accionesClientes{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en deleteCliente: "+ex.getMessage().toString());
 			return false;
 		}
 	}
@@ -170,7 +170,7 @@ public class accionesClientesImpl implements accionesClientes{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en updateCliente: "+ex.getMessage().toString());
 			return false;
 		}
 	}
@@ -194,7 +194,7 @@ public class accionesClientesImpl implements accionesClientes{
 			}
 			return salida;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaCliente: "+ex.getMessage().toString());
 			return 0;
 		}
 	}
@@ -215,7 +215,7 @@ public class accionesClientesImpl implements accionesClientes{
 				return "";
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error buscaNombre cliente: "+ex.getMessage().toString());
 			return null;
 		}
 	}

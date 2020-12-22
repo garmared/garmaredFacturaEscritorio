@@ -45,14 +45,14 @@ public class VentanaConceptos {
 	 */
 	public VentanaConceptos(ServiceDTO control) {
 		sesionGlobal = control;
-		initialize();
+		initialize(control.getNombreEmpresa());
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		frame = new JFrame("Conceptos");
+	private void initialize(String nombre) {
+		frame = new JFrame("Conceptos de la empresa " + nombre);
 		frame.setBounds(100, 100, 450, 300);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,9 +77,12 @@ public class VentanaConceptos {
 			public void actionPerformed(ActionEvent e) {
 				accion = false;
 				//grabamos los datos.
-				accion= accConceptos.grabarConcepto(textConcepto.getText());
+				conceptos = new ConceptosDTO();
+				conceptos.setDescripcion(textConcepto.getText());
+				conceptos.setIdEmpresa(sesionGlobal.getIdEmpresa());
+				accion= accConceptos.grabarConcepto(conceptos);
 				if (accion) {
-					initialize();
+					initialize(sesionGlobal.getNombreEmpresa());
 					JOptionPane.showMessageDialog(null, "Concepto dado de alta correctamente");
 				}else {
 					JOptionPane.showMessageDialog(null, "Error con el alta del concepto");
@@ -96,7 +99,7 @@ public class VentanaConceptos {
 				if (JOptionPane.OK_OPTION == confirmado) {
 					accion = accConceptos.deleteConcepto(idConcepto);
 					if (accion) {
-						initialize();
+						initialize(sesionGlobal.getNombreEmpresa());
 						JOptionPane.showMessageDialog(null, "Concepto borrado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "Error en el borrado del concepto");
@@ -117,7 +120,7 @@ public class VentanaConceptos {
 					conceptos.setIdConcepto(idConcepto);
 					accion = accConceptos.updateConcepto(conceptos);
 					if (accion) {
-						initialize();
+						initialize(sesionGlobal.getNombreEmpresa());
 						JOptionPane.showMessageDialog(null, "Concepto modificado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "error al modificar el concepto");
@@ -141,7 +144,7 @@ public class VentanaConceptos {
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize();
+				initialize(sesionGlobal.getNombreEmpresa());
 			}
 		});
 		btnLimpiar.setBounds(317, 68, 89, 23);
@@ -155,11 +158,12 @@ public class VentanaConceptos {
 					if (buscado != "" && !(buscado.isEmpty())) {
 						conceptos = new ConceptosDTO();
 						conceptos.setDescripcion(buscado);
+						conceptos.setIdEmpresa(sesionGlobal.getIdEmpresa());
 						conceptos = accConceptos.buscaConcepto(conceptos);
 						if (conceptos.getIdConcepto().equals(0)) {
 							JOptionPane.showMessageDialog(null, "Concepto no encontrado");	
 						} else {
-							initialize();
+							initialize(sesionGlobal.getNombreEmpresa());
 							textConcepto.setText(conceptos.getDescripcion());
 							idConcepto=conceptos.getIdConcepto();
 						}

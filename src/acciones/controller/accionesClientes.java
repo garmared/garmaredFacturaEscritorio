@@ -9,7 +9,7 @@ public interface accionesClientes {
 	// accion para grabar un cliente
 	public Boolean grabarCliente(ClientesDTO entrada);
 	// accion para recuperar la lista de los clientes de la base de datos (identificador y nombre)
-	public ArrayList<ObjetoJComboBox> consultaClientes();
+	public ArrayList<ObjetoJComboBox> consultaClientes(int empresa);
 	// accion para obtener los datos de un cliente a partir del nombre
 	public ClientesDTO buscaCliente(ClientesDTO cliente);
 	// accion para borrar un cliente a partir del identificador

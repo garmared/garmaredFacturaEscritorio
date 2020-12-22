@@ -9,7 +9,7 @@ public interface accionesCostes {
 	// accion para grabar costes
 	public Boolean grabarCoste(CostesDTO coste);
 	// accion para recuperar la lista de los costes de la base de datos (identificador y descripcion)
-	public ArrayList<ObjetoJComboBox> consultaCostes();
+	public ArrayList<ObjetoJComboBox> consultaCostes(int empresa);
 	// accion para obtener los datos de un coste a partir de la descripcion
 	public CostesDTO buscaCoste(CostesDTO costes);
 	// accion para borrar un coste a partir del identificador

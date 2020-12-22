@@ -8,9 +8,9 @@ import acciones.dto.ObjetoJComboBox;
 
 public interface accionesConceptos {
 	//insert de conceptos
-	public Boolean grabarConcepto(String descripcion);
+	public Boolean grabarConcepto(ConceptosDTO conceptos);
 	//listado de identificadores de conceptos
-	public ArrayList<ObjetoJComboBox> consultaConceptos();
+	public ArrayList<ObjetoJComboBox> consultaConceptos(int empresa);
 	//consulta concepto por descripción
 	public ConceptosDTO buscaConcepto(ConceptosDTO conceptos);
 	//borrado de un concepto

@@ -42,13 +42,13 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en grabarEmpresas: "+ex.getMessage().toString());
 			return false;
 		}
 		
 	}
 
-	public ArrayList<ObjetoJComboBox> consultaEmpresas(String tipo) {
+	public ArrayList<ObjetoJComboBox> listadoEmpresas() {
 		try {
 			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
 			Connection connection=null;
@@ -57,7 +57,7 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 			
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");
-			String peticion = "SELECT id_empresa, Nombre FROM empresas WHERE tipo = '"+tipo+"' ORDER BY Nombre";
+			String peticion = "SELECT id_empresa, Nombre FROM empresas WHERE tipo = 'E' ORDER BY Nombre";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next());{
@@ -70,10 +70,38 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 				
 			return salida;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en listadoEmpresas: "+ex.getMessage().toString());
 			return null;
 		}	
 	}
+	
+	public ArrayList<ObjetoJComboBox> consultaEmpresas(String tipo, int empresa) {
+		try {
+			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
+			Connection connection=null;
+			ResultSet result =null;
+			ArrayList<ObjetoJComboBox> salida= new ArrayList<ObjetoJComboBox>();
+			
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			connection=DriverManager.getConnection(conexion,"Edu","garmared");
+			String peticion = "SELECT id_empresa, Nombre FROM empresas WHERE tipo = '"+tipo+"' AND id_empresa = "+empresa+" ORDER BY Nombre";
+			Statement stmt = connection.createStatement();
+			result = stmt.executeQuery(peticion);
+			if (result.next());{
+				do {
+					ObjetoJComboBox temporal = new ObjetoJComboBox(result.getInt("id_empresa"),result.getString("Nombre"));
+					salida.add(temporal);
+				}
+				while(result.next()); 
+				}
+				
+			return salida;
+		}catch(Exception ex){
+			System.out.println("Error en consultaEmpresas: "+ex.getMessage().toString());
+			return null;
+		}	
+	}
+
 
 	public EmpresasDTO buscaEmpresa(EmpresasDTO empresas) {
 		// TODO Auto-generated method stub
@@ -113,7 +141,7 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 				return salida;
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaEmpresa: "+ex.getMessage().toString());
 			return null;
 		}	
 
@@ -132,7 +160,7 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en deleteEmpresa: "+ex.getMessage().toString());
 			return false;
 		}
 	}
@@ -169,7 +197,7 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en updateEmpresas: "+ex.getMessage().toString());
 			return null;
 		}
 	}
@@ -190,7 +218,7 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 				return "";
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaNombre empresa/proyecto: "+ex.getMessage().toString());
 			return null;
 		}
 	}
@@ -211,7 +239,7 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 				return 0;
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaId empresa/proyecto: "+ex.getMessage().toString());
 			return 0;
 		}
 	}

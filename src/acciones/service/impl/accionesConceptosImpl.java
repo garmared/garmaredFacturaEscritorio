@@ -13,27 +13,28 @@ import acciones.dto.ObjetoJComboBox;
 
 //definicion de todas las acciones que tenemos en la aplicacion
 public class accionesConceptosImpl implements accionesConceptos{
-	public  Boolean grabarConcepto(String descripcion) {
+	public  Boolean grabarConcepto(ConceptosDTO conceptos) {
 		try{
 			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
 			Connection connection=null;
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
-		    PreparedStatement stmt = connection.prepareStatement("INSERT INTO conceptos VALUES(NULL,?)");
-			stmt.setString(1, descripcion);
+		    PreparedStatement stmt = connection.prepareStatement("INSERT INTO conceptos VALUES(NULL,?,?)");
+			stmt.setString(1, conceptos.getDescripcion());
+			stmt.setInt(2, conceptos.getIdEmpresa());
 					
 			stmt.executeUpdate();
 			stmt.close();
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en grabarConcepto: "+ex.getMessage().toString());
 			return false;
 		}
 		
 	}
 	
-	public  ArrayList<ObjetoJComboBox> consultaConceptos() {
+	public  ArrayList<ObjetoJComboBox> consultaConceptos(int empresa) {
 		try {
 			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
 			Connection connection=null;
@@ -42,7 +43,7 @@ public class accionesConceptosImpl implements accionesConceptos{
 			
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");
-			String peticion = "SELECT id_concepto, descripcion FROM conceptos ORDER BY descripcion";
+			String peticion = "SELECT id_concepto, descripcion FROM conceptos WHERE id_empresa = "+empresa+" ORDER BY descripcion";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next());{
@@ -55,7 +56,7 @@ public class accionesConceptosImpl implements accionesConceptos{
 				
 			return salida;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en consultaConceptos: "+ex.getMessage().toString());
 			return null;
 		}	
 	}
@@ -68,7 +69,7 @@ public class accionesConceptosImpl implements accionesConceptos{
 			ResultSet result =null;	
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");
-			String peticion = "SELECT * FROM conceptos WHERE descripcion = '"+conceptos.getDescripcion()+"'";
+			String peticion = "SELECT * FROM conceptos WHERE descripcion = '"+conceptos.getDescripcion()+"' AND id_empresa = "+conceptos.getIdEmpresa()+"";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			//result.next();
@@ -81,7 +82,7 @@ public class accionesConceptosImpl implements accionesConceptos{
 				return salida;
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaConcepto: "+ex.getMessage().toString());
 			return null;
 		}		
 	}
@@ -99,7 +100,7 @@ public class accionesConceptosImpl implements accionesConceptos{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en deleteConcepto: "+ex.getMessage().toString());
 			return false;
 		}	
 	}
@@ -119,7 +120,7 @@ public class accionesConceptosImpl implements accionesConceptos{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en updateConcepto: "+ex.getMessage().toString());
 			return false;
 		}
 	}
@@ -140,7 +141,7 @@ public class accionesConceptosImpl implements accionesConceptos{
 				return "";
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaDescripcion concepto: "+ex.getMessage().toString());
 			return null;
 		}	
 	}
@@ -161,7 +162,7 @@ public class accionesConceptosImpl implements accionesConceptos{
 				return 0;
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaConcepto: "+ex.getMessage().toString());
 			return null;
 		}	
 	}

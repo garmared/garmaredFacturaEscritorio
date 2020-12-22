@@ -28,12 +28,12 @@ public class accionesCostesImpl implements accionesCostes{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en insert de costes: "+ex.getMessage().toString());
 			return false;
 		}
 	}
 	
-	public ArrayList<ObjetoJComboBox> consultaCostes() {
+	public ArrayList<ObjetoJComboBox> consultaCostes(int empresa) {
 		try {
 			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
 			Connection connection=null;
@@ -42,7 +42,7 @@ public class accionesCostesImpl implements accionesCostes{
 			
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");
-			String peticion = "SELECT id_coste, descripcion FROM costes ORDER BY descripcion";
+			String peticion = "SELECT id_coste, descripcion FROM costes WHERE id_empresa = "+empresa+"  ORDER BY descripcion";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next());{
@@ -55,7 +55,7 @@ public class accionesCostesImpl implements accionesCostes{
 				
 			return salida;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en consultaCostes: "+ex.getMessage().toString());
 			return null;
 		}	
 	}
@@ -82,7 +82,7 @@ public class accionesCostesImpl implements accionesCostes{
 				return salida;
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaCoste: "+ex.getMessage().toString());
 			return null;
 		}
 	}
@@ -100,7 +100,7 @@ public class accionesCostesImpl implements accionesCostes{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en delteCoste: "+ex.getMessage().toString());
 			return false;
 		}	}
 
@@ -119,7 +119,7 @@ public class accionesCostesImpl implements accionesCostes{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en updateCoste: "+ex.getMessage().toString());
 			return null;
 		}
 	}
@@ -140,7 +140,7 @@ public class accionesCostesImpl implements accionesCostes{
 				return "";
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaNombre: "+ex.getMessage().toString());
 			return null;
 		}
 	}
@@ -161,7 +161,7 @@ public class accionesCostesImpl implements accionesCostes{
 				return 0;
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaIdCoste: "+ex.getMessage().toString());
 			return 0;
 		}
 	}
@@ -182,7 +182,7 @@ public class accionesCostesImpl implements accionesCostes{
 				return "";
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaDescripcion Coste: "+ex.getMessage().toString());
 			return null;
 		}
 	}
@@ -203,7 +203,7 @@ public class accionesCostesImpl implements accionesCostes{
 				return 0;
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaCoste: "+ex.getMessage().toString());
 			return null;
 		}
 	}		

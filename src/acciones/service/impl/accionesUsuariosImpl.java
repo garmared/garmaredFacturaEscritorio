@@ -35,7 +35,7 @@ public class accionesUsuariosImpl implements accionesUsuarios{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en grabarUsuario: "+ex.getMessage().toString());
 			return false;
 		}
 	}
@@ -66,7 +66,7 @@ public class accionesUsuariosImpl implements accionesUsuarios{
 				return salida;
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaUsuario: "+ex.getMessage().toString());
 			return null;
 		}	
 
@@ -85,7 +85,7 @@ public class accionesUsuariosImpl implements accionesUsuarios{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en deleteUsuario: "+ex.getMessage().toString());
 			return false;
 		}
 	}
@@ -111,7 +111,7 @@ public class accionesUsuariosImpl implements accionesUsuarios{
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en updateUsuarios: "+ex.getMessage().toString());
 			return null;
 		}
 	}
@@ -138,7 +138,7 @@ public class accionesUsuariosImpl implements accionesUsuarios{
 			} 
 			return salida;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en listaUsuarios: "+ex.getMessage().toString());
 			return null;
 		}		}
 

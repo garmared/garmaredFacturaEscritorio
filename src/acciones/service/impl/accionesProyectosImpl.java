@@ -37,13 +37,13 @@ public class accionesProyectosImpl implements accionesProyectos{
 				connection.close();
 				return true;
 			}catch(Exception ex){
-				System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+				System.out.println("Error en grabarProyectos: "+ex.getMessage().toString());
 				return false;
 			}
 			
 		}
 
-		public ArrayList<ObjetoJComboBox> consultaProyectos() {
+		public ArrayList<ObjetoJComboBox> consultaProyectos(int empresa) {
 			try {
 				String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
 				Connection connection=null;
@@ -52,7 +52,7 @@ public class accionesProyectosImpl implements accionesProyectos{
 				
 				Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 				connection=DriverManager.getConnection(conexion,"Edu","garmared");
-				String peticion = "SELECT id_proyecto, descripcion FROM proyectos ORDER BY descripcion";
+				String peticion = "SELECT id_proyecto, descripcion FROM proyectos WHERE id_empresa = "+empresa+" ORDER BY descripcion";
 				Statement stmt = connection.createStatement();
 				result = stmt.executeQuery(peticion);
 				if (result.next());{
@@ -65,7 +65,7 @@ public class accionesProyectosImpl implements accionesProyectos{
 					
 				return salida;
 			}catch(Exception ex){
-				System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+				System.out.println("Error en consultaProyectos: "+ex.getMessage().toString());
 				return null;
 			}	
 		}
@@ -102,7 +102,7 @@ public class accionesProyectosImpl implements accionesProyectos{
 					return salida;
 				}
 			}catch(Exception ex){
-				System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+				System.out.println("Error en buscaProyecto: "+ex.getMessage().toString());
 				return null;
 			}	
 		}
@@ -120,7 +120,7 @@ public class accionesProyectosImpl implements accionesProyectos{
 				connection.close();
 				return true;
 			}catch(Exception ex){
-				System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+				System.out.println("Error en deleteProyecto: "+ex.getMessage().toString());
 				return false;
 			}
 		}
@@ -152,7 +152,7 @@ public class accionesProyectosImpl implements accionesProyectos{
 				connection.close();
 				return true;
 			}catch(Exception ex){
-				System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+				System.out.println("Error en updateProyectos: "+ex.getMessage().toString());
 				return null;
 			}
 		}
@@ -173,7 +173,7 @@ public class accionesProyectosImpl implements accionesProyectos{
 					return "";
 				}
 			}catch(Exception ex){
-				System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+				System.out.println("Error buscaDescripcion proyecto: "+ex.getMessage().toString());
 				return null;
 			}
 		}
@@ -194,7 +194,7 @@ public class accionesProyectosImpl implements accionesProyectos{
 					return 0;
 				}
 			}catch(Exception ex){
-				System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+				System.out.println("Error en buscaProyecto: "+ex.getMessage().toString());
 				return null;
 			}
 		}

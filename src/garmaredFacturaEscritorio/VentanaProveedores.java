@@ -211,7 +211,7 @@ public class VentanaProveedores {
 		frame.getContentPane().add(comboCoste);
 		comboCoste.addItem("----");
 		
-		ArrayList<ObjetoJComboBox> costes = accCostes.consultaCostes();
+		ArrayList<ObjetoJComboBox> costes = accCostes.consultaCostes(sesionGlobal.getIdEmpresa());
 	
 		for (var i = 0; i < costes.size(); i++) {
 			comboCoste.addItem(costes.get(i));

@@ -1,9 +1,10 @@
 package acciones.dto;
 
-public class ConceptosDTO {
+public class ConceptosDTO extends GeneralDTO{
 
 	private String descripcion;
 	private Integer idConcepto;
+	
 	public String getDescripcion() {
 		return descripcion;
 	}

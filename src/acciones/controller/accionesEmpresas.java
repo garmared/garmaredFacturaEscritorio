@@ -9,7 +9,9 @@ public interface accionesEmpresas {
 	//accion para grabar una empresa o proveedor segun el tipo
 	public Boolean grabarEmpresas(EmpresasDTO entrada);
 	//lista de empresas o proveedores segun el tipo
-	public ArrayList<ObjetoJComboBox> consultaEmpresas(String tipo);
+	public ArrayList<ObjetoJComboBox> listadoEmpresas();
+	//lista de empresas o proveedores segun el tipo
+	public ArrayList<ObjetoJComboBox> consultaEmpresas(String tipo, int empresa);
 	//consulta de una empresa o proveedor por nombre
 	public EmpresasDTO buscaEmpresa(EmpresasDTO empresas);
 	//borrado de una emprea o proveedor por identificador

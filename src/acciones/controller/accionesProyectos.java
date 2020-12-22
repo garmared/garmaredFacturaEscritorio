@@ -16,7 +16,7 @@ public interface accionesProyectos {
 	//accion para grabar un proyecto
 	public Boolean grabarProyectos(ProyectosDTO entrada);
 	//listado de proyectos
-	public ArrayList<ObjetoJComboBox> consultaProyectos();
+	public ArrayList<ObjetoJComboBox> consultaProyectos(int empresa);
 	//consulta de un proyecto
 	public ProyectosDTO buscaProyecto(ProyectosDTO proyecto);
 	//borrado de un proyecto

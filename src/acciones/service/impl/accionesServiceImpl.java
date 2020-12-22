@@ -34,7 +34,7 @@ public class accionesServiceImpl implements accionesService{
 				stmt.close();
 				connection.close();
 			}catch(Exception ex){
-				System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+				System.out.println("Error en controlLogin: "+ex.getMessage().toString());
 			}
 			return (nivelSeguridad);
 		}

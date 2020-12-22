@@ -38,7 +38,6 @@ public class VentanaProyectos {
 	private JTextField textImporte;
 	private JTextField textMargen;
 
-	private JLabel lblEmpresa;
 	private JLabel lblFechaInicio;
 	private JLabel lblFechaFin;
 	private JLabel lblFechaCierre;
@@ -53,7 +52,6 @@ public class VentanaProyectos {
 	
 	private JComboBox comboCoste;
 	private JComboBox comboCliente;
-	private JComboBox comboEmpresa;
 	
 	private Boolean accion = false;
 	accionesClientesImpl accClientes = new accionesClientesImpl();
@@ -93,21 +91,6 @@ public class VentanaProyectos {
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		comboEmpresa = new JComboBox();
-		comboEmpresa.setBounds(133, 51, 170, 22);
-		frame.getContentPane().add(comboEmpresa);
-		comboEmpresa.addItem("----");
-		
-		ArrayList<ObjetoJComboBox> empresas = accEmpresas.consultaEmpresas("E");
-	
-		for (var i = 0; i < empresas.size(); i++) {
-			comboEmpresa.addItem(empresas.get(i));
-		}
-		
-		lblEmpresa = new JLabel("Empresa");
-		lblEmpresa.setBounds(40, 55, 48, 14);
-		frame.getContentPane().add(lblEmpresa);
 		
 		lblFechaInicio = new JLabel("Fecha inicio");
 		lblFechaInicio.setBounds(40, 91, 72, 14);
@@ -172,10 +155,12 @@ public class VentanaProyectos {
 		frame.getContentPane().add(comboCoste);
 		comboCoste.addItem("----");
 		
-		ArrayList<ObjetoJComboBox> costes = accCostes.consultaCostes();
+		ArrayList<ObjetoJComboBox> costes = accCostes.consultaCostes(sesionGlobal.getIdEmpresa());
 	
-		for (var i = 0; i < costes.size(); i++) {
-			comboCoste.addItem(costes.get(i));
+		if (costes !=null) {
+			for (var i = 0; i < costes.size(); i++) {
+				comboCoste.addItem(costes.get(i));
+			}
 		}
 		
 		lblCliente = new JLabel("Cliente");
@@ -187,10 +172,12 @@ public class VentanaProyectos {
 		frame.getContentPane().add(comboCliente);
 		comboCliente.addItem("----");
 		
-		ArrayList<ObjetoJComboBox> clientes = accClientes.consultaClientes();
+		ArrayList<ObjetoJComboBox> clientes = accClientes.consultaClientes(sesionGlobal.getIdEmpresa());
 			
-		for (var i = 0; i < clientes.size(); i++) {
-			comboCliente.addItem(clientes.get(i));
+		if (clientes != null) {
+			for (var i = 0; i < clientes.size(); i++) {
+				comboCliente.addItem(clientes.get(i));
+			}
 		}
 		
 		textObservaciones = new JTextField();
@@ -237,9 +224,6 @@ public class VentanaProyectos {
 		JButton btnAlta = new JButton("Alta Proyecto");
 		btnAlta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String descripcion, web, iban, observaciones;
-				Integer empresa, fechaIni, fechaFin, fechaCierre, cliente, tipoCoste;
-				double importe, margen;
 				ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
 				//llenamos el DTO de proyectos
 				ProyectosDTO entrada = new ProyectosDTO();
@@ -247,8 +231,7 @@ public class VentanaProyectos {
 				entrada.setWeb(textWeb.getText());
 				entrada.setIban(textIban.getText());
 				entrada.setObservaciones(textObservaciones.getText());
-				temporal = (ObjetoJComboBox) comboEmpresa.getSelectedItem();
-				entrada.setEmpresa(temporal.getNumero());
+				entrada.setEmpresa(sesionGlobal.getIdEmpresa());
 				temporal = (ObjetoJComboBox) comboCoste.getSelectedItem();
 				entrada.setCoste(temporal.getNumero());
 				entrada.setFechaIni(Integer.valueOf(textFIni.getText()));
@@ -375,8 +358,7 @@ public class VentanaProyectos {
 		proyecto.setCliente(accClientes.buscaCliente(variable));
 		variable = (String) comboCoste.getSelectedItem().toString();
 		proyecto.setCoste(accCostes.buscaIdCoste(variable));
-		variable = (String) comboEmpresa.getSelectedItem().toString();
-		proyecto.setEmpresa(accEmpresas.buscaId(variable,"E"));
+		proyecto.setEmpresa(sesionGlobal.getIdEmpresa());
 		
 		
 		return proyecto;
@@ -396,7 +378,6 @@ public class VentanaProyectos {
 		
 		lblCliente.setVisible(true);
 		lblDescripcin.setVisible(true);
-		lblEmpresa.setVisible(true);
 		lblFechaCierre.setVisible(true);
 		lblFechaFin.setVisible(true);
 		lblFechaInicio.setVisible(true);
@@ -427,9 +408,6 @@ public class VentanaProyectos {
 		valorCombo = accClientes.buscaNombre(entrada.getCliente());
 		comboCliente.getModel().setSelectedItem(valorCombo);
 		
-		valorCombo = accEmpresas.buscaNombre(entrada.getEmpresa(),"E");
-		comboEmpresa.getModel().setSelectedItem(valorCombo);
-			
 		
 	}
 }

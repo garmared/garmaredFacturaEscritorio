@@ -3,6 +3,8 @@ package garmaredFacturaEscritorio;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,6 +22,7 @@ public class VentanaLogin {
 	private JFrame frame;
 	private JPasswordField textPassword;
 	private JTextField textUser;
+	JButton btnAcceder;
 	accionesServiceImpl accService = new accionesServiceImpl();
 	ServiceDTO control = new ServiceDTO();
 	/**
@@ -77,33 +80,44 @@ public class VentanaLogin {
 		labelError.setBounds(46, 236, 201, 14);
 		frame.getContentPane().add(labelError);
 		
-		JButton btnAcceder = new JButton("Acceder");
-		btnAcceder.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String usuario = textUser.getText();
-				String password = textPassword.getText();
-				//Integer acceso = 0;
-				
-				labelError.setText(" ");
-				if ((usuario.isEmpty() == true) || (password.isEmpty() == true)) {
-					JOptionPane.showMessageDialog(null, "Usuraio o clave no informados");
-					//labelError.setText("Usuraio o clave no informados");
-				}else {
-					control.setAcceso(accService.controlLogin(usuario, password));
-					if (control.getAcceso() > 0) {
-						labelError.setText(" ");
-						textUser.setText(" ");
-						textPassword.setText(null);
-						VentanaPrincipal menu = new VentanaPrincipal(control);
-					} else {
-						//labelError.setText("Usuario no autorizado");
-						JOptionPane.showMessageDialog(null, "Usuario no autorizado");
-					}
-				}
-			}
-		});
+		EventosTecladoRaton teclado = new EventosTecladoRaton();
+		btnAcceder = new JButton("Acceder");
+		btnAcceder.addKeyListener(teclado);
+		btnAcceder.addActionListener(teclado);
+			
 		btnAcceder.setBounds(308, 137, 89, 23);
 		frame.getContentPane().add(btnAcceder);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+	}
+	
+	private class EventosTecladoRaton extends java.awt.event.KeyAdapter implements java.awt.event.ActionListener{
+
+		private static final int VK_ENTER = 0;
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String usuario = textUser.getText();
+			String password = textPassword.getText();
+			//Integer acceso = 0;
+			
+			if ((usuario.isEmpty() == true) || (password.isEmpty() == true)) {
+				JOptionPane.showMessageDialog(null, "Usuraio o clave no informados");
+			}else {
+				control.setAcceso(accService.controlLogin(usuario, password));
+				if (control.getAcceso() > 0) {
+					textUser.setText(" ");
+					textPassword.setText(null);
+					VentanaPrincipal menu = new VentanaPrincipal(control);
+				} else {
+					JOptionPane.showMessageDialog(null, "Usuario no autorizado");
+				}
+			}
+			
+		}
+		
+		public void keyPressed(java.awt.event.KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) btnAcceder.doClick();
+		}
+		
 	}
 }

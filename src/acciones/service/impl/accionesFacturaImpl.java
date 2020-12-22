@@ -37,7 +37,7 @@ public class accionesFacturaImpl implements accionesFactura {
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en grabarFactura: "+ex.getMessage().toString());
 			return false;
 		}
 		
@@ -51,7 +51,7 @@ public class accionesFacturaImpl implements accionesFactura {
 			ResultSet result =null;	
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");
-			String peticion = "SELECT * FROM factura WHERE id_cliente = '"+factura.getCliente()+"' AND fecha = '"+factura.getFecha()+"'";
+			String peticion = "SELECT * FROM factura WHERE id_cliente = '"+factura.getCliente()+"' AND fecha = '"+factura.getFecha()+"' AND idEmpresa = "+factura.getIdEmpresa()+"";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
@@ -76,7 +76,7 @@ public class accionesFacturaImpl implements accionesFactura {
 				return salida;
 			}
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en buscaFactura: "+ex.getMessage().toString());
 			return null;
 		}
 	}
@@ -94,7 +94,7 @@ public class accionesFacturaImpl implements accionesFactura {
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en deleteFactura: "+ex.getMessage().toString());
 			return false;
 		}
 	}
@@ -128,7 +128,7 @@ public class accionesFacturaImpl implements accionesFactura {
 			connection.close();
 			return true;
 		}catch(Exception ex){
-			System.out.print("Ha ocurrido el siguiente error: "+ex.getMessage().toString());
+			System.out.println("Error en updateFactura: "+ex.getMessage().toString());
 			return null;
 		}
 	}

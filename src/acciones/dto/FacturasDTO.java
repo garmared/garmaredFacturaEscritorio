@@ -1,6 +1,6 @@
 package acciones.dto;
 
-public class FacturasDTO {
+public class FacturasDTO extends GeneralDTO {
 
 	private String iban;
 	private Integer idFactura,empresa, proveedor, fecha, vencimiento, proyecto, cliente,coste, concepto;
