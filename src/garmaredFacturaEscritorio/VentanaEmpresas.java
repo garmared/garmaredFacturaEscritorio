@@ -18,7 +18,6 @@ import javax.swing.JTextField;
 import acciones.dto.EmpresasDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.accionesCostesImpl;
 import acciones.service.impl.accionesEmpresasImpl;
 
 
@@ -40,7 +39,6 @@ public class VentanaEmpresas {
 	private JTextField textObserv;
 	private JTextField textCP;
 	private JRadioButton rdbtnNo;
-	accionesCostesImpl accCostes = new accionesCostesImpl();
 	accionesEmpresasImpl accEmpresas = new accionesEmpresasImpl();
 	
 	private JComboBox comboCoste;
@@ -56,7 +54,6 @@ public class VentanaEmpresas {
 	private JLabel lblPersonaContacto;
 	private JLabel lblCorreo;
 	private JLabel lblWeb;
-	private JLabel lblTipoCoste;
 	private JLabel lblObservaciones;
 	private JLabel lblIban;
 	private JLabel lblCP;
@@ -206,18 +203,6 @@ public class VentanaEmpresas {
 		JLabel lblTipoCoste = new JLabel("Tipo de coste");
 		lblTipoCoste.setBounds(10, 291, 96, 14);
 		frame.getContentPane().add(lblTipoCoste);
-		
-		comboCoste = new JComboBox();
-		comboCoste.setBounds(116, 291, 96, 20);
-		frame.getContentPane().add(comboCoste);
-		comboCoste.addItem("----");
-		
-		ArrayList<ObjetoJComboBox> costes = accCostes.consultaCostes(sesionGlobal.getIdEmpresa());
-	
-		for (var i = 0; i < costes.size(); i++) {
-			comboCoste.addItem(costes.get(i));
-		}
-
 		
 		JLabel lblIban = new JLabel("IBAN");
 		lblIban.setBounds(10, 322, 75, 14);
@@ -437,7 +422,6 @@ public class VentanaEmpresas {
 		lblMvil1.setVisible(false);
 		lblPersonaContacto.setVisible(false);
 		lblCorreo.setVisible(false);
-		lblTipoCoste.setVisible(false);
 		lblWeb.setVisible(false);
 		lblIban.setVisible(false);
 		lblObservaciones.setVisible(false);
@@ -459,7 +443,6 @@ public class VentanaEmpresas {
 		textPersonaContact.setVisible(true);
 		textWeb.setVisible(true);
 		textMail.setVisible(true);
-		comboCoste.setVisible(true);
 		textIban.setVisible(true);
 		textObserv.setVisible(true);
 		textCP.setVisible(true);
@@ -473,7 +456,6 @@ public class VentanaEmpresas {
 		lblPersonaContacto.setVisible(true);
 		lblCorreo.setVisible(true);
 		lblWeb.setVisible(true);
-		lblTipoCoste.setVisible(true);
 		lblObservaciones.setVisible(true);
 		lblIban.setVisible(true);
 		lblActivo.setVisible(true);
@@ -496,9 +478,6 @@ public class VentanaEmpresas {
 		textPersonaContact.setText(entrada.getPersonaContacto());
 		textWeb.setText(entrada.getWeb());
 		textMail.setText(entrada.getMail());
-		
-		String valorCoste = accCostes.buscaNombre(entrada.getTipoCoste());
-		comboCoste.getModel().setSelectedItem(valorCoste);
 		
 		textIban.setText(entrada.getIban());
 		textObserv.setText(entrada.getObservaciones());
@@ -529,9 +508,6 @@ public class VentanaEmpresas {
 		empresas.setPersonaContacto(textPersonaContact.getText());
 		empresas.setMail(textMail.getText());
 		empresas.setWeb(textWeb.getText());
-		
-		String variable = (String) comboCoste.getSelectedItem().toString();
-		empresas.setTipoCoste(accCostes.buscaIdCoste(variable));
 		
 		empresas.setIban(textIban.getText());
 		empresas.setObservaciones(textObserv.getText());

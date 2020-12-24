@@ -33,7 +33,9 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 			stmt.setString(11,entrada.getPersonaContacto());
 			stmt.setString(12,entrada.getMail());
 			stmt.setString(13,entrada.getWeb());
-			stmt.setInt(14,entrada.getTipoCoste());
+			if (entrada.getTipoCoste()!=null) {
+				stmt.setInt(14,entrada.getTipoCoste());
+			}else stmt.setInt(14,0);
 			stmt.setString(15,entrada.getIban());
 			stmt.setString(16,entrada.getObservaciones());
 			stmt.setString(17,entrada.getActivo());

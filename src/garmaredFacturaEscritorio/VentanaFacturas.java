@@ -89,11 +89,6 @@ public class VentanaFacturas {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-					
-		/*JLabel lblEmpresa = new JLabel("Empresa");
-		lblEmpresa.setBounds(10, 14, 96, 14);
-		frame.getContentPane().add(lblEmpresa);*/
-		
 		JLabel lblFecha = new JLabel("Fecha");
 		lblFecha.setBounds(10, 42, 48, 14);
 		frame.getContentPane().add(lblFecha);
@@ -120,17 +115,6 @@ public class VentanaFacturas {
 		lblCliente.setBounds(10, 129, 48, 14);
 		frame.getContentPane().add(lblCliente);
 		
-		/*comboEmpresa = new JComboBox();
-		comboEmpresa.setBounds(128, 7, 96, 22);
-		frame.getContentPane().add(comboEmpresa);
-		comboEmpresa.addItem("----");
-		
-		ArrayList<ObjetoJComboBox> empresas = accEmpresas.consultaEmpresas("E");
-	
-		for (var i = 0; i < empresas.size(); i++) {
-			comboEmpresa.addItem(empresas.get(i));
-		}*/
-		
 		comboProyecto = new JComboBox();
 		comboProyecto.setBounds(128, 95, 96, 22);
 		frame.getContentPane().add(comboProyecto);
@@ -138,8 +122,10 @@ public class VentanaFacturas {
 		
 		ArrayList<ObjetoJComboBox> proyectos = accProyecto.consultaProyectos(sesionGlobal.getIdEmpresa());
 		
-		for (var i = 0; i < proyectos.size(); i++) {
-			comboProyecto.addItem(proyectos.get(i));
+		if (proyectos != null) {
+			for (var i = 0; i < proyectos.size(); i++) {
+				comboProyecto.addItem(proyectos.get(i));
+			}
 		}
 		
 		comboCliente = new JComboBox();
@@ -149,9 +135,11 @@ public class VentanaFacturas {
 		
 		accionesClientesImpl accClientes = new accionesClientesImpl();
 		ArrayList<ObjetoJComboBox> clientes = accClientes.consultaClientes(sesionGlobal.getIdEmpresa());
-			
-		for (var i = 0; i < clientes.size(); i++) {
-			comboCliente.addItem(clientes.get(i));
+		
+		if (clientes != null) {
+			for (var i = 0; i < clientes.size(); i++) {
+				comboCliente.addItem(clientes.get(i));
+			}
 		}
 		
 		comboConcepto = new JComboBox();
@@ -160,8 +148,10 @@ public class VentanaFacturas {
 		comboConcepto.addItem("----");
 		ArrayList<ObjetoJComboBox> conceptos = accConceptos.consultaConceptos(sesionGlobal.getIdEmpresa());
 		
-		for (var i = 0; i < conceptos.size(); i++) {
-			comboConcepto.addItem(conceptos.get(i));
+		if (conceptos != null) {
+			for (var i = 0; i < conceptos.size(); i++) {
+				comboConcepto.addItem(conceptos.get(i));
+			}
 		}
 	
 		comboCoste = new JComboBox();
@@ -171,8 +161,10 @@ public class VentanaFacturas {
 		
 		ArrayList<ObjetoJComboBox> costes = accCostes.consultaCostes(sesionGlobal.getIdEmpresa());
 	
-		for (var i = 0; i < costes.size(); i++) {
-			comboCoste.addItem(costes.get(i));
+		if (costes != null) {
+			for (var i = 0; i < costes.size(); i++) {
+				comboCoste.addItem(costes.get(i));
+			}
 		}
 		
 		comboProveedor = new JComboBox();
@@ -182,8 +174,10 @@ public class VentanaFacturas {
 		
 		ArrayList<ObjetoJComboBox> proveedor = accEmpresas.consultaEmpresas("P", sesionGlobal.getIdEmpresa());
 		
-		for (var i = 0; i < proveedor.size(); i++) {
-			comboProveedor.addItem(proveedor.get(i));
+		if (proveedor != null) {
+			for (var i = 0; i < proveedor.size(); i++) {
+				comboProveedor.addItem(proveedor.get(i));
+			}
 		}
 			
 		JLabel lblConcepto = new JLabel("Concepto");
@@ -396,7 +390,7 @@ public class VentanaFacturas {
 		btnBuscar.setBounds(335, 89, 89, 23);
 		frame.getContentPane().add(btnBuscar);
 		
-				frame.setVisible(true);
+		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
 	

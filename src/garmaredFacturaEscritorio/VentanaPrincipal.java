@@ -19,9 +19,9 @@ import acciones.service.impl.accionesUsuariosImpl;
 
 public class VentanaPrincipal implements ActionListener{
 	JFrame ventana;
-	JMenu opcion1, opcion2,opcion3;
+	JMenu opcion1, opcion2,opcion3,opcion4;
 	JMenuItem Sopcion1, Sopcion2, Sopcion3, Sopcion4,Sopcion5,Sopcion6,Sopcion7,Sopcion8,Sopcion9,Sopcion10;
-	//JMenuItem sub1,sub2,sub3;
+	JMenuItem sub1,sub2,sub3;
 	JMenuBar menubar;
 	ServiceDTO control;
 	accionesEmpresasImpl accEmpresas = new accionesEmpresasImpl();
@@ -36,25 +36,28 @@ public class VentanaPrincipal implements ActionListener{
 		opcion2.setMnemonic(KeyEvent.VK_G);
 		opcion3 = new JMenu("Administraci\u00F3n");
 		opcion3.setMnemonic(KeyEvent.VK_A);
+		opcion4 = new JMenu("Facturas");
+		opcion4.setMnemonic(KeyEvent.VK_F);
 		
 		Sopcion1 = new JMenuItem("Clientes");
 		Sopcion1.setMnemonic(KeyEvent.VK_C);
 		Sopcion2 = new JMenuItem("Proveedores");
 		Sopcion2.setMnemonic(KeyEvent.VK_P);
-		Sopcion3 = new JMenuItem("Gestión Empresas");
+		Sopcion3 = new JMenuItem("Gesti\u00F3n Empresas");
 		Sopcion3.setMnemonic(KeyEvent.VK_G);
 		Sopcion4 = new JMenuItem("Costes");
 		Sopcion4.setMnemonic(KeyEvent.VK_O);
 		Sopcion5 = new JMenuItem("Proyectos");
 		Sopcion5.setMnemonic(KeyEvent.VK_R);
-		Sopcion6 = new JMenuItem("Facturas");
-		Sopcion6.setMnemonic(KeyEvent.VK_F);
 		Sopcion7 = new JMenuItem("Cambio sesi\u00F3n");
 		Sopcion7.setMnemonic(KeyEvent.VK_M);
 		Sopcion9 = new JMenuItem("Conceptos");
 		Sopcion9.setMnemonic(KeyEvent.VK_N);
 		Sopcion10 = new JMenuItem("Selecci\u00F3n empresa");
 		Sopcion10.setMnemonic(KeyEvent.VK_S);
+		
+		sub1 = new JMenuItem("Gesti\u00F3n Factura");
+		sub2 = new JMenuItem("Listado Facturas");
 		
 
 		menubar.add(opcion1);
@@ -66,20 +69,25 @@ public class VentanaPrincipal implements ActionListener{
 		opcion1.add(Sopcion4);
 		
 		opcion2.add(Sopcion5);
-		opcion2.add(Sopcion6);
+		opcion2.add(opcion4);
 				
 		opcion3.add(Sopcion10);
 		opcion3.add(Sopcion7);
 		opcion3.add(Sopcion9);
 		
+		opcion4.add(sub1);
+		opcion4.add(sub2);
+		
 		Sopcion1.addActionListener(this);
 		Sopcion2.addActionListener(this);
 		Sopcion4.addActionListener(this);
 		Sopcion5.addActionListener(this);
-		Sopcion6.addActionListener(this);
 		Sopcion7.addActionListener(this);
 		Sopcion9.addActionListener(this);
 		Sopcion10.addActionListener(this);
+		
+		sub1.addActionListener(this);
+		sub2.addActionListener(this);
 		
 	}
 	
@@ -132,7 +140,7 @@ public class VentanaPrincipal implements ActionListener{
 		JOptionPane.showMessageDialog(null, nomBuscado, "A partir de ahora trabajaremos con ", JOptionPane.INFORMATION_MESSAGE);
 		entrada.setNombreEmpresa(nomBuscado.toString());
 		entrada.setIdEmpresa(accEmpresas.buscaId(nomBuscado.toString(), "E"));
-		System.out.println(entrada.getIdEmpresa());
+		//System.out.println(entrada.getIdEmpresa());
 	}
 
 	@Override
@@ -148,10 +156,6 @@ public class VentanaPrincipal implements ActionListener{
 				ventana.setVisible(false);
 				VentanaProveedores proveedores = new VentanaProveedores(control);
 				break;
-			case "Empresas":
-				ventana.setVisible(false);
-				VentanaEmpresas empresas = new VentanaEmpresas(control);
-				break;
 			case "Costes":
 				ventana.setVisible(false);
 				VentanaCostes costes = new VentanaCostes(control);
@@ -160,7 +164,7 @@ public class VentanaPrincipal implements ActionListener{
 				ventana.setVisible(false);
 				VentanaProyectos proyecto = new VentanaProyectos(control);
 				break;
-			case "Facturas":
+			case "Gesti\u00F3n Factura":
 				ventana.setVisible(false);
 				VentanaFacturas facturas = new VentanaFacturas(control);
 				break;
@@ -177,6 +181,14 @@ public class VentanaPrincipal implements ActionListener{
 				break;
 			case "Selecci\u00F3n empresa":
 				seleccionEmpresa(control);
+				break;
+			case "Gesti\u00F3n Empresas":
+				ventana.setVisible(false);
+				VentanaEmpresas empresas = new VentanaEmpresas(control);
+				break;
+			case "Listado Facturas":
+				ventana.setVisible(false);
+				ListadoFacturas listadoFacturas = new ListadoFacturas(control);
 				break;
 		}
 	}
