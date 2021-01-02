@@ -3,7 +3,7 @@ package acciones.dto;
 public class EmpresasDTO extends GeneralDTO {
 
 	private String tipo, iban;
-	private Integer idEmpresa,diaPago,tipoCoste;
+	private Integer idEmpresa,diaPago,tipoCoste,Empresa;
 	
 
 	
@@ -49,6 +49,14 @@ public class EmpresasDTO extends GeneralDTO {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public Integer getEmpresa() {
+		return Empresa;
+	}
+
+	public void setEmpresa(Integer empresa) {
+		Empresa = empresa;
 	}
 
 }

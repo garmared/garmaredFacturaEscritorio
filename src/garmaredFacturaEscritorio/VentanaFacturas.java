@@ -55,6 +55,7 @@ public class VentanaFacturas {
 	accionesEmpresasImpl accEmpresas = new accionesEmpresasImpl();
 	accionesFacturaImpl accFactura = new accionesFacturaImpl();
 	accionesProyectosImpl accProyecto = new accionesProyectosImpl();
+	accionesClientesImpl accClientes = new accionesClientesImpl();
 	/**
 	 * Launch the application.
 	 */
@@ -133,7 +134,6 @@ public class VentanaFacturas {
 		frame.getContentPane().add(comboCliente);
 		comboCliente.addItem("----");
 		
-		accionesClientesImpl accClientes = new accionesClientesImpl();
 		ArrayList<ObjetoJComboBox> clientes = accClientes.consultaClientes(sesionGlobal.getIdEmpresa());
 		
 		if (clientes != null) {
@@ -281,9 +281,10 @@ public class VentanaFacturas {
 				//grabamos los datos
 				accion= accFactura.grabarFactura(entrada);
 				if (accion) {
-					lblError.setText("Factura dada de alta correctamente");
+					limpiaPantalla();
+					JOptionPane.showMessageDialog(null, "Factura dada de alta correctamente");
 				}else {
-					lblError.setText("Error en el alta de factura");
+					JOptionPane.showMessageDialog(null, "Error en el alta de factura");
 				}
 			}
 		});
@@ -297,7 +298,7 @@ public class VentanaFacturas {
 			if (JOptionPane.OK_OPTION == confirmado) {
 				accion = accFactura.deleteFactura(idFactura);
 				if (accion) {
-					initialize(sesionGlobal.getNombreEmpresa());
+					limpiaPantalla();
 					JOptionPane.showMessageDialog(null, "Factura borrada correctamente");
 				}else {
 					JOptionPane.showMessageDialog(null, "Error en el borrado de la factura");
@@ -316,7 +317,7 @@ public class VentanaFacturas {
 					factura = llenaCamposDto();
 					accion = accFactura.updateFactura(factura);
 					if (accion) {
-						initialize(sesionGlobal.getNombreEmpresa());
+						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Empresa modificado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "error al modificar la empresa");
@@ -333,6 +334,7 @@ public class VentanaFacturas {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
+				frame.dispose(); //esto cierra la ventana
 				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
 			}
 		});
@@ -350,7 +352,7 @@ public class VentanaFacturas {
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize(sesionGlobal.getNombreEmpresa());
+				limpiaPantalla();
 			}
 		});
 		btnLimpiar.setBounds(335, 55, 89, 23);
@@ -359,26 +361,33 @@ public class VentanaFacturas {
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JTextField cliente = new JTextField();
+				JComboBox cliente = new JComboBox();
+				ArrayList<ObjetoJComboBox> cadena = accClientes.consultaClientes(sesionGlobal.getIdEmpresa());
+				if (cadena != null) {
+					for (var i = 0; i < cadena.size(); i++) {
+						cliente.addItem(cadena.get(i));
+					}
+				}
 				JTextField fecha = new JTextField();
 				Object [] mensaje= {
 						"Cliente:", cliente,
 						"Fecha Inicio:", fecha
 				};
+				//Object opcion = JOptionPane.showInputDialog(null,"Seleccione una opción","",JOptionPane.PLAIN_MESSAGE,null,cliente.toArray(),null);
 				int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Búsqueda de Factura", JOptionPane.OK_CANCEL_OPTION);
 				if (opcion == JOptionPane.OK_OPTION){
-					if (cliente.getText() == "" || fecha.getText()== "") {
-						
-					}else {
+					if (fecha.getText()!= "") {
 						factura = new FacturasDTO();
 						factura.setIdEmpresa(sesionGlobal.getIdEmpresa());
-						factura.setCliente(Integer.valueOf(cliente.getText()));
+						ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
+						temporal = (ObjetoJComboBox) cliente.getSelectedItem();
+						factura.setCliente(temporal.getNumero());
 						factura.setFecha(Integer.valueOf(fecha.getText()));
 						factura = accFactura.buscaFactura(factura);
 						if (factura.getIdFactura().equals(0)) {
 							JOptionPane.showMessageDialog(null, "Factura no encontrada");	
 						} else {
-							initialize(sesionGlobal.getNombreEmpresa());
+							limpiaPantalla();
 							llenaCamposPantalla(factura);
 							lblError.setText("");
 						}
@@ -408,7 +417,6 @@ public class VentanaFacturas {
 		
 		/*String valorCombo = accEmpresas.buscaNombre(entrada.getEmpresa(),"E");
 		comboEmpresa.getModel().setSelectedItem(valorCombo);*/
-		accionesClientesImpl accClientes = new accionesClientesImpl();
 		String valorCombo = accClientes.buscaNombre(entrada.getCliente());
 		comboCliente.getModel().setSelectedItem(valorCombo);
 		valorCombo = accConceptos.buscaDescripcion(entrada.getConcepto());
@@ -435,7 +443,6 @@ public class VentanaFacturas {
 		factura.setTasa(Double.valueOf(textTasa.getText()));
 		factura.setVencimiento(Integer.valueOf(textVencimiento.getText()));				
 		
-		accionesClientesImpl accClientes = new accionesClientesImpl();
 		String variable = (String) comboCliente.getSelectedItem().toString();
 		factura.setCliente(accClientes.buscaCliente(variable));
 		
@@ -455,5 +462,21 @@ public class VentanaFacturas {
 		factura.setProyecto(accProyecto.buscaProyecto(variable));
 		
 		return factura;
+	}
+	
+	private void limpiaPantalla() {
+		textBaseImponible.setText(" ");
+		textDescuento.setText(" ");
+		textFecha.setText(" ");
+		textIban.setText(" ");
+		textIrpf.setText(" ");
+		textIva.setText(" ");
+		textTasa.setText(" ");
+		textVencimiento.setText(" ");
+		comboCliente.getModel().setSelectedItem("----");
+		comboConcepto.getModel().setSelectedItem("----");
+		comboCoste.getModel().setSelectedItem("----");
+		comboProveedor.getModel().setSelectedItem("----");
+		comboProyecto.getModel().setSelectedItem("----");
 	}
 }

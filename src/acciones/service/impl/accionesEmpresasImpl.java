@@ -20,22 +20,25 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
 			PreparedStatement stmt = connection.prepareStatement("INSERT INTO empresas VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-			stmt.setString(1, entrada.getCif());
-			stmt.setString(2, entrada.getTipo());
-			stmt.setString(3,entrada.getNombre());
-			stmt.setString(4,entrada.getDireccion());
-			stmt.setString(5,entrada.getPoblacion());
-			stmt.setString(6,entrada.getProvincia());
-			stmt.setInt(7,entrada.getCp());
-			stmt.setInt(8,entrada.getTelefono1());
-			stmt.setInt(9,entrada.getTelefono2());
-			stmt.setInt(10,entrada.getTelefono3());
-			stmt.setString(11,entrada.getPersonaContacto());
-			stmt.setString(12,entrada.getMail());
-			stmt.setString(13,entrada.getWeb());
-			if (entrada.getTipoCoste()!=null) {
-				stmt.setInt(14,entrada.getTipoCoste());
-			}else stmt.setInt(14,0);
+			//las empresas no necesitan relacionarse con sigo mismas los proveedores se han de relacionar con una empresa.
+			if (entrada.getTipo()=="E") {
+				stmt.setInt(1, 0);
+			}else {
+				stmt.setInt(1, entrada.getEmpresa());
+			}
+			stmt.setString(2, entrada.getCif());
+			stmt.setString(3, entrada.getTipo());
+			stmt.setString(4,entrada.getNombre());
+			stmt.setString(5,entrada.getDireccion());
+			stmt.setString(6,entrada.getPoblacion());
+			stmt.setString(7,entrada.getProvincia());
+			stmt.setInt(8,entrada.getCp());
+			stmt.setInt(9,entrada.getTelefono1());
+			stmt.setInt(10,entrada.getTelefono2());
+			stmt.setInt(11,entrada.getTelefono3());
+			stmt.setString(12,entrada.getPersonaContacto());
+			stmt.setString(13,entrada.getMail());
+			stmt.setString(14,entrada.getWeb());
 			stmt.setString(15,entrada.getIban());
 			stmt.setString(16,entrada.getObservaciones());
 			stmt.setString(17,entrada.getActivo());
@@ -78,15 +81,15 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 	}
 	
 	public ArrayList<ObjetoJComboBox> consultaEmpresas(String tipo, int empresa) {
+		//dada una empresa y un tipo (tiene sentido solo para proveedor) devolvemos los nombres e identificador. 
 		try {
 			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
 			Connection connection=null;
 			ResultSet result =null;
 			ArrayList<ObjetoJComboBox> salida= new ArrayList<ObjetoJComboBox>();
-			
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");
-			String peticion = "SELECT id_empresa, Nombre FROM empresas WHERE tipo = '"+tipo+"' AND id_empresa = "+empresa+" ORDER BY Nombre";
+			String peticion = "SELECT id_empresa, Nombre FROM empresas WHERE tipo = '"+tipo+"' AND empresa = "+empresa+" ORDER BY Nombre";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next());{
@@ -120,6 +123,7 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 			//result.next();
 			if (result.next()){
 				salida.setidEmpresa(result.getInt("id_empresa"));
+				salida.setEmpresa(result.getInt("empresa"));
 				salida.setCif(result.getString("CIF"));
 				salida.setTipo(result.getString("tipo"));
 				salida.setNombre(result.getString("Nombre"));
@@ -133,7 +137,6 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 				salida.setPersonaContacto(result.getString("Persona_contacto"));
 				salida.setMail(result.getString("mail"));
 				salida.setWeb(result.getString("web"));
-				salida.setTipoCoste(result.getInt("Tipo_coste"));
 				salida.setIban(result.getString("IBAN"));
 				salida.setObservaciones(result.getString("observaciones"));
 				salida.setActivo(result.getString("activo"));
@@ -173,22 +176,22 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 			Connection connection=null;
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
-		    PreparedStatement stmt = connection.prepareStatement("UPDATE empresas set CIF = ?, tipo = ?, Nombre = ?, Direccion = ?, Poblacion = ?, Provincia = ?, CP = ?, Telefono1=?, "
-		    		+ "Telefono2=?, Telefono3=?, Persona_contacto=?,mail=?,web=?,Tipo_coste=?,IBAN=?,observaciones=?,activo=? WHERE id_empresa = ?");
-		    stmt.setString(1, empresas.getCif());
-		    stmt.setString(2,"E");
-		    stmt.setString(3,empresas.getNombre());
-		    stmt.setString(4,empresas.getDireccion());
-			stmt.setString(5,empresas.getPoblacion());
-			stmt.setString(6,empresas.getProvincia());
-			stmt.setInt(7,empresas.getCp());
-			stmt.setInt(8, empresas.getTelefono1());
-			stmt.setInt(9, empresas.getTelefono2());
-			stmt.setInt(10, empresas.getTelefono3());
-			stmt.setString(11,empresas.getPersonaContacto());
-			stmt.setString(12,empresas.getMail());
-			stmt.setString(13,empresas.getWeb());
-			stmt.setInt(14,empresas.getTipoCoste());
+		    PreparedStatement stmt = connection.prepareStatement("UPDATE empresas set empresa=?, CIF = ?, tipo = ?, Nombre = ?, Direccion = ?, Poblacion = ?, Provincia = ?, CP = ?, Telefono1=?, "
+		    		+ "Telefono2=?, Telefono3=?, Persona_contacto=?,mail=?,web=?,IBAN=?,observaciones=?,activo=? WHERE id_empresa = ?");
+		    stmt.setInt(1, empresas.getEmpresa());
+		    stmt.setString(2, empresas.getCif());
+		    stmt.setString(3,empresas.getTipo());
+		    stmt.setString(4,empresas.getNombre());
+		    stmt.setString(5,empresas.getDireccion());
+			stmt.setString(6,empresas.getPoblacion());
+			stmt.setString(7,empresas.getProvincia());
+			stmt.setInt(8,empresas.getCp());
+			stmt.setInt(9, empresas.getTelefono1());
+			stmt.setInt(10, empresas.getTelefono2());
+			stmt.setInt(11, empresas.getTelefono3());
+			stmt.setString(12,empresas.getPersonaContacto());
+			stmt.setString(13,empresas.getMail());
+			stmt.setString(14,empresas.getWeb());
 			stmt.setString(15, empresas.getIban());
 			stmt.setString(16,empresas.getObservaciones());
 			stmt.setString(17,empresas.getActivo());

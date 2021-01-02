@@ -3,21 +3,25 @@ package garmaredFacturaEscritorio;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import acciones.dto.FacturasDTO;
+import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
+import acciones.service.impl.accionesClientesImpl;
 import acciones.service.impl.accionesFacturaImpl;
-
-import javax.swing.JButton;
-import java.awt.BorderLayout;
-import javax.swing.JTextArea;
-import javax.swing.JTable;
+import acciones.service.impl.accionesServiceImpl;
 
 public class ListadoFacturas {
 
@@ -25,9 +29,9 @@ public class ListadoFacturas {
 	static ServiceDTO sesionGlobal;
 	private FacturasDTO factura;
 	accionesFacturaImpl accFactura = new accionesFacturaImpl();
+	accionesClientesImpl accClientes = new accionesClientesImpl();
+	accionesServiceImpl accService = new accionesServiceImpl();
 	private JTable table;
-	private String titColumna[];
-	private String datoColumna[][];
 	DefaultTableModel modelo = new DefaultTableModel();
 	/**
 	 * Launch the application.
@@ -67,30 +71,24 @@ public class ListadoFacturas {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
+				frame.dispose(); //esto cierra la ventana
 				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
 			}
 		});
 		btnVolver.setBounds(318, 21, 89, 23);
 		frame.getContentPane().add(btnVolver);
-		
-		String datos[][] = {{"dato1/1","dato1/2","dato1/3","dato1/4","dato1/5","dato1/6","dato1/7","dato1/8"},
-				{"dato2/1","dato2/2","dato2/3","dato2/4","dato2/5","dato2/6","dato2/7","dato2/8"},
-				{"dato3/1","dato3/2","dato3/3","dato3/4","dato3/5","dato3/6","dato3/7","dato3/8"}	
-		};
-		
-		String cabecera[] = {"Fecha","num Factura","Vencimiento","Proyecto","Cliente",
-				"Concepto", "Coste", "Proveedor"
-		};
-		
-		JTable table = new JTable(datos,cabecera);
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(17, 75, 800, 800);
-		frame.getContentPane().add(scrollPane);
-		
+				
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JTextField cliente = new JTextField();
+				JComboBox cliente = new JComboBox();
+				ArrayList<ObjetoJComboBox> cadena = accClientes.consultaClientes(sesionGlobal.getIdEmpresa());
+				if (cadena != null) {
+					for (var i = 0; i < cadena.size(); i++) {
+						cliente.addItem(cadena.get(i));
+					}
+					cliente.addItem(new ObjetoJComboBox(0, "Todos"));
+				}
 				JTextField fecha = new JTextField();
 				Object [] mensaje= {
 						"Cliente:", cliente,
@@ -98,29 +96,48 @@ public class ListadoFacturas {
 				};
 				int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Búsqueda de Factura", JOptionPane.OK_CANCEL_OPTION);
 				if (opcion == JOptionPane.OK_OPTION){
-					if (cliente.getText() == "" || fecha.getText()== "") {
+					if (fecha.getText()!= "") {
+						int empresa = 0;
+						int fentrada = 0;
+						int idCliente = 0;
 						
-					}else {
-						factura = new FacturasDTO();
-						factura.setIdEmpresa(sesionGlobal.getIdEmpresa());
-						factura.setCliente(Integer.valueOf(cliente.getText()));
-						factura.setFecha(Integer.valueOf(fecha.getText()));
-						factura = accFactura.buscaFactura(factura);
-						if (factura.getIdFactura().equals(0)) {
-							JOptionPane.showMessageDialog(null, "No se han encontrado datos para esta selección");	
+						empresa = sesionGlobal.getIdEmpresa();
+						ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
+						temporal = (ObjetoJComboBox) cliente.getSelectedItem();
+						idCliente = temporal.getNumero();			
+						fentrada = Integer.valueOf(fecha.getText());
+						//array con tantas filas cómo columnas queramos en el listado
+						Connection connection = accService.getConexion();
+						DefaultTableModel modelo = new DefaultTableModel();
+						String consulta;
+						if (idCliente==0) {
+							consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE fecha = '"+fentrada+"' AND id_empresa = "+empresa+"";
+							
 						} else {
-							initialize(sesionGlobal.getNombreEmpresa());
-							llenaCamposListado(factura);
+							consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE id_cliente = '"+idCliente+"' AND fecha = '"+fentrada+"' AND id_empresa = "+empresa+"";
 						}
+						ResultSet rs = accService.getTabla(consulta, connection);
+						modelo.setColumnIdentifiers(new Object[]{"Fecha","num Factura","Vencimiento","Proyecto","Cliente","Concepto", "Coste", "Proveedor"});
+						
+						JTable table = new JTable(modelo);
+						try {
+								while (rs.next()) {
+									modelo.addRow(new Object[] {rs.getInt("fecha"), rs.getInt("id_factura"), rs.getInt("vencimiento"), rs.getInt("id_proyecto"), rs.getInt("id_cliente"), rs.getInt("id_concepto"),
+										rs.getInt("id_coste"),rs.getInt("id_proveedor")});
+								}
+								table.setModel(modelo);
+								if (table.getRowCount()==0) {
+									JOptionPane.showMessageDialog(null, "Facturas no encontradas para esta selección");
+								}
+								rs.close();
+								connection.close();
+						} catch (Exception e1) {System.out.println(e1);}
+						JScrollPane scrollPane = new JScrollPane(table);
+						scrollPane.setBounds(17, 75, 800, 800);
+						frame.getContentPane().add(scrollPane);
 					}
-				}				
-			
-			}
-
-			private void llenaCamposListado(FacturasDTO factura) {
-				// TODO Auto-generated method stub
-				
-			}
+				}
+			}				
 		});
 
 		btnBuscar.setBounds(42, 21, 89, 23);

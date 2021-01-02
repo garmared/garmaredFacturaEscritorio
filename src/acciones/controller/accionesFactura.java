@@ -1,5 +1,6 @@
 package acciones.controller;
 
+import java.util.ArrayList;
 import acciones.dto.FacturasDTO;
 
 public interface accionesFactura {
@@ -11,4 +12,6 @@ public interface accionesFactura {
 	public Boolean deleteFactura(int idFactura);
 	//modificacion de un afactura por identificador
 	public Boolean updateFactura(FacturasDTO factura);
+	//listado de facturas
+	public ArrayList buscaFacturas(FacturasDTO factura);
 }

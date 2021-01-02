@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import acciones.controller.accionesFactura;
 import acciones.dto.FacturasDTO;
@@ -51,7 +52,7 @@ public class accionesFacturaImpl implements accionesFactura {
 			ResultSet result =null;	
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			connection=DriverManager.getConnection(conexion,"Edu","garmared");
-			String peticion = "SELECT * FROM factura WHERE id_cliente = '"+factura.getCliente()+"' AND fecha = '"+factura.getFecha()+"' AND idEmpresa = "+factura.getIdEmpresa()+"";
+			String peticion = "SELECT * FROM factura WHERE id_cliente = '"+factura.getCliente()+"' AND fecha = '"+factura.getFecha()+"' AND id_empresa = "+factura.getIdEmpresa()+"";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
@@ -131,6 +132,49 @@ public class accionesFacturaImpl implements accionesFactura {
 			System.out.println("Error en updateFactura: "+ex.getMessage().toString());
 			return null;
 		}
+	}
+	
+	public ArrayList buscarFacturas(FacturasDTO factura) {
+		String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
+		Connection connection=null;
+		ArrayList listaFacturas = new ArrayList();
+		try {
+			ResultSet result =null;	
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			connection=DriverManager.getConnection(conexion,"Edu","garmared");
+			String peticion = "SELECT * FROM factura WHERE id_cliente = '"+factura.getCliente()+"' AND fecha = '"+factura.getFecha()+"' AND id_empresa = "+factura.getIdEmpresa()+"";
+			Statement stmt = connection.createStatement();
+			result = stmt.executeQuery(peticion);
+			while (result.next()){
+				factura.setIdFactura(result.getInt("id_factura"));
+				factura.setBaseImpo(result.getDouble("base_impo"));
+				factura.setCliente(result.getInt("id_cliente"));
+				factura.setConcepto(result.getInt("id_concepto"));
+				factura.setCoste(result.getInt("id_coste"));
+				factura.setDescuento(result.getDouble("descuento"));
+				factura.setEmpresa(result.getInt("id_empresa"));
+				factura.setFecha(result.getInt("fecha"));
+				factura.setIban(result.getString("IBAN"));
+				factura.setIrpf(result.getDouble("IRPF"));
+				factura.setIva(result.getDouble("IVA"));
+				factura.setProveedor(result.getInt("id_proveedor"));
+				factura.setProyecto(result.getInt("id_proyecto"));
+				factura.setTasa(result.getDouble("tasa"));
+				factura.setVencimiento(result.getInt("vencimiento"));
+				listaFacturas.add(factura);
+			}
+			stmt.close();
+			connection.close();
+		} catch(Exception ex){
+			System.out.println("Error en buscarFacturas: "+ex.getMessage().toString());
+		} 
+		return listaFacturas;
+	}
+
+	@Override
+	public ArrayList buscaFacturas(FacturasDTO factura) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

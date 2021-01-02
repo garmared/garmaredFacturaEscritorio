@@ -215,6 +215,7 @@ public class VentanaProyectos {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
+				frame.dispose(); //esto cierra la ventana
 				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
 			}
 		});

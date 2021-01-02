@@ -285,7 +285,7 @@ public class VentaClientes {
 				//grabamos los datos
 				accion= accClientes.grabarCliente(cliente);
 				if (accion) {
-					initialize(nombre);
+					limpiaPantalla();
 					JOptionPane.showMessageDialog(null, "Cliente dado de alta correctamente");
 				}else {
 					JOptionPane.showMessageDialog(null, "Error en el alta de cliente");
@@ -301,7 +301,7 @@ public class VentaClientes {
 				if (JOptionPane.OK_OPTION == confirmado) {
 					accion = accClientes.deleteCliente(idCliente);
 					if (accion) {
-						initialize(nombre);
+						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Cliente borrado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "Error en el borrado del cliente");
@@ -321,7 +321,7 @@ public class VentaClientes {
 					cliente=llenaCamposDto();
 					accion = accClientes.updateCliente(cliente);
 					if (accion) {
-						initialize(nombre);
+						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Cliente modificado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "error al modificar el cliente");
@@ -337,6 +337,7 @@ public class VentaClientes {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
+				frame.dispose(); //esto cierra la ventana
 				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
 			}
 		});
@@ -354,7 +355,7 @@ public class VentaClientes {
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize(nombre);
+				limpiaPantalla();
 			}
 		});
 		btnLimpiar.setBounds(335, 55, 89, 23);
@@ -376,7 +377,7 @@ public class VentaClientes {
 						if (cliente.getIdCliente().equals(0)) {
 							JOptionPane.showMessageDialog(null, "Cliente no encontrado");	
 						} else {
-							initialize(nombre);
+							limpiaPantalla();
 							llenaCamposPantalla(cliente);
 							lblError.setText("");
 						}
@@ -520,6 +521,27 @@ public class VentaClientes {
 		} else {cliente.setActivo("N");}
 				
 		return cliente;
+	}
+	
+	private void limpiaPantalla() {
+		textCif.setText(" ");
+		textNombre.setText(" ");
+		textDireccion.setText(" ");
+		textPoblacion.setText(" ");
+		textProvincia.setText(" ");
+		textTelefono1.setText(" ");
+		textTelefono2.setText(" ");
+		textTelefono3.setText(" ");
+		textPersonaContact.setText(" ");
+		textMail.setText(" ");
+		textWeb.setText(" ");
+		textFP.setText(" ");
+		textDiaPago.setText(" ");
+		textMP.setText(" ");
+		textObserv.setText(" ");
+		textCP.setText(" ");
+		rdbtnNo.setSelected(false);
+		rdbtnSi.setSelected(false);
 	}
 
 }

@@ -149,45 +149,45 @@ public class VentanaPrincipal implements ActionListener{
 		String opcion = A.getActionCommand();
 		switch (opcion) {
 			case "Clientes":
-				ventana.setVisible(false);
+				ventana.dispose();
 				VentaClientes clientes = new VentaClientes(control);
 				break;
 			case "Proveedores":
-				ventana.setVisible(false);
+				ventana.dispose();
 				VentanaProveedores proveedores = new VentanaProveedores(control);
 				break;
 			case "Costes":
-				ventana.setVisible(false);
+				ventana.dispose();
 				VentanaCostes costes = new VentanaCostes(control);
 				break;
 			case "Proyectos":
-				ventana.setVisible(false);
+				ventana.dispose();
 				VentanaProyectos proyecto = new VentanaProyectos(control);
 				break;
 			case "Gesti\u00F3n Factura":
-				ventana.setVisible(false);
+				ventana.dispose();
 				VentanaFacturas facturas = new VentanaFacturas(control);
 				break;
 			case "Conceptos":
-				ventana.setVisible(false);
+				ventana.dispose();
 				VentanaConceptos conceptos = new VentanaConceptos(control);
 				break;
 			case "Usuarios":
-				ventana.setVisible(false);
+				ventana.dispose();
 				VentanaUsuarios users = new VentanaUsuarios(control);
 				break;
 			case "Cambio sesi\u00F3n":
-				ventana.setVisible(false);
+				ventana.dispose();
 				break;
 			case "Selecci\u00F3n empresa":
 				seleccionEmpresa(control);
 				break;
 			case "Gesti\u00F3n Empresas":
-				ventana.setVisible(false);
+				ventana.dispose();
 				VentanaEmpresas empresas = new VentanaEmpresas(control);
 				break;
 			case "Listado Facturas":
-				ventana.setVisible(false);
+				ventana.dispose();
 				ListadoFacturas listadoFacturas = new ListadoFacturas(control);
 				break;
 		}

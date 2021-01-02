@@ -38,6 +38,7 @@ public class VentanaProveedores {
 	private JTextField textIban;
 	private JTextField textObserv;
 	private JTextField textCP;
+	private JRadioButton rdbtnSi;
 	private JRadioButton rdbtnNo;
 	
 	accionesCostesImpl accCostes = new accionesCostesImpl();
@@ -272,15 +273,13 @@ public class VentanaProveedores {
 		frame.getContentPane().add(btnAlta);
 		btnAlta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String nombre, cif, direccion, poblacion, provincia, personaContacto, mail, web, observaciones,activo,iban;
-				Integer cp, telefono1, telefono2, telefono3,tipoCoste;
 				Boolean accion = false;
 				//llenamos el DTO de empresas
 				EmpresasDTO entrada = new EmpresasDTO();
 				if (rdbtnNo.isSelected() == true) {
 					entrada.setActivo("S");
 				} else {entrada.setActivo("N");}
-				
+				entrada.setEmpresa(sesionGlobal.getIdEmpresa());
 				entrada.setCif(textCif.getText());
 				entrada.setCp(Integer.valueOf(textCP.getText()));
 				entrada.setDireccion(textDireccion.getText());
@@ -302,9 +301,10 @@ public class VentanaProveedores {
 				//grabamos los datos. Es igual que en empresa pero el TIPO es "P" de proveedores.
 				accion= accEmpresas.grabarEmpresas(entrada);
 				if (accion) {
-					lblError.setText("Proveedor dada de alta correctamente");
+					limpiaPantalla();
+					JOptionPane.showMessageDialog(null, "Proveedor dada de alta correctamente");
 				}else {
-					lblError.setText("Error en el alta de proveedor");
+					JOptionPane.showMessageDialog(null, "Error en el alta de proveedor");
 				}
 			}
 		});
@@ -317,7 +317,7 @@ public class VentanaProveedores {
 				if (JOptionPane.OK_OPTION == confirmado) {
 					accion = accEmpresas.deleteEmpresa(idEmpresa);
 					if (accion) {
-						initialize(sesionGlobal.getNombreEmpresa());
+						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Proveedor borrado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "Error en el borrado del proveedor");
@@ -337,7 +337,7 @@ public class VentanaProveedores {
 					empresas = llenaCamposDto();
 					accion = accEmpresas.updateEmpresas(empresas);
 					if (accion) {
-						initialize(sesionGlobal.getNombreEmpresa());
+						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Proveedor modificado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "error al modificar el proveedor");
@@ -354,6 +354,7 @@ public class VentanaProveedores {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
+				frame.dispose(); //esto cierra la ventana
 				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
 			}
 		});
@@ -371,7 +372,7 @@ public class VentanaProveedores {
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize(sesionGlobal.getNombreEmpresa());
+				limpiaPantalla();
 			}
 		});
 		btnLimpiar.setBounds(425, 45, 89, 23);
@@ -393,7 +394,7 @@ public class VentanaProveedores {
 						if (empresas.getidEmpresa().equals(0)) {
 							JOptionPane.showMessageDialog(null, "Proveedor no encontrado");	
 						} else {
-							initialize(sesionGlobal.getNombreEmpresa());
+							limpiaPantalla();
 							llenaCamposPantalla(empresas);
 							lblError.setText("");
 						}
@@ -405,7 +406,7 @@ public class VentanaProveedores {
 		btnBuscar.setBounds(425, 79, 89, 23);
 		frame.getContentPane().add(btnBuscar);
 		
-		JRadioButton rdbtnSi = new JRadioButton("Si");
+		rdbtnSi = new JRadioButton("Si");
 		rdbtnSi.setBounds(309, 318, 44, 23);
 		frame.getContentPane().add(rdbtnSi);
 		
@@ -444,7 +445,7 @@ public class VentanaProveedores {
 		lblObservaciones.setVisible(false);
 		lblCP.setVisible(false);
 		lblActivo.setVisible(false);
-		rdbtnNo.setVisible(false);
+		rdbtnSi.setVisible(false);
 		rdbtnNo.setVisible(false);
 	}
 	
@@ -478,7 +479,7 @@ public class VentanaProveedores {
 		lblObservaciones.setVisible(true);
 		lblIban.setVisible(true);
 		lblActivo.setVisible(true);
-		rdbtnNo.setVisible(true);
+		rdbtnSi.setVisible(true);
 		rdbtnNo.setVisible(true);
 	}
 
@@ -505,14 +506,33 @@ public class VentanaProveedores {
 		textObserv.setText(entrada.getObservaciones());
 		textCP.setText(String.valueOf(entrada.getCp()));
 		if (entrada.getActivo().equals("S")) {
-			rdbtnNo.setSelected(false);
+			rdbtnSi.setSelected(false);
 			rdbtnNo.setSelected(true);
 		} else {
-			rdbtnNo.setSelected(true);
+			rdbtnSi.setSelected(true);
 			rdbtnNo.setSelected(false);
 		}
 	}
 	
+	private void limpiaPantalla() {
+		textNombre.setText(" ");
+		textCif.setText(" ");
+		textDireccion.setText(" ");
+		textPoblacion.setText(" ");
+		textProvincia.setText(" ");
+		textTelefono1.setText(" ");
+		textTelefono2.setText(" ");
+		textTelefono3.setText(" ");
+		textPersonaContact.setText(" ");
+		textWeb.setText(" ");
+		textMail.setText(" ");
+		comboCoste.getModel().setSelectedItem("----");
+		textIban.setText(" ");
+		textObserv.setText(" ");
+		textCP.setText(" ");
+		rdbtnSi.setSelected(false);
+		rdbtnNo.setSelected(false);
+	}
 	private  EmpresasDTO llenaCamposDto(){
 		//llenamos el DTO de clientes con los datos de pantalla
 		empresas = new EmpresasDTO();

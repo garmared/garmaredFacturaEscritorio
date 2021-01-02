@@ -82,7 +82,7 @@ public class VentanaConceptos {
 				conceptos.setIdEmpresa(sesionGlobal.getIdEmpresa());
 				accion= accConceptos.grabarConcepto(conceptos);
 				if (accion) {
-					initialize(sesionGlobal.getNombreEmpresa());
+					limpiaPantalla();
 					JOptionPane.showMessageDialog(null, "Concepto dado de alta correctamente");
 				}else {
 					JOptionPane.showMessageDialog(null, "Error con el alta del concepto");
@@ -99,7 +99,7 @@ public class VentanaConceptos {
 				if (JOptionPane.OK_OPTION == confirmado) {
 					accion = accConceptos.deleteConcepto(idConcepto);
 					if (accion) {
-						initialize(sesionGlobal.getNombreEmpresa());
+						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Concepto borrado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "Error en el borrado del concepto");
@@ -120,7 +120,7 @@ public class VentanaConceptos {
 					conceptos.setIdConcepto(idConcepto);
 					accion = accConceptos.updateConcepto(conceptos);
 					if (accion) {
-						initialize(sesionGlobal.getNombreEmpresa());
+						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Concepto modificado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "error al modificar el concepto");
@@ -135,6 +135,7 @@ public class VentanaConceptos {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
+				frame.dispose(); //esto cierra la ventana
 				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
 			}
 		});
@@ -144,7 +145,7 @@ public class VentanaConceptos {
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize(sesionGlobal.getNombreEmpresa());
+				limpiaPantalla();
 			}
 		});
 		btnLimpiar.setBounds(317, 68, 89, 23);
@@ -163,7 +164,7 @@ public class VentanaConceptos {
 						if (conceptos.getIdConcepto().equals(0)) {
 							JOptionPane.showMessageDialog(null, "Concepto no encontrado");	
 						} else {
-							initialize(sesionGlobal.getNombreEmpresa());
+							limpiaPantalla();
 							textConcepto.setText(conceptos.getDescripcion());
 							idConcepto=conceptos.getIdConcepto();
 						}
@@ -177,5 +178,10 @@ public class VentanaConceptos {
 		
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+	}
+
+	protected void limpiaPantalla() {
+		// TODO Auto-generated method stub
+		textConcepto.setText(" ");;
 	}
 }
