@@ -5,4 +5,5 @@ module garmaredFacturaEscritorio {
 	requires layout;
 	requires kernel;
 	requires io;
+	requires opencsv;
 }

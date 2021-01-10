@@ -4,9 +4,13 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,15 +21,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import com.itextpdf.io.font.FontConstants;
-import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.property.TextAlignment;
+import com.opencsv.CSVWriter;
 
 import acciones.dto.FacturasDTO;
 import acciones.dto.ObjetoJComboBox;
@@ -37,6 +37,7 @@ import acciones.service.impl.AccionesEmpresasImpl;
 import acciones.service.impl.AccionesFacturaImpl;
 import acciones.service.impl.AccionesProyectosImpl;
 import acciones.service.impl.AccionesServiceImpl;
+import estructuras.DatosFacturas;
 
 public class ListadoFacturas {
 
@@ -51,6 +52,8 @@ public class ListadoFacturas {
 	AccionesConceptosImpl accConcepto = new AccionesConceptosImpl();
 	AccionesCostesImpl accCostes = new AccionesCostesImpl();
 	AccionesEmpresasImpl accProveedor = new AccionesEmpresasImpl();
+	DatosFacturas datosFact = new DatosFacturas();
+	List<String[]> datosCsv = new ArrayList<String[]>();
 	
 	private JTable table;
 	Table tablaPdf;
@@ -131,63 +134,22 @@ public class ListadoFacturas {
 						Connection connection = accService.getConexion();
 						DefaultTableModel modelo = new DefaultTableModel();
 						String consulta;
-						if (idCliente==0) {
-							if (fentrada==0){
-								consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE id_empresa = "+empresa+" order by id_factura, fecha";
-							} else {
-								consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE fecha = '"+fentrada+"' AND id_empresa = "+empresa+" order by id_factura, fecha";
-							}
-						} else if (fentrada==0){
-							consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE id_cliente = '"+idCliente+"' AND id_empresa = "+empresa+" order by id_factura, fecha";
-						} else {
-							consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE id_cliente = '"+idCliente+"' AND fecha = '"+fentrada+"' AND id_empresa = "+empresa+" order by id_factura, fecha";
-						}
-						
-						Table tabla = new Table(new float[] {3,10,3,3,3,3,3,3});
-						tabla.setWidth(100);
-						
-						tabla.addHeaderCell(new Paragraph("Fecha"));
-						tabla.addHeaderCell(new Paragraph("num Factura"));
-						tabla.addHeaderCell(new Paragraph("Vencimiento"));
-						tabla.addHeaderCell(new Paragraph("Proyecto"));
-						tabla.addHeaderCell(new Paragraph("Cliente"));
-						tabla.addHeaderCell(new Paragraph("Concepto"));
-						tabla.addHeaderCell(new Paragraph("Coste"));
-						tabla.addHeaderCell(new Paragraph("Proveedor"));
-												
+						consulta=accFactura.creaConsulta(idCliente,fentrada,empresa);
+																
 						ResultSet rs = accService.getTabla(consulta, connection);
 						modelo.setColumnIdentifiers(new Object[]{"Fecha","num Factura","Vencimiento","Proyecto","Cliente","Concepto", "Coste", "Proveedor"});
 						JTable table = new JTable(modelo);
 						try {
 								tablaPdf = new Table(8);
-								
-								tablaPdf.addHeaderCell("Fecha");
-								tablaPdf.addHeaderCell("Factura");
-								tablaPdf.addHeaderCell("Vencimiento");
-								tablaPdf.addHeaderCell("Proyecto");
-								tablaPdf.addHeaderCell("Cliente");
-								tablaPdf.addHeaderCell("Concepto");
-								tablaPdf.addHeaderCell("Coste");
-								tablaPdf.addHeaderCell("Proveedor");
-								
-								String proyecto, nombreCliente, concepto, coste, proveedor;
+								tablaPdf = llenaCabecera();
+								int indice= 0;
+								//String proyecto, nombreCliente, concepto, coste, proveedor;
 								while (rs.next()) {
-									proyecto = accProyecto.buscaDescripcion(rs.getInt("id_proyecto"));
-									nombreCliente = accClientes.buscaNombre(rs.getInt("id_cliente"));
-									concepto = accConcepto.buscaDescripcion(rs.getInt("id_concepto"));
-									coste = accCostes.buscaDescripcion(rs.getInt("id_coste"));
-									proveedor = accProveedor.buscaNombre(rs.getInt("id_proveedor"), "P");
-									
-									modelo.addRow(new Object[] {rs.getInt("fecha"), rs.getInt("id_factura"), rs.getInt("vencimiento"), proyecto, nombreCliente, concepto,coste,proveedor});
-									
-									tablaPdf.addCell(String.valueOf(rs.getInt("fecha")));
-									tablaPdf.addCell(String.valueOf(rs.getInt("id_factura")));
-									tablaPdf.addCell(String.valueOf(rs.getInt("vencimiento")));
-									tablaPdf.addCell(proyecto);
-									tablaPdf.addCell(nombreCliente);
-									tablaPdf.addCell(concepto);
-									tablaPdf.addCell(coste);
-									tablaPdf.addCell(proveedor);
+									datosFact = llenaJtable(rs);
+									modelo.addRow(new Object[] {rs.getInt("fecha"), rs.getInt("id_factura"), rs.getInt("vencimiento"), datosFact.getProyecto(), datosFact.getNombreCliente(), datosFact.getConcepto(),datosFact.getCoste(),datosFact.getProveedor()});
+									llenaTablaPdf(datosFact);	
+									llenaDatosCsv(datosFact,indice);
+									indice++;
 								}
 								table.setModel(modelo);
 								if (table.getRowCount()==0) {
@@ -201,7 +163,8 @@ public class ListadoFacturas {
 						frame.getContentPane().add(scrollPane);
 					}
 				}
-			}				
+			}
+
 		});
 
 		btnBuscar.setBounds(42, 21, 89, 23);
@@ -219,6 +182,7 @@ public class ListadoFacturas {
 		JButton btnExportarExcel = new JButton("Exportar a Excel");
 		btnExportarExcel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				crearCsv();
 			}
 		});
 		btnExportarExcel.setBounds(364, 21, 134, 23);
@@ -246,4 +210,69 @@ public class ListadoFacturas {
 		
 		JOptionPane.showMessageDialog(null, "Fichero "+nomFichero+" creado correctamente");
 	}
-}
+	
+	private void crearCsv() {
+		String nomFichero = ("csv/factura/"+JOptionPane.showInputDialog("Escribe el nombre del fichero a generar")+".csv");
+		try {
+			CSVWriter csv = new CSVWriter(new FileWriter(nomFichero));
+			String [] cabecera = {"Fecha", "Factura", "Vencimiento", "Proyecto","Cliente","Concepto","Coste","Proveedor"};
+			csv.writeNext(cabecera);
+			csv.writeAll(datosCsv);
+			csv.close();
+			JOptionPane.showMessageDialog(null, "Fichero "+nomFichero+" creado correctamente");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		}
+			        
+	}
+	
+	private Table llenaCabecera() {
+		
+		tablaPdf.addHeaderCell("Fecha");
+		tablaPdf.addHeaderCell("Factura");
+		tablaPdf.addHeaderCell("Vencimiento");
+		tablaPdf.addHeaderCell("Proyecto");
+		tablaPdf.addHeaderCell("Cliente");
+		tablaPdf.addHeaderCell("Concepto");
+		tablaPdf.addHeaderCell("Coste");
+		tablaPdf.addHeaderCell("Proveedor");
+		
+		return tablaPdf;
+	}	
+	
+	private void llenaTablaPdf(DatosFacturas datosFact) {
+		tablaPdf.addCell(datosFact.getFecha());
+		tablaPdf.addCell(datosFact.getFactura());
+		tablaPdf.addCell(datosFact.getVencimiento());
+		tablaPdf.addCell(datosFact.getProyecto());
+		tablaPdf.addCell(datosFact.getNombreCliente());
+		tablaPdf.addCell(datosFact.getConcepto());
+		tablaPdf.addCell(datosFact.getCoste());
+		tablaPdf.addCell(datosFact.getProveedor());
+	}
+	
+	private DatosFacturas llenaJtable(ResultSet rs) {
+		datosFact = new DatosFacturas();
+		try {
+			datosFact.setProyecto(accProyecto.buscaDescripcion(rs.getInt("id_proyecto")));
+			datosFact.setNombreCliente(accClientes.buscaNombre(rs.getInt("id_cliente")));
+			datosFact.setConcepto(accConcepto.buscaDescripcion(rs.getInt("id_concepto")));
+			datosFact.setCoste(accCostes.buscaDescripcion(rs.getInt("id_coste")));
+			datosFact.setProveedor(accProveedor.buscaNombre(rs.getInt("id_proveedor"), "P"));
+			datosFact.setFecha(String.valueOf(rs.getInt("fecha")));
+			datosFact.setFactura(String.valueOf(rs.getInt("id_factura")));
+			datosFact.setVencimiento(String.valueOf(rs.getInt("vencimiento")));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return datosFact;
+	}
+
+	private void llenaDatosCsv(DatosFacturas datosFact, int indice) {
+		String[] dato = {datosFact.getFecha(), datosFact.getFactura(), datosFact.getVencimiento(),datosFact.getProyecto(), datosFact.getNombreCliente(), datosFact.getConcepto(), datosFact.getCoste(), datosFact.getProveedor()};
+		datosCsv.add(indice,dato);
+	}
+}	
+

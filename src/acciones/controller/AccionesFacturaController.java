@@ -14,4 +14,6 @@ public interface AccionesFacturaController {
 	public Boolean updateFactura(FacturasDTO factura);
 	//listado de facturas
 	public ArrayList buscaFacturas(FacturasDTO factura);
+	//prepara la consutla db2 según parámetro
+	public String creaConsulta(int idCliente, int fentrada, int empresa);
 }

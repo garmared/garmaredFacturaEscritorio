@@ -35,4 +35,21 @@ public class AccionesFacturaImpl implements AccionesFacturaController {
 		return null;
 	}
 
+	public String creaConsulta(int idCliente, int fentrada, int empresa) {
+		String consulta;
+		if (idCliente==0) {
+			if (fentrada==0){
+				consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE id_empresa = "+empresa+" order by id_factura, fecha";
+			} else {
+				consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE fecha = '"+fentrada+"' AND id_empresa = "+empresa+" order by id_factura, fecha";
+			}
+		} else if (fentrada==0){
+			consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE id_cliente = '"+idCliente+"' AND id_empresa = "+empresa+" order by id_factura, fecha";
+		} else {
+			consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE id_cliente = '"+idCliente+"' AND fecha = '"+fentrada+"' AND id_empresa = "+empresa+" order by id_factura, fecha";
+		}
+		
+		return consulta;
+	}
+
 }
