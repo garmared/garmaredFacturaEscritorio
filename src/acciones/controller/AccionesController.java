@@ -2,17 +2,17 @@ package acciones.controller;
 
 import java.sql.*;
 
-public class accionesController {
+import acciones.service.impl.AccionesServiceImpl;
 
+public class AccionesController {
+	
 	@SuppressWarnings("deprecation")
 	public static Integer controlLogin(String usuario, String password) {
 	// gestion de acceso a la aplicacion	
 		int nivelSeguridad = 0;
+		AccionesServiceImpl accService = new AccionesServiceImpl();
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
+			Connection connection=accService.getConexion();						
 			Statement stmt = connection.createStatement();
 			ResultSet rset;						
 			String peticion = "SELECT nivelSeguridad FROM usuarios WHERE usuario = '"+usuario+"' AND password='"+password+"'";

@@ -1,24 +1,22 @@
-package acciones.service.impl;
+package acciones.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Vector;
 
-import acciones.controller.accionesEmpresas;
 import acciones.dto.EmpresasDTO;
 import acciones.dto.ObjetoJComboBox;
+import acciones.service.impl.AccionesServiceImpl;
 
 //definicion de todas las acciones que tenemos en la aplicacion
-public class accionesEmpresasImpl implements accionesEmpresas{
+public class AccionesEmpresas{
+	AccionesServiceImpl accService = new AccionesServiceImpl();
 	public Boolean grabarEmpresas(EmpresasDTO entrada) {
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
+			Connection connection=accService.getConexion();						
 			PreparedStatement stmt = connection.prepareStatement("INSERT INTO empresas VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			//las empresas no necesitan relacionarse con sigo mismas los proveedores se han de relacionar con una empresa.
 			if (entrada.getTipo()=="E") {
@@ -55,13 +53,9 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 
 	public ArrayList<ObjetoJComboBox> listadoEmpresas() {
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;
 			ArrayList<ObjetoJComboBox> salida= new ArrayList<ObjetoJComboBox>();
-			
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT id_empresa, Nombre FROM empresas WHERE tipo = 'E' ORDER BY Nombre";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -83,12 +77,9 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 	public ArrayList<ObjetoJComboBox> consultaEmpresas(String tipo, int empresa) {
 		//dada una empresa y un tipo (tiene sentido solo para proveedor) devolvemos los nombres e identificador. 
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;
 			ArrayList<ObjetoJComboBox> salida= new ArrayList<ObjetoJComboBox>();
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT id_empresa, Nombre FROM empresas WHERE tipo = '"+tipo+"' AND empresa = "+empresa+" ORDER BY Nombre";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -112,11 +103,8 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 		// TODO Auto-generated method stub
 		EmpresasDTO salida = new EmpresasDTO();
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT * FROM empresas WHERE Nombre = '"+empresas.getNombre()+"' AND tipo = '"+empresas.getTipo()+"'";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -154,11 +142,8 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 
 	public Boolean deleteEmpresa(int idEmpresa) {
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
-		    PreparedStatement stmt = connection.prepareStatement("DELETE FROM empresas WHERE id_empresa = ?");
+			Connection connection=accService.getConexion();
+			PreparedStatement stmt = connection.prepareStatement("DELETE FROM empresas WHERE id_empresa = ?");
 		    stmt.setInt(1,idEmpresa);
 			stmt.executeUpdate();
 			stmt.close();
@@ -172,10 +157,7 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 
 	public Boolean updateEmpresas(EmpresasDTO empresas) {
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
+			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("UPDATE empresas set empresa=?, CIF = ?, tipo = ?, Nombre = ?, Direccion = ?, Poblacion = ?, Provincia = ?, CP = ?, Telefono1=?, "
 		    		+ "Telefono2=?, Telefono3=?, Persona_contacto=?,mail=?,web=?,IBAN=?,observaciones=?,activo=? WHERE id_empresa = ?");
 		    stmt.setInt(1, empresas.getEmpresa());
@@ -209,11 +191,8 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 
 	public String buscaNombre(Integer empresa, String tipo) {
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT Nombre FROM empresas WHERE id_empresa = '"+empresa+"' AND tipo = '"+tipo+"'";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -230,11 +209,8 @@ public class accionesEmpresasImpl implements accionesEmpresas{
 
 	public Integer buscaId(String variable, String string) {
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT id_empresa FROM empresas WHERE Nombre = '"+variable+"' AND tipo = '"+string+"'";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);

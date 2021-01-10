@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import acciones.dto.ClientesDTO;
 import acciones.dto.ObjetoJComboBox;
 
-public interface accionesClientes {
+public interface AccionesClientesController {
 	// accion para grabar un cliente
 	public Boolean grabarCliente(ClientesDTO entrada);
 	// accion para recuperar la lista de los clientes de la base de datos (identificador y nombre)

@@ -1,20 +1,16 @@
-package acciones.service;
+package acciones.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+
+import acciones.service.impl.AccionesServiceImpl;
 
 //definicion de todas las acciones que tenemos en la aplicacion
-public interface accionesService{
-	
-	public static Boolean grabarUsuarios(String usuario, String password, String nombre, String apellidos, String email,int nivelSeguridad) {
+public class AccionesService{
+	AccionesServiceImpl accService = new AccionesServiceImpl();
+	public Boolean grabarUsuarios(String usuario, String password, String nombre, String apellidos, String email,int nivelSeguridad) {
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
+			Connection connection=accService.getConexion();
 			PreparedStatement stmt = connection.prepareStatement("INSERT INTO usuarios VALUES(NULL,?,?,?,?,?,?)");
 			stmt.setString(1, usuario);
 			stmt.setString(2, password);
@@ -32,5 +28,4 @@ public interface accionesService{
 			return false;
 		}
 	}
-		
 }

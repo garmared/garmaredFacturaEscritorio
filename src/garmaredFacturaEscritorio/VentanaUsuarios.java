@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
 import acciones.dto.UsuariosDTO;
-import acciones.service.impl.accionesUsuariosImpl;
+import acciones.service.impl.AccionesUsuariosImpl;
 import javax.swing.JComboBox;
 
 public class VentanaUsuarios {
@@ -33,7 +33,7 @@ public class VentanaUsuarios {
 	int idUsuario;
 	UsuariosDTO usuarios;
 	Boolean accion = false;
-	accionesUsuariosImpl accUsuarios = new accionesUsuariosImpl();
+	AccionesUsuariosImpl accUsuarios = new AccionesUsuariosImpl();
 
 	/**
 	 * Launch the application.

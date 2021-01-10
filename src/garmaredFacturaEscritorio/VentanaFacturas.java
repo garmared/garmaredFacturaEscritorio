@@ -14,17 +14,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
-import acciones.controller.accionesProyectos;
+import acciones.controller.AccionesProyectosController;
 import acciones.dto.ClientesDTO;
 import acciones.dto.FacturasDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.accionesClientesImpl;
-import acciones.service.impl.accionesConceptosImpl;
-import acciones.service.impl.accionesCostesImpl;
-import acciones.service.impl.accionesEmpresasImpl;
-import acciones.service.impl.accionesFacturaImpl;
-import acciones.service.impl.accionesProyectosImpl;
+import acciones.service.impl.AccionesClientesImpl;
+import acciones.service.impl.AccionesConceptosImpl;
+import acciones.service.impl.AccionesCostesImpl;
+import acciones.service.impl.AccionesEmpresasImpl;
+import acciones.service.impl.AccionesFacturaImpl;
+import acciones.service.impl.AccionesProyectosImpl;
 
 public class VentanaFacturas {
 
@@ -50,12 +50,12 @@ public class VentanaFacturas {
 	private JComboBox comboConcepto;
 	private JComboBox comboCoste;
 	private JComboBox comboProveedor;
-	accionesCostesImpl accCostes = new accionesCostesImpl();
-	accionesConceptosImpl accConceptos = new accionesConceptosImpl();
-	accionesEmpresasImpl accEmpresas = new accionesEmpresasImpl();
-	accionesFacturaImpl accFactura = new accionesFacturaImpl();
-	accionesProyectosImpl accProyecto = new accionesProyectosImpl();
-	accionesClientesImpl accClientes = new accionesClientesImpl();
+	AccionesCostesImpl accCostes = new AccionesCostesImpl();
+	AccionesConceptosImpl accConceptos = new AccionesConceptosImpl();
+	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
+	AccionesFacturaImpl accFactura = new AccionesFacturaImpl();
+	AccionesProyectosImpl accProyecto = new AccionesProyectosImpl();
+	AccionesClientesImpl accClientes = new AccionesClientesImpl();
 	/**
 	 * Launch the application.
 	 */

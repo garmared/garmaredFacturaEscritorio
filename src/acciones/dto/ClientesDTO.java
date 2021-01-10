@@ -2,7 +2,8 @@ package acciones.dto;
 
 public class ClientesDTO extends GeneralDTO{
 
-	private Integer idCliente,diaPago;
+	private Integer idCliente;
+	Integer diaPago;
 	String modaPago, fp;
 	
 	public String getFp() {

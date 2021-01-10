@@ -2,7 +2,7 @@ package acciones.controller;
 
 import acciones.dto.UsuariosDTO;
 
-public interface accionesUsuarios {
+public interface AccionesUsuariosController {
 	// accion para grabar un cliente
 	public Boolean grabarUsuario(UsuariosDTO entrada);
 	//búsqueda de usuario a partir de nombre

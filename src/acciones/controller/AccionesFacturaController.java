@@ -3,7 +3,7 @@ package acciones.controller;
 import java.util.ArrayList;
 import acciones.dto.FacturasDTO;
 
-public interface accionesFactura {
+public interface AccionesFacturaController {
 	//accion para grabar una factura
 	public Boolean grabarFactura(FacturasDTO entrada);
 	//consulta de una factura por cliente y fecha

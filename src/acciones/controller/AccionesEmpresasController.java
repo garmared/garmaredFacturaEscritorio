@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import acciones.dto.EmpresasDTO;
 import acciones.dto.ObjetoJComboBox;
 
-public interface accionesEmpresas {
+public interface AccionesEmpresasController {
 	//accion para grabar una empresa o proveedor segun el tipo
 	public Boolean grabarEmpresas(EmpresasDTO entrada);
 	//lista de empresas o proveedores segun el tipo

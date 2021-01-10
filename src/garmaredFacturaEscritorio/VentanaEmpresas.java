@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 import acciones.dto.EmpresasDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.accionesEmpresasImpl;
+import acciones.service.impl.AccionesEmpresasImpl;
 
 
 public class VentanaEmpresas {
@@ -39,7 +39,7 @@ public class VentanaEmpresas {
 	private JTextField textObserv;
 	private JTextField textCP;
 	private JRadioButton rdbtnNo;
-	accionesEmpresasImpl accEmpresas = new accionesEmpresasImpl();
+	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	
 	private JComboBox comboCoste;
 	

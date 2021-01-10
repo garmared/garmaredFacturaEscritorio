@@ -12,7 +12,7 @@ import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ProyectosDTO;
 
 //definicion de todas las acciones que tenemos en la aplicacion
-public interface accionesProyectos {
+public interface AccionesProyectosController {
 	//accion para grabar un proyecto
 	public Boolean grabarProyectos(ProyectosDTO entrada);
 	//listado de proyectos

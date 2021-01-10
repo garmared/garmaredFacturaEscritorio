@@ -5,10 +5,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import acciones.controller.accionesService;
+import acciones.controller.AccionesServiceController;
 import acciones.dto.ServiceDTO;
 
-public class accionesServiceImpl implements accionesService{
+public class AccionesServiceImpl implements AccionesServiceController{
 	@Override
 	public ServiceDTO obtenerVentanaActual() {
 		ServiceDTO salida = new ServiceDTO(java.awt.Toolkit.getDefaultToolkit().getScreenSize().height, java.awt.Toolkit.getDefaultToolkit().getScreenSize().width);
@@ -16,11 +16,12 @@ public class accionesServiceImpl implements accionesService{
 	}
 
 	private static String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
+	
 	public Integer controlLogin(String usuario, String password) {
 		// gestion de acceso a la aplicacion	
 			int nivelSeguridad = 0;
 			try{
-				Connection connection=getConexion();
+				Connection connection= getConexion();
 				Statement stmt = connection.createStatement();
 				String peticion = "SELECT nivelSeguridad FROM usuarios WHERE usuario = '"+usuario+"' AND password='"+password+"'";
 				ResultSet rset = getTabla(peticion, connection);
@@ -34,6 +35,7 @@ public class accionesServiceImpl implements accionesService{
 			}
 			return (nivelSeguridad);
 		}
+		
 
 	@Override
 	public Connection getConexion() {

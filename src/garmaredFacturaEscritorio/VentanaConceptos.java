@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 
 import acciones.dto.ConceptosDTO;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.accionesConceptosImpl;
+import acciones.service.impl.AccionesConceptosImpl;
 
 public class VentanaConceptos {
 
@@ -22,7 +22,7 @@ public class VentanaConceptos {
 	private Boolean accion;
 	private ConceptosDTO conceptos;
 	private int idConcepto;
-	accionesConceptosImpl accConceptos = new accionesConceptosImpl();
+	AccionesConceptosImpl accConceptos = new AccionesConceptosImpl();
 
 	/**
 	 * Launch the application.

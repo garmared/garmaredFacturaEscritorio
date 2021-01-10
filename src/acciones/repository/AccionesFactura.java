@@ -1,23 +1,21 @@
-package acciones.service.impl;
+package acciones.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import acciones.controller.accionesFactura;
 import acciones.dto.FacturasDTO;
+import acciones.service.impl.AccionesServiceImpl;
 
-public class accionesFacturaImpl implements accionesFactura {
+//definicion de todas las acciones que tenemos en la aplicacion
+public class AccionesFactura{
+	AccionesServiceImpl accService = new AccionesServiceImpl();
 	public Boolean grabarFactura(FacturasDTO entrada) {
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
-		    PreparedStatement stmt = connection.prepareStatement("INSERT INTO factura VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			Connection connection=accService.getConexion();
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO factura VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			stmt.setInt(1, entrada.getEmpresa());
 			stmt.setInt(2,entrada.getFecha());
 			stmt.setInt(3,entrada.getVencimiento());
@@ -47,11 +45,8 @@ public class accionesFacturaImpl implements accionesFactura {
 	public FacturasDTO buscaFactura(FacturasDTO factura) {
 		try {
 			FacturasDTO salida = new FacturasDTO();
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT * FROM factura WHERE id_cliente = '"+factura.getCliente()+"' AND fecha = '"+factura.getFecha()+"' AND id_empresa = "+factura.getIdEmpresa()+"";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -84,11 +79,8 @@ public class accionesFacturaImpl implements accionesFactura {
 
 	public Boolean deleteFactura(int idFactura) {
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
-		    PreparedStatement stmt = connection.prepareStatement("DELETE FROM factura WHERE id_factura = ?");
+			Connection connection=accService.getConexion();
+			PreparedStatement stmt = connection.prepareStatement("DELETE FROM factura WHERE id_factura = ?");
 		    stmt.setInt(1,idFactura);
 			stmt.executeUpdate();
 			stmt.close();
@@ -102,10 +94,7 @@ public class accionesFacturaImpl implements accionesFactura {
 
 	public Boolean updateFactura(FacturasDTO factura) {
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
+			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("UPDATE factura set id_empresa = ?, fecha=?, vencimiento=?, id_proyecto=?, id_cliente=?,"
 		    		+ "id_concepto=?, id_coste=?, id_proveedor=?, IRPF=?, descuento=?, IBAN=?, base_impo=?, IVA=?, tasa=? WHERE id_factura = ?");
 		    stmt.setInt(1, factura.getEmpresa());
@@ -135,13 +124,10 @@ public class accionesFacturaImpl implements accionesFactura {
 	}
 	
 	public ArrayList buscarFacturas(FacturasDTO factura) {
-		String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-		Connection connection=null;
+		Connection connection=accService.getConexion();
 		ArrayList listaFacturas = new ArrayList();
 		try {
 			ResultSet result =null;	
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT * FROM factura WHERE id_cliente = '"+factura.getCliente()+"' AND fecha = '"+factura.getFecha()+"' AND id_empresa = "+factura.getIdEmpresa()+"";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -170,11 +156,4 @@ public class accionesFacturaImpl implements accionesFactura {
 		} 
 		return listaFacturas;
 	}
-
-	@Override
-	public ArrayList buscaFacturas(FacturasDTO factura) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

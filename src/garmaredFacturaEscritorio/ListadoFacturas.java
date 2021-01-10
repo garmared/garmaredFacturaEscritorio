@@ -30,13 +30,13 @@ import com.itextpdf.layout.property.TextAlignment;
 import acciones.dto.FacturasDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.accionesClientesImpl;
-import acciones.service.impl.accionesConceptosImpl;
-import acciones.service.impl.accionesCostesImpl;
-import acciones.service.impl.accionesEmpresasImpl;
-import acciones.service.impl.accionesFacturaImpl;
-import acciones.service.impl.accionesProyectosImpl;
-import acciones.service.impl.accionesServiceImpl;
+import acciones.service.impl.AccionesClientesImpl;
+import acciones.service.impl.AccionesConceptosImpl;
+import acciones.service.impl.AccionesCostesImpl;
+import acciones.service.impl.AccionesEmpresasImpl;
+import acciones.service.impl.AccionesFacturaImpl;
+import acciones.service.impl.AccionesProyectosImpl;
+import acciones.service.impl.AccionesServiceImpl;
 
 public class ListadoFacturas {
 
@@ -44,13 +44,13 @@ public class ListadoFacturas {
 	static ServiceDTO sesionGlobal;
 	private FacturasDTO factura;
 
-	accionesFacturaImpl accFactura = new accionesFacturaImpl();
-	accionesClientesImpl accClientes = new accionesClientesImpl();
-	accionesServiceImpl accService = new accionesServiceImpl();
-	accionesProyectosImpl accProyecto = new accionesProyectosImpl();
-	accionesConceptosImpl accConcepto = new accionesConceptosImpl();
-	accionesCostesImpl accCostes = new accionesCostesImpl();
-	accionesEmpresasImpl accProveedor = new accionesEmpresasImpl();
+	AccionesFacturaImpl accFactura = new AccionesFacturaImpl();
+	AccionesClientesImpl accClientes = new AccionesClientesImpl();
+	AccionesServiceImpl accService = new AccionesServiceImpl();
+	AccionesProyectosImpl accProyecto = new AccionesProyectosImpl();
+	AccionesConceptosImpl accConcepto = new AccionesConceptosImpl();
+	AccionesCostesImpl accCostes = new AccionesCostesImpl();
+	AccionesEmpresasImpl accProveedor = new AccionesEmpresasImpl();
 	
 	private JTable table;
 	Table tablaPdf;

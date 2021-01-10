@@ -1,24 +1,23 @@
-package acciones.service.impl;
+package acciones.repository;
 
-import acciones.controller.accionesCostes;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Vector;
+
 import acciones.dto.CostesDTO;
 import acciones.dto.ObjetoJComboBox;
+import acciones.service.impl.AccionesServiceImpl;
 
 //definicion de todas las acciones que tenemos en la aplicacion
-public class accionesCostesImpl implements accionesCostes{
+public class AccionesCostes{
+	AccionesServiceImpl accService = new AccionesServiceImpl();
 	public Boolean grabarCoste(CostesDTO coste) {
 		// TODO Auto-generated method stub
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
+			Connection connection=accService.getConexion();						
 			PreparedStatement stmt = connection.prepareStatement("INSERT INTO costes VALUES(NULL,?,?)");
 			stmt.setString(1, coste.getDescripcion());
 			stmt.setInt(2, coste.getIdEmpresa());
@@ -35,13 +34,9 @@ public class accionesCostesImpl implements accionesCostes{
 	
 	public ArrayList<ObjetoJComboBox> consultaCostes(int empresa) {
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;
 			ArrayList<ObjetoJComboBox> salida= new ArrayList<ObjetoJComboBox>();
-			
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT id_coste, descripcion FROM costes WHERE id_empresa = "+empresa+"  ORDER BY descripcion";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -63,11 +58,8 @@ public class accionesCostesImpl implements accionesCostes{
 	public CostesDTO buscaCoste(CostesDTO costes) {
 		CostesDTO salida = new CostesDTO();
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT * FROM costes WHERE descripcion = '"+costes.getDescripcion()+"' AND id_empresa = "+costes.getIdEmpresa()+"";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -89,10 +81,7 @@ public class accionesCostesImpl implements accionesCostes{
 
 	public Boolean deleteCoste(int idCoste) {
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
+			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("DELETE FROM costes WHERE id_coste = ?");
 		    stmt.setInt(1,idCoste);
 			stmt.executeUpdate();
@@ -106,10 +95,7 @@ public class accionesCostesImpl implements accionesCostes{
 
 	public Boolean updateCoste(CostesDTO costes) {
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
+			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("UPDATE costes set descripcion = ? WHERE id_coste = ?");
 			stmt.setString(1, costes.getDescripcion());
 			stmt.setInt(2, costes.getIdCoste());
@@ -126,11 +112,8 @@ public class accionesCostesImpl implements accionesCostes{
 
 	public String buscaNombre(Integer tipoCoste) {
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT descripcion FROM costes WHERE id_coste = '"+tipoCoste+"'";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -147,11 +130,8 @@ public class accionesCostesImpl implements accionesCostes{
 
 	public int buscaIdCoste(String variable) {
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT id_coste FROM costes WHERE descripcion = '"+variable+"'";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -168,11 +148,8 @@ public class accionesCostesImpl implements accionesCostes{
 
 	public String buscaDescripcion(Integer coste) {
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT descripcion FROM costes WHERE id_coste = '"+coste+"'";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -189,11 +166,8 @@ public class accionesCostesImpl implements accionesCostes{
 
 	public Integer buscaCoste(String variable) {
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT id_coste FROM costes WHERE descripcion = '"+variable+"'";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -207,4 +181,5 @@ public class accionesCostesImpl implements accionesCostes{
 			return null;
 		}
 	}		
+		
 }

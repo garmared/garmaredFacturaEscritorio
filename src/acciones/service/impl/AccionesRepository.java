@@ -1,5 +1,5 @@
 package acciones.service.impl;
 
-public interface accionesRepository {
+public interface AccionesRepository {
 
 }

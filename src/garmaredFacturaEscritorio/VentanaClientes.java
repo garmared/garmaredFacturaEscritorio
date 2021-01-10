@@ -16,10 +16,10 @@ import javax.swing.JTextField;
 
 import acciones.dto.ClientesDTO;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.accionesClientesImpl;
+import acciones.service.impl.AccionesClientesImpl;
 
 
-public class VentaClientes {
+public class VentanaClientes {
 
 	private JFrame frame;
 	private JTextField textCif;
@@ -67,7 +67,7 @@ public class VentaClientes {
 	static ServiceDTO sesionGlobal;
 	private Integer idCliente;
 	private Boolean accion = false;
-	accionesClientesImpl accClientes = new accionesClientesImpl();
+	AccionesClientesImpl accClientes = new AccionesClientesImpl();
 	/**
 	 * Launch the application.
 	 */
@@ -75,7 +75,7 @@ public class VentaClientes {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentaClientes window = new VentaClientes(control);
+					VentanaClientes window = new VentanaClientes(control);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -87,7 +87,7 @@ public class VentaClientes {
 	/**
 	 * Create the application.
 	 */
-	public VentaClientes(ServiceDTO sesion) {
+	public VentanaClientes(ServiceDTO sesion) {
 		sesionGlobal = sesion;
 		initialize(sesion.getNombreEmpresa());
 	}

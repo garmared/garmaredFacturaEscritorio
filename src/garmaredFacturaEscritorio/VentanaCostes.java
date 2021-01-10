@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 
 import acciones.dto.CostesDTO;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.accionesCostesImpl;
+import acciones.service.impl.AccionesCostesImpl;
 
 public class VentanaCostes {
 
@@ -23,7 +23,7 @@ public class VentanaCostes {
 	private Boolean accion;
 	private CostesDTO costes;
 	private int idCoste;
-	accionesCostesImpl accCostes = new accionesCostesImpl();
+	AccionesCostesImpl accCostes = new AccionesCostesImpl();
 
 	/**
 	 * Launch the application.

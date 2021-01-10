@@ -1,27 +1,20 @@
-package acciones.service.impl;
+package acciones.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Vector;
 
-import acciones.controller.accionesUsuarios;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.UsuariosDTO;
+import acciones.service.impl.AccionesServiceImpl;
 
-//definicion de todas las acciones que tenemos en la aplicacion
-public class accionesUsuariosImpl implements accionesUsuarios{
-
-	@Override
+public class AccionesUsuarios {
+	AccionesServiceImpl accService = new AccionesServiceImpl();
 	public Boolean grabarUsuario(UsuariosDTO entrada) {
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
+			Connection connection=accService.getConexion();
 			PreparedStatement stmt = connection.prepareStatement("INSERT INTO usuarios VALUES(NULL,?,?,?,?,?,?)");
 			stmt.setString(1, entrada.getUsuario());
 			stmt.setString(2, entrada.getPassword());
@@ -43,11 +36,8 @@ public class accionesUsuariosImpl implements accionesUsuarios{
 	public UsuariosDTO buscaUsuario(String nomBuscado) {
 		UsuariosDTO salida = new UsuariosDTO();
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
 			ResultSet result =null;	
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
+			Connection connection=accService.getConexion();
 			String peticion = "SELECT * FROM usuarios WHERE usuario = '"+nomBuscado+"'";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -74,10 +64,7 @@ public class accionesUsuariosImpl implements accionesUsuarios{
 
 	public Boolean deleteUsuario(int idUsuario) {
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
+			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("DELETE FROM usuarios WHERE idUsuario = ?");
 		    stmt.setInt(1,idUsuario);
 			stmt.executeUpdate();
@@ -92,11 +79,8 @@ public class accionesUsuariosImpl implements accionesUsuarios{
 
 	public Boolean updateUsuarios(UsuariosDTO usuarios) {
 		try{
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");						
-		    PreparedStatement stmt = connection.prepareStatement("UPDATE usuarios set usuario=?, password=?,nombre=?,apellidos=?,email=?,"
+			Connection connection=accService.getConexion();
+			PreparedStatement stmt = connection.prepareStatement("UPDATE usuarios set usuario=?, password=?,nombre=?,apellidos=?,email=?,"
 		    		+ "nivelSeguridad=? WHERE idUsuario = ?");
 		    stmt.setString(1, usuarios.getUsuario());
 		    stmt.setString(2,usuarios.getPassword());
@@ -119,11 +103,8 @@ public class accionesUsuariosImpl implements accionesUsuarios{
 	public ArrayList<ObjetoJComboBox> listaUsuarios() {
 		ArrayList<ObjetoJComboBox> salida = new ArrayList<ObjetoJComboBox>();
 		try {
-			String conexion = "jdbc:mysql://localhost:3306/garmared_factura";
-			Connection connection=null;
+			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			connection=DriverManager.getConnection(conexion,"Edu","garmared");
 			String peticion = "SELECT * FROM usuarios ORDER by usuario";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
@@ -141,31 +122,5 @@ public class accionesUsuariosImpl implements accionesUsuarios{
 			System.out.println("Error en listaUsuarios: "+ex.getMessage().toString());
 			return null;
 		}		}
-
-	public String buscaSeguridad(Integer nivelSeguridad) {
-		String salida ="";
-		switch (nivelSeguridad) {
-			case 1: 
-				salida = "desarrollo";
-				break;
-			case 2: 
-				salida = "usuario";
-				break;
-		}
-		return salida;
-	}
-
-	public Integer buscaIdSeguridad(String variable) {
-		Integer salida = 0;
-		switch (variable) {
-			case "desarrollo":
-				salida=1;
-				break;
-			case "usuario":
-				salida=2;
-				break;
-		}
-		return salida;
-	}
 
 }

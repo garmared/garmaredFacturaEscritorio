@@ -14,8 +14,8 @@ import javax.swing.JOptionPane;
 
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.accionesEmpresasImpl;
-import acciones.service.impl.accionesUsuariosImpl;
+import acciones.service.impl.AccionesEmpresasImpl;
+import acciones.service.impl.AccionesUsuariosImpl;
 
 public class VentanaPrincipal implements ActionListener{
 	JFrame ventana;
@@ -24,7 +24,7 @@ public class VentanaPrincipal implements ActionListener{
 	JMenuItem sub1,sub2,sub3;
 	JMenuBar menubar;
 	ServiceDTO control;
-	accionesEmpresasImpl accEmpresas = new accionesEmpresasImpl();
+	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	static int sesion; //variable para pasar el tipo de sesion que estamos utilizando (gestion o usuario) al resto de pantallas.
 	
 	public void CrearMenu() {
@@ -150,7 +150,7 @@ public class VentanaPrincipal implements ActionListener{
 		switch (opcion) {
 			case "Clientes":
 				ventana.dispose();
-				VentaClientes clientes = new VentaClientes(control);
+				VentanaClientes clientes = new VentanaClientes(control);
 				break;
 			case "Proveedores":
 				ventana.dispose();

@@ -18,8 +18,8 @@ import javax.swing.JTextField;
 import acciones.dto.EmpresasDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.accionesCostesImpl;
-import acciones.service.impl.accionesEmpresasImpl;
+import acciones.service.impl.AccionesCostesImpl;
+import acciones.service.impl.AccionesEmpresasImpl;
 
 public class VentanaProveedores {
 
@@ -41,8 +41,8 @@ public class VentanaProveedores {
 	private JRadioButton rdbtnSi;
 	private JRadioButton rdbtnNo;
 	
-	accionesCostesImpl accCostes = new accionesCostesImpl();
-	accionesEmpresasImpl accEmpresas = new accionesEmpresasImpl();
+	AccionesCostesImpl accCostes = new AccionesCostesImpl();
+	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	private JComboBox comboCoste;
 	
 	private JLabel lblCif;

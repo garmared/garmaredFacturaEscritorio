@@ -6,7 +6,7 @@ import acciones.dto.ClientesDTO;
 import acciones.dto.ConceptosDTO;
 import acciones.dto.ObjetoJComboBox;
 
-public interface accionesConceptos {
+public interface AccionesConceptosController {
 	//insert de conceptos
 	public Boolean grabarConcepto(ConceptosDTO conceptos);
 	//listado de identificadores de conceptos

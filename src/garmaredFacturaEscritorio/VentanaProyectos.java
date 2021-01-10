@@ -16,10 +16,10 @@ import javax.swing.JTextField;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ProyectosDTO;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.accionesClientesImpl;
-import acciones.service.impl.accionesCostesImpl;
-import acciones.service.impl.accionesEmpresasImpl;
-import acciones.service.impl.accionesProyectosImpl;
+import acciones.service.impl.AccionesClientesImpl;
+import acciones.service.impl.AccionesCostesImpl;
+import acciones.service.impl.AccionesEmpresasImpl;
+import acciones.service.impl.AccionesProyectosImpl;
 
 public class VentanaProyectos {
 
@@ -54,10 +54,10 @@ public class VentanaProyectos {
 	private JComboBox comboCliente;
 	
 	private Boolean accion = false;
-	accionesClientesImpl accClientes = new accionesClientesImpl();
-	accionesCostesImpl accCostes = new accionesCostesImpl();
-	accionesEmpresasImpl accEmpresas = new accionesEmpresasImpl();
-	accionesProyectosImpl accProyectos = new accionesProyectosImpl();
+	AccionesClientesImpl accClientes = new AccionesClientesImpl();
+	AccionesCostesImpl accCostes = new AccionesCostesImpl();
+	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
+	AccionesProyectosImpl accProyectos = new AccionesProyectosImpl();
 	/**
 	 * Launch the application.
 	 */

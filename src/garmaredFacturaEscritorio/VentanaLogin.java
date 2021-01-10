@@ -2,9 +2,7 @@ package garmaredFacturaEscritorio;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,7 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.accionesServiceImpl;
+import acciones.service.impl.AccionesServiceImpl;
 
 
 public class VentanaLogin {
@@ -23,7 +21,7 @@ public class VentanaLogin {
 	private JPasswordField textPassword;
 	private JTextField textUser;
 	JButton btnAcceder;
-	accionesServiceImpl accService = new accionesServiceImpl();
+	AccionesServiceImpl accService = new AccionesServiceImpl();
 	ServiceDTO control = new ServiceDTO();
 	/**
 	 * Launch the application.
