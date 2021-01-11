@@ -24,8 +24,8 @@ public interface AccionesProyectosController {
 	//modificacion de un proyecto
 	public Boolean updateProyectos(ProyectosDTO proyecto);
 	//descripcion de un proyecto por identificador
-	public  String buscaDescripcion(Integer proyecto);
+	public  String buscaDescripcion(int proyecto, int empresa);
 	//identificador de proyecto a partir de nombre
-	public Integer buscaProyecto(String variable);
+	public Integer buscaProyecto(String variable, int empresa);
 	
 }

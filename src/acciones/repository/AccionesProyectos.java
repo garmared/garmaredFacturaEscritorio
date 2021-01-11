@@ -141,11 +141,11 @@ public class AccionesProyectos{
 			}
 		}
 
-		public  String buscaDescripcion(Integer proyecto) {
+		public  String buscaDescripcion(Integer proyecto, int empresa) {
 			try {
 				Connection connection=accService.getConexion();
 				ResultSet result =null;	
-				String peticion = "SELECT descripcion FROM proyectos WHERE id_proyecto = '"+proyecto+"'";
+				String peticion = "SELECT descripcion FROM proyectos WHERE id_empresa = '"+empresa+"' AND id_proyecto = '"+proyecto+"'";
 				Statement stmt = connection.createStatement();
 				result = stmt.executeQuery(peticion);
 				if (result.next()){
@@ -159,11 +159,11 @@ public class AccionesProyectos{
 			}
 		}
 
-		public Integer buscaProyecto(String variable) {
+		public Integer buscaProyecto(String variable, int empresa) {
 			try {
 				Connection connection=accService.getConexion();
 				ResultSet result =null;	
-				String peticion = "SELECT id_proyecto FROM proyectos WHERE id_empresa = '"+variable+"'";
+				String peticion = "SELECT id_proyecto FROM proyectos WHERE id_empresa = '"+empresa+"' AND descripcion = '"+variable+"'";
 				Statement stmt = connection.createStatement();
 				result = stmt.executeQuery(peticion);
 				if (result.next()){

@@ -4,17 +4,23 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
-import acciones.controller.AccionesProyectosController;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+
 import acciones.dto.ClientesDTO;
 import acciones.dto.FacturasDTO;
 import acciones.dto.ObjetoJComboBox;
@@ -29,14 +35,16 @@ import acciones.service.impl.AccionesProyectosImpl;
 public class VentanaFacturas {
 
 	private JFrame frame;
-	private JTextField textFecha;
-	private JTextField textVencimiento;
+	private JDateChooser textVencimiento;
 	private JTextField textIrpf;
 	private JTextField textDescuento;
 	private JTextField textIban;
 	private JTextField textTasa;
 	private JTextField textBaseImponible;
 	private JTextField textIva;
+	private JRadioButton rdbtnSi;
+	private JRadioButton rdbtnNo;
+	private JDateChooser textFecha;
 	
 	ClientesDTO cliente;
 
@@ -94,17 +102,15 @@ public class VentanaFacturas {
 		lblFecha.setBounds(10, 42, 48, 14);
 		frame.getContentPane().add(lblFecha);
 		
-		textFecha = new JTextField();
-		textFecha.setColumns(10);
-		textFecha.setBounds(128, 36, 96, 20);
-		frame.getContentPane().add(textFecha);
-		
 		JLabel lblVencimiento = new JLabel("Vencimiento");
 		lblVencimiento.setBounds(10, 70, 75, 14);
 		frame.getContentPane().add(lblVencimiento);
 		
-		textVencimiento = new JTextField();
-		textVencimiento.setColumns(10);
+		textFecha = new JDateChooser();
+		textFecha.setBounds(128, 36, 96, 20);
+		frame.getContentPane().add(textFecha);
+		
+		textVencimiento = new JDateChooser();
 		textVencimiento.setBounds(128, 64, 96, 20);
 		frame.getContentPane().add(textVencimiento);
 		
@@ -246,6 +252,31 @@ public class VentanaFacturas {
 		textIva.setBounds(128, 344, 96, 20);
 		frame.getContentPane().add(textIva);
 		
+		JLabel lblPagado = new JLabel("Pagado");
+		lblPagado.setBounds(276, 350, 48, 14);
+		frame.getContentPane().add(lblPagado);
+		
+		rdbtnSi = new JRadioButton("Si");
+		rdbtnSi.setBounds(328, 346, 42, 23);
+		frame.getContentPane().add(rdbtnSi);
+		
+		rdbtnNo = new JRadioButton("No");
+		rdbtnNo.setBounds(372, 346, 48, 23);
+		frame.getContentPane().add(rdbtnNo);
+		
+		rdbtnSi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnNo.setSelected(false);
+				rdbtnSi.setSelected(true);
+			}
+		});
+		rdbtnNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnNo.setSelected(true);
+				rdbtnSi.setSelected(false);
+			}
+		});
+		
 		JLabel lblError = new JLabel("");
 		lblError.setBounds(10, 375, 414, 14);
 		frame.getContentPane().add(lblError);
@@ -258,26 +289,7 @@ public class VentanaFacturas {
 				ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
 				//llenamos el DTO de factura
 				FacturasDTO entrada = new FacturasDTO();
-				//temporal = (ObjetoJComboBox) comboEmpresa.getSelectedItem();
-				entrada.setEmpresa(sesionGlobal.getIdEmpresa());
-				entrada.setFecha(Integer.valueOf(textFecha.getText()));
-				entrada.setVencimiento(Integer.valueOf(textVencimiento.getText()));
-				temporal = (ObjetoJComboBox) comboProyecto.getSelectedItem();
-				entrada.setProyecto(temporal.getNumero());
-				temporal = (ObjetoJComboBox) comboCliente.getSelectedItem();
-				entrada.setCliente(temporal.getNumero());
-				temporal = (ObjetoJComboBox) comboConcepto.getSelectedItem();
-				entrada.setConcepto(temporal.getNumero());
-				temporal = (ObjetoJComboBox) comboCoste.getSelectedItem();
-				entrada.setCoste(temporal.getNumero());
-				temporal = (ObjetoJComboBox) comboProveedor.getSelectedItem();
-				entrada.setProveedor(temporal.getNumero());
-				entrada.setIrpf(Double.valueOf(textIrpf.getText()));
-				entrada.setDescuento(Double.valueOf(textDescuento.getText()));
-				entrada.setIban(textIban.getText());
-				entrada.setBaseImpo(Double.valueOf(textBaseImponible.getText()));
-				entrada.setIva(Double.valueOf(textIva.getText()));
-				entrada.setTasa(Double.valueOf(textTasa.getText()));
+				entrada = llenaCamposDto();
 				//grabamos los datos
 				accion= accFactura.grabarFactura(entrada);
 				if (accion) {
@@ -318,9 +330,9 @@ public class VentanaFacturas {
 					accion = accFactura.updateFactura(factura);
 					if (accion) {
 						limpiaPantalla();
-						JOptionPane.showMessageDialog(null, "Empresa modificado correctamente");
+						JOptionPane.showMessageDialog(null, "Factura modificada correctamente");
 					}else {
-						JOptionPane.showMessageDialog(null, "error al modificar la empresa");
+						JOptionPane.showMessageDialog(null, "error al modificar la factura");
 					}
 				} else System.out.println("vale... no hago nada...");
 			}
@@ -368,7 +380,7 @@ public class VentanaFacturas {
 						cliente.addItem(cadena.get(i));
 					}
 				}
-				JTextField fecha = new JTextField();
+				JCalendar fecha = new JCalendar();
 				Object [] mensaje= {
 						"Cliente:", cliente,
 						"Fecha Inicio:", fecha
@@ -376,13 +388,22 @@ public class VentanaFacturas {
 				//Object opcion = JOptionPane.showInputDialog(null,"Seleccione una opción","",JOptionPane.PLAIN_MESSAGE,null,cliente.toArray(),null);
 				int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Búsqueda de Factura", JOptionPane.OK_CANCEL_OPTION);
 				if (opcion == JOptionPane.OK_OPTION){
-					if (fecha.getText()!= "") {
 						factura = new FacturasDTO();
 						factura.setIdEmpresa(sesionGlobal.getIdEmpresa());
 						ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
 						temporal = (ObjetoJComboBox) cliente.getSelectedItem();
 						factura.setCliente(temporal.getNumero());
-						factura.setFecha(Integer.valueOf(fecha.getText()));
+						String dia = Integer.toString(fecha.getCalendar().get(Calendar.DAY_OF_MONTH));
+						if (fecha.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
+							dia = ("0"+dia);
+						}
+						String mes = Integer.toString(fecha.getCalendar().get(Calendar.MONTH)+1);
+						if (fecha.getCalendar().get(Calendar.MONTH)+1<10) {
+							mes = ("0"+mes);
+						}
+						String ano = Integer.toString(fecha.getCalendar().get(Calendar.YEAR));
+						String varFecha = (ano+mes+dia);
+						factura.setFecha(Integer.valueOf(varFecha));
 						factura = accFactura.buscaFactura(factura);
 						if (factura.getIdFactura().equals(0)) {
 							JOptionPane.showMessageDialog(null, "Factura no encontrada");	
@@ -391,14 +412,14 @@ public class VentanaFacturas {
 							llenaCamposPantalla(factura);
 							lblError.setText("");
 						}
-					}
+					
 				}				
 			
 			}
 		});
 		btnBuscar.setBounds(335, 89, 89, 23);
 		frame.getContentPane().add(btnBuscar);
-		
+			
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
@@ -408,13 +429,27 @@ public class VentanaFacturas {
 		idFactura = entrada.getIdFactura();
 		textBaseImponible.setText(String.valueOf(entrada.getBaseImpo()));
 		textDescuento.setText(String.valueOf(entrada.getDescuento()));
-		textFecha.setText(String.valueOf(entrada.getFecha()));
+		SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
+		String fecha = String.valueOf(entrada.getFecha());
+		try {
+			textFecha.setDate(formato.parse(fecha));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		textIban.setText(entrada.getIban());
 		textIrpf.setText(String.valueOf(entrada.getIrpf()));
 		textIva.setText(String.valueOf(entrada.getIva()));
 		textTasa.setText(String.valueOf(entrada.getTasa()));
-		textVencimiento.setText(String.valueOf(entrada.getVencimiento()));
 		
+		fecha = String.valueOf(entrada.getVencimiento());
+		try {
+			textVencimiento.setDate(formato.parse(fecha));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
 		/*String valorCombo = accEmpresas.buscaNombre(entrada.getEmpresa(),"E");
 		comboEmpresa.getModel().setSelectedItem(valorCombo);*/
 		String valorCombo = accClientes.buscaNombre(entrada.getCliente());
@@ -425,8 +460,15 @@ public class VentanaFacturas {
 		comboCoste.getModel().setSelectedItem(valorCombo);
 		valorCombo = accEmpresas.buscaNombre(entrada.getProveedor(),"P");
 		comboProveedor.getModel().setSelectedItem(valorCombo);
-		valorCombo = accProyecto.buscaDescripcion(entrada.getProyecto());
+		valorCombo = accProyecto.buscaDescripcion(entrada.getProyecto(),sesionGlobal.getIdEmpresa());
 		comboProyecto.getModel().setSelectedItem(valorCombo);
+		if (entrada.getPagado().equals("S")) {
+			rdbtnNo.setSelected(false);
+			rdbtnSi.setSelected(true);
+		} else {
+			rdbtnNo.setSelected(true);
+			rdbtnSi.setSelected(false);
+		}
 	}
 	
 	private  FacturasDTO llenaCamposDto(){
@@ -435,13 +477,35 @@ public class VentanaFacturas {
 		
 		factura.setBaseImpo(Double.valueOf(textBaseImponible.getText()));
 		factura.setDescuento(Double.valueOf(textDescuento.getText()));
-		factura.setFecha(Integer.valueOf(textFecha.getText()));
+		String dia = Integer.toString(textFecha.getCalendar().get(Calendar.DAY_OF_MONTH));
+		if (textFecha.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
+			dia = ("0"+dia);
+		}
+		String mes = Integer.toString(textFecha.getCalendar().get(Calendar.MONTH)+1);
+		if (textFecha.getCalendar().get(Calendar.MONTH)+1<10) {
+			mes = ("0"+mes);
+		}
+		String ano = Integer.toString(textFecha.getCalendar().get(Calendar.YEAR));
+		String varFecha = (ano+mes+dia);
+		factura.setFecha(Integer.valueOf(varFecha));
+		
 		factura.setIban(textIban.getText());
 		factura.setIdFactura(idFactura);
 		factura.setIrpf(Double.valueOf(textIrpf.getText()));
 		factura.setIva(Double.valueOf(textIva.getText()));
 		factura.setTasa(Double.valueOf(textTasa.getText()));
-		factura.setVencimiento(Integer.valueOf(textVencimiento.getText()));				
+		
+		dia = Integer.toString(textVencimiento.getCalendar().get(Calendar.DAY_OF_MONTH));
+		if (textVencimiento.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
+			dia = ("0"+dia);
+		}
+		mes = Integer.toString(textVencimiento.getCalendar().get(Calendar.MONTH)+1);
+		if (textVencimiento.getCalendar().get(Calendar.MONTH)+1<10) {
+			mes = ("0"+mes);
+		}
+		ano = Integer.toString(textVencimiento.getCalendar().get(Calendar.YEAR));
+		varFecha = (ano+mes+dia);
+		factura.setVencimiento(Integer.valueOf(varFecha));				
 		
 		String variable = (String) comboCliente.getSelectedItem().toString();
 		factura.setCliente(accClientes.buscaCliente(variable));
@@ -452,14 +516,17 @@ public class VentanaFacturas {
 		variable = (String) comboCoste.getSelectedItem().toString();
 		factura.setCoste(accCostes.buscaCoste(variable));
 		
-		/*variable = (String) comboEmpresa.getSelectedItem().toString();
-		factura.setEmpresa(accEmpresas.buscaId(variable,"E"));*/
+		factura.setEmpresa(sesionGlobal.getIdEmpresa());
 		
 		variable = (String) comboProveedor.getSelectedItem().toString();
 		factura.setProveedor(accEmpresas.buscaId(variable,"P"));
 		
 		variable = (String) comboProyecto.getSelectedItem().toString();
-		factura.setProyecto(accProyecto.buscaProyecto(variable));
+		factura.setProyecto(accProyecto.buscaProyecto(variable,sesionGlobal.getIdEmpresa()));
+		
+		if (rdbtnSi.isSelected() == true) {
+			factura.setPagado("S");
+		} else {factura.setPagado("N");}
 		
 		return factura;
 	}
@@ -467,16 +534,18 @@ public class VentanaFacturas {
 	private void limpiaPantalla() {
 		textBaseImponible.setText(" ");
 		textDescuento.setText(" ");
-		textFecha.setText(" ");
+		textFecha.setDate(null);
 		textIban.setText(" ");
 		textIrpf.setText(" ");
 		textIva.setText(" ");
 		textTasa.setText(" ");
-		textVencimiento.setText(" ");
+		textVencimiento.setDate(null);
 		comboCliente.getModel().setSelectedItem("----");
 		comboConcepto.getModel().setSelectedItem("----");
 		comboCoste.getModel().setSelectedItem("----");
 		comboProveedor.getModel().setSelectedItem("----");
 		comboProyecto.getModel().setSelectedItem("----");
+		rdbtnNo.setSelected(false);
+		rdbtnSi.setSelected(false);
 	}
 }

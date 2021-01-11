@@ -132,7 +132,7 @@ public class AccionesConceptos{
 		try {
 			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			String peticion = "SELECT id_comcepto FROM conceptos WHERE descripcion = '"+variable+"'";
+			String peticion = "SELECT id_concepto FROM conceptos WHERE descripcion = '"+variable+"'";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){

@@ -15,7 +15,7 @@ public class AccionesFactura{
 	public Boolean grabarFactura(FacturasDTO entrada) {
 		try{
 			Connection connection=accService.getConexion();
-			PreparedStatement stmt = connection.prepareStatement("INSERT INTO factura VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO factura VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			stmt.setInt(1, entrada.getEmpresa());
 			stmt.setInt(2,entrada.getFecha());
 			stmt.setInt(3,entrada.getVencimiento());
@@ -30,6 +30,7 @@ public class AccionesFactura{
 			stmt.setDouble(12,entrada.getBaseImpo());
 			stmt.setDouble(13,entrada.getIva());
 			stmt.setDouble(14,entrada.getTasa());
+			stmt.setString(15,entrada.getPagado());
 						
 			stmt.executeUpdate();
 			stmt.close();
@@ -66,6 +67,7 @@ public class AccionesFactura{
 				salida.setProyecto(result.getInt("id_proyecto"));
 				salida.setTasa(result.getDouble("tasa"));
 				salida.setVencimiento(result.getInt("vencimiento"));
+				salida.setPagado(result.getString("pagado"));
 				return salida;
 			} else {
 				salida.setIdFactura(0);
@@ -96,7 +98,7 @@ public class AccionesFactura{
 		try{
 			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("UPDATE factura set id_empresa = ?, fecha=?, vencimiento=?, id_proyecto=?, id_cliente=?,"
-		    		+ "id_concepto=?, id_coste=?, id_proveedor=?, IRPF=?, descuento=?, IBAN=?, base_impo=?, IVA=?, tasa=? WHERE id_factura = ?");
+		    		+ "id_concepto=?, id_coste=?, id_proveedor=?, IRPF=?, descuento=?, IBAN=?, base_impo=?, IVA=?, tasa=?, pagado = ? WHERE id_factura = ?");
 		    stmt.setInt(1, factura.getEmpresa());
 		    stmt.setInt(2,factura.getFecha());
 		    stmt.setInt(3,factura.getVencimiento());
@@ -111,7 +113,8 @@ public class AccionesFactura{
 			stmt.setDouble(12,factura.getBaseImpo());
 			stmt.setDouble(13,factura.getIva());
 			stmt.setDouble(14,factura.getTasa());
-			stmt.setInt(15, factura.getIdFactura());
+			stmt.setString(15, factura.getPagado());
+			stmt.setInt(16, factura.getIdFactura());
 			
 			stmt.executeUpdate();
 			stmt.close();
@@ -147,6 +150,7 @@ public class AccionesFactura{
 				factura.setProyecto(result.getInt("id_proyecto"));
 				factura.setTasa(result.getDouble("tasa"));
 				factura.setVencimiento(result.getInt("vencimiento"));
+				factura.setPagado(result.getString("pagado"));
 				listaFacturas.add(factura);
 			}
 			stmt.close();

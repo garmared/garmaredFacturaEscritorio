@@ -6,4 +6,5 @@ module garmaredFacturaEscritorio {
 	requires kernel;
 	requires io;
 	requires opencsv;
+	requires jcalendar;
 }

@@ -33,11 +33,11 @@ public class AccionesProyectosImpl implements AccionesProyectosController{
 			return accProyectos.updateProyectos(proyecto);
 		}
 
-		public  String buscaDescripcion(Integer proyecto) {
-			return accProyectos.buscaDescripcion(proyecto);
+		public  String buscaDescripcion(int proyecto, int empresa) {
+			return accProyectos.buscaDescripcion(proyecto,empresa);
 		}
 
-		public Integer buscaProyecto(String variable) {
-			return accProyectos.buscaProyecto(variable);
+		public Integer buscaProyecto(String variable, int empresa) {
+			return accProyectos.buscaProyecto(variable,empresa);
 		}
 }

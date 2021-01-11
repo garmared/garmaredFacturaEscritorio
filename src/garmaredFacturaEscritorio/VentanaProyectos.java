@@ -3,8 +3,10 @@ package garmaredFacturaEscritorio;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -12,6 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ProyectosDTO;
@@ -28,9 +33,9 @@ public class VentanaProyectos {
 	private ProyectosDTO proyecto;
 	private int idProyecto;
 	
-	private JTextField textFIni;
-	private JTextField textFFin;
-	private JTextField textFCierre;
+	private JDateChooser textFIni;
+	private JDateChooser textFFin;
+	private JDateChooser textFCierre;
 	private JTextField textDescripcion;
 	private JTextField textWeb;
 	private JTextField textIban;
@@ -58,6 +63,8 @@ public class VentanaProyectos {
 	AccionesCostesImpl accCostes = new AccionesCostesImpl();
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	AccionesProyectosImpl accProyectos = new AccionesProyectosImpl();
+	private String dia,mes,ano,varFecha,fecha; 
+	private SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
 	/**
 	 * Launch the application.
 	 */
@@ -96,17 +103,15 @@ public class VentanaProyectos {
 		lblFechaInicio.setBounds(40, 91, 72, 14);
 		frame.getContentPane().add(lblFechaInicio);
 		
-		textFIni = new JTextField();
+		textFIni = new JDateChooser();
 		textFIni.setBounds(133, 88, 96, 20);
 		frame.getContentPane().add(textFIni);
-		textFIni.setColumns(10);
 		
 		lblFechaFin = new JLabel("Fecha fin");
 		lblFechaFin.setBounds(40, 119, 72, 14);
 		frame.getContentPane().add(lblFechaFin);
 		
-		textFFin = new JTextField();
-		textFFin.setColumns(10);
+		textFFin = new JDateChooser();
 		textFFin.setBounds(133, 116, 96, 20);
 		frame.getContentPane().add(textFFin);
 		
@@ -114,8 +119,7 @@ public class VentanaProyectos {
 		lblFechaCierre.setBounds(256, 119, 72, 14);
 		frame.getContentPane().add(lblFechaCierre);
 		
-		textFCierre = new JTextField();
-		textFCierre.setColumns(10);
+		textFCierre = new JDateChooser();
 		textFCierre.setBounds(333, 116, 96, 20);
 		frame.getContentPane().add(textFCierre);
 		
@@ -235,9 +239,39 @@ public class VentanaProyectos {
 				entrada.setEmpresa(sesionGlobal.getIdEmpresa());
 				temporal = (ObjetoJComboBox) comboCoste.getSelectedItem();
 				entrada.setCoste(temporal.getNumero());
-				entrada.setFechaIni(Integer.valueOf(textFIni.getText()));
-				entrada.setFechaFin(Integer.valueOf(textFFin.getText()));
-				entrada.setFechaCierre(Integer.valueOf(textFCierre.getText()));
+				dia = Integer.toString(textFIni.getCalendar().get(Calendar.DAY_OF_MONTH));
+				if (textFIni.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
+					dia = ("0"+dia);
+				}
+				mes = Integer.toString(textFIni.getCalendar().get(Calendar.MONTH)+1);
+				if (textFIni.getCalendar().get(Calendar.MONTH)+1<10) {
+					mes = ("0"+mes);
+				}
+				ano = Integer.toString(textFIni.getCalendar().get(Calendar.YEAR));
+				varFecha = (ano+mes+dia);
+				entrada.setFechaIni(Integer.valueOf(varFecha));
+				dia = Integer.toString(textFFin.getCalendar().get(Calendar.DAY_OF_MONTH));
+				if (textFFin.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
+					dia = ("0"+dia);
+				}
+				mes = Integer.toString(textFFin.getCalendar().get(Calendar.MONTH)+1);
+				if (textFFin.getCalendar().get(Calendar.MONTH)+1<10) {
+					mes = ("0"+mes);
+				}
+				ano = Integer.toString(textFFin.getCalendar().get(Calendar.YEAR));
+				varFecha = (ano+mes+dia);
+				entrada.setFechaFin(Integer.valueOf(varFecha));
+				dia = Integer.toString(textFCierre.getCalendar().get(Calendar.DAY_OF_MONTH));
+				if (textFCierre.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
+					dia = ("0"+dia);
+				}
+				mes = Integer.toString(textFCierre.getCalendar().get(Calendar.MONTH)+1);
+				if (textFCierre.getCalendar().get(Calendar.MONTH)+1<10) {
+					mes = ("0"+mes);
+				}
+				ano = Integer.toString(textFCierre.getCalendar().get(Calendar.YEAR));
+				varFecha = (ano+mes+dia);
+				entrada.setFechaCierre(Integer.valueOf(varFecha));
 				temporal = (ObjetoJComboBox) comboCliente.getSelectedItem();
 				entrada.setCliente(temporal.getNumero());
 				entrada.setImporte(Double.valueOf(textImporte.getText()));
@@ -305,21 +339,37 @@ public class VentanaProyectos {
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JTextField cliente = new JTextField();
-				JTextField fecha = new JTextField();
+				JComboBox cliente = new JComboBox();
+				ArrayList<ObjetoJComboBox> cadena = accClientes.consultaClientes(sesionGlobal.getIdEmpresa());
+				if (cadena != null) {
+					for (var i = 0; i < cadena.size(); i++) {
+						cliente.addItem(cadena.get(i));
+					}
+				}
+				JCalendar fecha = new JCalendar();
 				Object [] mensaje= {
 						"Cliente:", cliente,
 						"Fecha Inicio:", fecha
 				};
 				int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Búsqueda de Proyecto", JOptionPane.OK_CANCEL_OPTION);
 				if (opcion == JOptionPane.OK_OPTION){
-					if (cliente.getText() == "" || fecha.getText()== "") {
-						activaCampos();
-					}else {
 						proyecto = new ProyectosDTO();
-						int numCliente = accClientes.buscaCliente(cliente.getText());
-						proyecto.setCliente(numCliente);
-						proyecto.setFechaIni(Integer.valueOf(fecha.getText()));
+						ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
+						temporal = (ObjetoJComboBox) cliente.getSelectedItem();
+						proyecto.setCliente(temporal.getNumero());
+												
+						String dia = Integer.toString(fecha.getCalendar().get(Calendar.DAY_OF_MONTH));
+						if (fecha.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
+							dia = ("0"+dia);
+						}
+						String mes = Integer.toString(fecha.getCalendar().get(Calendar.MONTH)+1);
+						if (fecha.getCalendar().get(Calendar.MONTH)+1<10) {
+							mes = ("0"+mes);
+						}
+						String ano = Integer.toString(fecha.getCalendar().get(Calendar.YEAR));
+						String varFecha = (ano+mes+dia);
+						
+						proyecto.setFechaIni(Integer.valueOf(varFecha));
 						proyecto = accProyectos.buscaProyecto(proyecto);
 						if (proyecto.getIdProyecto().equals(0)) {
 							JOptionPane.showMessageDialog(null, "Proyecto no encontrado");	
@@ -330,8 +380,6 @@ public class VentanaProyectos {
 						}
 					}
 				}				
-
-			}
 		});
 		btnBuscar.setBounds(446, 82, 89, 23);
 		frame.getContentPane().add(btnBuscar);
@@ -346,9 +394,39 @@ public class VentanaProyectos {
 		
 		proyecto.setIdProyecto(idProyecto);
 		proyecto.setDescripcion(textDescripcion.getText());
-		proyecto.setFechaCierre(Integer.valueOf(textFCierre.getText()));
-		proyecto.setFechaFin(Integer.valueOf(textFFin.getText()));
-		proyecto.setFechaIni(Integer.valueOf(textFIni.getText()));	
+		dia = Integer.toString(textFCierre.getCalendar().get(Calendar.DAY_OF_MONTH));
+		if (textFCierre.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
+			dia = ("0"+dia);
+		}
+		mes = Integer.toString(textFCierre.getCalendar().get(Calendar.MONTH)+1);
+		if (textFCierre.getCalendar().get(Calendar.MONTH)+1<10) {
+			mes = ("0"+mes);
+		}
+		ano = Integer.toString(textFCierre.getCalendar().get(Calendar.YEAR));
+		varFecha = (ano+mes+dia);
+		proyecto.setFechaCierre(Integer.valueOf(varFecha));
+		dia = Integer.toString(textFFin.getCalendar().get(Calendar.DAY_OF_MONTH));
+		if (textFFin.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
+			dia = ("0"+dia);
+		}
+		mes = Integer.toString(textFFin.getCalendar().get(Calendar.MONTH)+1);
+		if (textFFin.getCalendar().get(Calendar.MONTH)+1<10) {
+			mes = ("0"+mes);
+		}
+		ano = Integer.toString(textFFin.getCalendar().get(Calendar.YEAR));
+		varFecha = (ano+mes+dia);
+		proyecto.setFechaFin(Integer.valueOf(varFecha));
+		dia = Integer.toString(textFIni.getCalendar().get(Calendar.DAY_OF_MONTH));
+		if (textFIni.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
+			dia = ("0"+dia);
+		}
+		mes = Integer.toString(textFIni.getCalendar().get(Calendar.MONTH)+1);
+		if (textFIni.getCalendar().get(Calendar.MONTH)+1<10) {
+			mes = ("0"+mes);
+		}
+		ano = Integer.toString(textFIni.getCalendar().get(Calendar.YEAR));
+		varFecha = (ano+mes+dia);
+		proyecto.setFechaIni(Integer.valueOf(varFecha));	
 		proyecto.setIban(textIban.getText());
 		proyecto.setImporte(Integer.valueOf(textImporte.getText()));
 		proyecto.setMargen(Integer.valueOf(textMargen.getText()));
@@ -394,9 +472,31 @@ public class VentanaProyectos {
 		//llenamos los campos de pantalla con el DTO de proyectos
 		idProyecto = entrada.getIdProyecto();
 		textDescripcion.setText(entrada.getDescripcion());
-		textFCierre.setText(String.valueOf(entrada.getFechaCierre()));
-		textFFin.setText(String.valueOf(entrada.getFechaFin()));
-		textFIni.setText(String.valueOf(entrada.getFechaIni()));
+		
+		fecha = String.valueOf(entrada.getFechaCierre());
+		try {
+			textFCierre.setDate(formato.parse(fecha));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		fecha = String.valueOf(entrada.getFechaFin());
+		try {
+			textFFin.setDate(formato.parse(fecha));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		fecha = String.valueOf(entrada.getFechaIni());
+		try {
+			textFIni.setDate(formato.parse(fecha));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		textIban.setText(entrada.getIban());
 		textImporte.setText(String.valueOf(entrada.getImporte()));
 		textMargen.setText(String.valueOf(entrada.getMargen()));

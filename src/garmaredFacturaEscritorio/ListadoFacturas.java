@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -26,6 +27,8 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Table;
 import com.opencsv.CSVWriter;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 import acciones.dto.FacturasDTO;
 import acciones.dto.ObjetoJComboBox;
@@ -113,23 +116,33 @@ public class ListadoFacturas {
 					}
 					cliente.addItem(new ObjetoJComboBox(0, "Todos"));
 				}
-				JTextField fecha = new JTextField();
+				JCalendar fecha = new JCalendar();
 				Object [] mensaje= {
 						"Cliente:", cliente,
 						"Fecha Inicio:", fecha
 				};
 				int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Búsqueda de Factura", JOptionPane.OK_CANCEL_OPTION);
 				if (opcion == JOptionPane.OK_OPTION){
-					if (fecha.getText()!= "") {
+					
 						int empresa = 0;
 						int fentrada = 0;
 						int idCliente = 0;
+						String dia = Integer.toString(fecha.getCalendar().get(Calendar.DAY_OF_MONTH));
+						if (fecha.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
+							dia=("0"+dia);
+						}
+						String mes = Integer.toString(fecha.getCalendar().get(Calendar.MONTH)+1);
+						if (fecha.getCalendar().get(Calendar.MONTH)+1<10) {
+							mes=("0"+mes);
+						}
+						String ano = Integer.toString(fecha.getCalendar().get(Calendar.YEAR));
+						String varFecha = (ano+mes+dia);
 						
 						empresa = sesionGlobal.getIdEmpresa();
 						ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
 						temporal = (ObjetoJComboBox) cliente.getSelectedItem();
 						idCliente = temporal.getNumero();			
-						fentrada = Integer.valueOf(fecha.getText());
+						fentrada = Integer.valueOf(varFecha) ;
 						//array con tantas filas cómo columnas queramos en el listado
 						Connection connection = accService.getConexion();
 						DefaultTableModel modelo = new DefaultTableModel();
@@ -161,7 +174,7 @@ public class ListadoFacturas {
 						JScrollPane scrollPane = new JScrollPane(table);
 						scrollPane.setBounds(17, 75, 800, 800);
 						frame.getContentPane().add(scrollPane);
-					}
+					
 				}
 			}
 
@@ -255,7 +268,7 @@ public class ListadoFacturas {
 	private DatosFacturas llenaJtable(ResultSet rs) {
 		datosFact = new DatosFacturas();
 		try {
-			datosFact.setProyecto(accProyecto.buscaDescripcion(rs.getInt("id_proyecto")));
+			datosFact.setProyecto(accProyecto.buscaDescripcion(rs.getInt("id_proyecto"),sesionGlobal.getIdEmpresa()));
 			datosFact.setNombreCliente(accClientes.buscaNombre(rs.getInt("id_cliente")));
 			datosFact.setConcepto(accConcepto.buscaDescripcion(rs.getInt("id_concepto")));
 			datosFact.setCoste(accCostes.buscaDescripcion(rs.getInt("id_coste")));

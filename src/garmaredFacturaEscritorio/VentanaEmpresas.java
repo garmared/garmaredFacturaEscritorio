@@ -39,6 +39,7 @@ public class VentanaEmpresas {
 	private JTextField textObserv;
 	private JTextField textCP;
 	private JRadioButton rdbtnNo;
+	private JRadioButton rdbtnSi;
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	
 	private JComboBox comboCoste;
@@ -241,7 +242,7 @@ public class VentanaEmpresas {
 		rdbtnNo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rdbtnNo.setSelected(false);
-				rdbtnNo.setSelected(true);
+				rdbtnSi.setSelected(true);
 			}
 		});
 		frame.getContentPane().add(rdbtnNo);
@@ -460,7 +461,7 @@ public class VentanaEmpresas {
 		lblObservaciones.setVisible(true);
 		lblIban.setVisible(true);
 		lblActivo.setVisible(true);
-		rdbtnNo.setVisible(true);
+		rdbtnSi.setVisible(true);
 		rdbtnNo.setVisible(true);
 	}
 
@@ -484,8 +485,8 @@ public class VentanaEmpresas {
 		textObserv.setText(entrada.getObservaciones());
 		textCP.setText(String.valueOf(entrada.getCp()));
 		if (entrada.getActivo().equals("S")) {
-			rdbtnNo.setSelected(false);
-			rdbtnNo.setSelected(true);
+			rdbtnSi.setSelected(false);
+			rdbtnSi.setSelected(true);
 		} else {
 			rdbtnNo.setSelected(true);
 			rdbtnNo.setSelected(false);
@@ -512,7 +513,7 @@ public class VentanaEmpresas {
 		
 		empresas.setIban(textIban.getText());
 		empresas.setObservaciones(textObserv.getText());
-		if (rdbtnNo.isSelected() == true) {
+		if (rdbtnSi.isSelected() == true) {
 			empresas.setActivo("S");
 		} else {empresas.setActivo("N");}
 				

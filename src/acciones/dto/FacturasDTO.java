@@ -2,7 +2,7 @@ package acciones.dto;
 
 public class FacturasDTO extends GeneralDTO {
 
-	private String iban;
+	private String iban, pagado,activo;
 	private Integer idFactura,empresa, proveedor, fecha, vencimiento, proyecto, cliente,coste, concepto;
 	private double irpf, descuento,baseImpo,iva,tasa;
 	
@@ -99,6 +99,18 @@ public class FacturasDTO extends GeneralDTO {
 	}
 	public void setProveedor(Integer proveedor) {
 		this.proveedor = proveedor;
+	}
+	public String getPagado() {
+		return pagado;
+	}
+	public void setPagado(String pagado) {
+		this.pagado = pagado;
+	}
+	public String getActivo() {
+		return activo;
+	}
+	public void setActivo(String activo) {
+		this.activo = activo;
 	}
 	
 }
