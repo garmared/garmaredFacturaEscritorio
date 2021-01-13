@@ -1,7 +1,7 @@
 package estructuras;
 
 public class DatosFacturas {
-	String proyecto, nombreCliente, concepto, coste, proveedor,fecha,factura,vencimiento;
+	String proyecto, nombreCliente, concepto, coste, proveedor,fecha,factura,vencimiento,estado;
 
 	public String getProyecto() {
 		return proyecto;
@@ -65,6 +65,14 @@ public class DatosFacturas {
 
 	public void setProveedor(String proveedor) {
 		this.proveedor = proveedor;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 	

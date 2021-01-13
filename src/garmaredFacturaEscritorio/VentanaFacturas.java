@@ -42,8 +42,6 @@ public class VentanaFacturas {
 	private JTextField textTasa;
 	private JTextField textBaseImponible;
 	private JTextField textIva;
-	private JRadioButton rdbtnSi;
-	private JRadioButton rdbtnNo;
 	private JDateChooser textFecha;
 	
 	ClientesDTO cliente;
@@ -58,6 +56,7 @@ public class VentanaFacturas {
 	private JComboBox comboConcepto;
 	private JComboBox comboCoste;
 	private JComboBox comboProveedor;
+	private JComboBox comboPagado;
 	AccionesCostesImpl accCostes = new AccionesCostesImpl();
 	AccionesConceptosImpl accConceptos = new AccionesConceptosImpl();
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
@@ -256,26 +255,13 @@ public class VentanaFacturas {
 		lblPagado.setBounds(276, 350, 48, 14);
 		frame.getContentPane().add(lblPagado);
 		
-		rdbtnSi = new JRadioButton("Si");
-		rdbtnSi.setBounds(328, 346, 42, 23);
-		frame.getContentPane().add(rdbtnSi);
-		
-		rdbtnNo = new JRadioButton("No");
-		rdbtnNo.setBounds(372, 346, 48, 23);
-		frame.getContentPane().add(rdbtnNo);
-		
-		rdbtnSi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				rdbtnNo.setSelected(false);
-				rdbtnSi.setSelected(true);
-			}
-		});
-		rdbtnNo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				rdbtnNo.setSelected(true);
-				rdbtnSi.setSelected(false);
-			}
-		});
+		comboPagado = new JComboBox();
+		comboPagado.setBounds(328, 346, 96, 23);
+		frame.getContentPane().add(comboPagado);
+		comboPagado.addItem("----");
+		comboPagado.addItem("Abono");
+		comboPagado.addItem("Pendiente");
+		comboPagado.addItem("Pagado");
 		
 		JLabel lblError = new JLabel("");
 		lblError.setBounds(10, 375, 414, 14);
@@ -462,13 +448,7 @@ public class VentanaFacturas {
 		comboProveedor.getModel().setSelectedItem(valorCombo);
 		valorCombo = accProyecto.buscaDescripcion(entrada.getProyecto(),sesionGlobal.getIdEmpresa());
 		comboProyecto.getModel().setSelectedItem(valorCombo);
-		if (entrada.getPagado().equals("S")) {
-			rdbtnNo.setSelected(false);
-			rdbtnSi.setSelected(true);
-		} else {
-			rdbtnNo.setSelected(true);
-			rdbtnSi.setSelected(false);
-		}
+		comboPagado.getModel().setSelectedItem(entrada.getPagado());
 	}
 	
 	private  FacturasDTO llenaCamposDto(){
@@ -524,10 +504,8 @@ public class VentanaFacturas {
 		variable = (String) comboProyecto.getSelectedItem().toString();
 		factura.setProyecto(accProyecto.buscaProyecto(variable,sesionGlobal.getIdEmpresa()));
 		
-		if (rdbtnSi.isSelected() == true) {
-			factura.setPagado("S");
-		} else {factura.setPagado("N");}
-		
+		factura.setPagado(comboPagado.getSelectedItem().toString());
+				
 		return factura;
 	}
 	
@@ -545,7 +523,6 @@ public class VentanaFacturas {
 		comboCoste.getModel().setSelectedItem("----");
 		comboProveedor.getModel().setSelectedItem("----");
 		comboProyecto.getModel().setSelectedItem("----");
-		rdbtnNo.setSelected(false);
-		rdbtnSi.setSelected(false);
+		comboPagado.getModel().setSelectedItem("----");
 	}
 }

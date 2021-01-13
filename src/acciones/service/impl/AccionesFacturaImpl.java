@@ -35,21 +35,33 @@ public class AccionesFacturaImpl implements AccionesFacturaController {
 		return null;
 	}
 
-	public String creaConsulta(int idCliente, int fentrada, int empresa) {
-		String consulta;
-		if (idCliente==0) {
-			if (fentrada==0){
-				consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE id_empresa = "+empresa+" order by id_factura, fecha";
-			} else {
-				consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE fecha = '"+fentrada+"' AND id_empresa = "+empresa+" order by id_factura, fecha";
-			}
-		} else if (fentrada==0){
-			consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE id_cliente = '"+idCliente+"' AND id_empresa = "+empresa+" order by id_factura, fecha";
-		} else {
-			consulta = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor from factura WHERE id_cliente = '"+idCliente+"' AND fecha = '"+fentrada+"' AND id_empresa = "+empresa+" order by id_factura, fecha";
+	public String creaConsulta(FacturasDTO entrada) {
+		String consulta, select, where, order, whereAND;
+		select = "select fecha, id_factura, vencimiento, id_proyecto, id_cliente, id_concepto, id_coste, id_proveedor, pagado from factura ";
+		where = "WHERE id_empresa = "+entrada.getEmpresa()+"";
+		order = " order by id_factura, fecha";
+		consulta = select + where;
+		if (entrada.getCliente()!=0) {
+			whereAND = " AND id_cliente = '"+entrada.getCliente()+"'";
+			consulta = consulta + whereAND;
 		}
-		
-		return consulta;
+		if (entrada.getFecha()!=0){
+			whereAND = " AND fecha = '"+entrada.getFecha()+"'";
+			consulta = consulta + whereAND;
+		}
+		if (entrada.getProveedor()!=0){
+			whereAND = " AND id_proveedor = '"+entrada.getProveedor()+"'";
+			consulta = consulta + whereAND;
+		}
+		if (entrada.getCoste()!=0){
+			whereAND = " AND id_coste = '"+entrada.getCoste()+"'";
+			consulta = consulta + whereAND;
+		}
+		if (entrada.getPagado()!="Todos"){
+			whereAND = " AND pagado = '"+entrada.getPagado()+"'";
+			consulta = consulta + whereAND;
+		}
+		return consulta = consulta + order;
 	}
 
 }
