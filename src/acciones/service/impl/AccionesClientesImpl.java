@@ -42,5 +42,27 @@ public class AccionesClientesImpl implements AccionesClientesController{
 	public String buscaNombre(Integer cliente) {
 		return accClientes.buscaNombre(cliente);
 	}
+
+	public ArrayList<String> consultaPoblacion(Integer idEmpresa) {
+		// TODO Auto-generated method stub
+		return accClientes.buscaDireccion(idEmpresa);
+	}
+
+	public String creaConsulta(ClientesDTO paramConsulta) {
+		String consulta, select, where, order, whereAND;
+		select = "select id_cliente, Nombre, CIF, Direccion, Poblacion, CP, Telefono1, Persona_contacto, mail, web, activo  from clientes ";
+		where = "WHERE id_empresa = "+paramConsulta.getIdEmpresa()+"";
+		order = " order by nombre, id_cliente";
+		consulta = select + where;
+		if (paramConsulta.getActivo()!="Todos") {
+			whereAND = " AND activo = '"+paramConsulta.getActivo()+"'";
+			consulta = consulta + whereAND;
+		}
+		if (paramConsulta.getPoblacion()!="Todos"){
+			whereAND = " AND Poblacion = '"+paramConsulta.getPoblacion()+"'";
+			consulta = consulta + whereAND;
+		}
+		return consulta = consulta + order;
+	}
 	
 }

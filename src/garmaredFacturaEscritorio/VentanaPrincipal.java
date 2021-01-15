@@ -19,9 +19,9 @@ import acciones.service.impl.AccionesUsuariosImpl;
 
 public class VentanaPrincipal implements ActionListener{
 	JFrame ventana;
-	JMenu opcion1, opcion2,opcion3,opcion4;
+	JMenu opcion1, opcion2,opcion3,opcion4,opcion5;
 	JMenuItem Sopcion1, Sopcion2, Sopcion3, Sopcion4,Sopcion5,Sopcion6,Sopcion7,Sopcion8,Sopcion9,Sopcion10;
-	JMenuItem sub1,sub2,sub3;
+	JMenuItem sub1,sub2,sub3,sub4,sub5;
 	JMenuBar menubar;
 	ServiceDTO control;
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
@@ -38,6 +38,8 @@ public class VentanaPrincipal implements ActionListener{
 		opcion3.setMnemonic(KeyEvent.VK_A);
 		opcion4 = new JMenu("Facturas");
 		opcion4.setMnemonic(KeyEvent.VK_F);
+		opcion5 = new JMenu("Clientes");
+		opcion5.setMnemonic(KeyEvent.VK_C);
 		
 		Sopcion1 = new JMenuItem("Clientes");
 		Sopcion1.setMnemonic(KeyEvent.VK_C);
@@ -58,13 +60,15 @@ public class VentanaPrincipal implements ActionListener{
 		
 		sub1 = new JMenuItem("Gesti\u00F3n Factura");
 		sub2 = new JMenuItem("Listado Facturas");
+		sub4 = new JMenuItem("Gesti\u00F3n Clientes");
+		sub5 = new JMenuItem("Listado Clientes");
 		
 
 		menubar.add(opcion1);
 		menubar.add(opcion2);
 		menubar.add(opcion3);
 		
-		opcion1.add(Sopcion1);
+		opcion1.add(opcion5);
 		opcion1.add(Sopcion2);
 		opcion1.add(Sopcion4);
 		
@@ -77,6 +81,9 @@ public class VentanaPrincipal implements ActionListener{
 		
 		opcion4.add(sub1);
 		opcion4.add(sub2);
+
+		opcion5.add(sub4);
+		opcion5.add(sub5);
 		
 		Sopcion1.addActionListener(this);
 		Sopcion2.addActionListener(this);
@@ -88,6 +95,8 @@ public class VentanaPrincipal implements ActionListener{
 		
 		sub1.addActionListener(this);
 		sub2.addActionListener(this);
+		sub4.addActionListener(this);
+		sub5.addActionListener(this);
 		
 	}
 	
@@ -148,9 +157,13 @@ public class VentanaPrincipal implements ActionListener{
 		// aqui añadimos las acciones de clik de las opciones.
 		String opcion = A.getActionCommand();
 		switch (opcion) {
-			case "Clientes":
+			case "Gesti\u00F3n Clientes":
 				ventana.dispose();
 				VentanaClientes clientes = new VentanaClientes(control);
+				break;
+			case "Listado Clientes":
+				ventana.dispose();
+				ListadoClientes listadoClientes = new ListadoClientes(control);
 				break;
 			case "Proveedores":
 				ventana.dispose();
