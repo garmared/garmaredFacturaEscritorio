@@ -19,9 +19,9 @@ import acciones.service.impl.AccionesUsuariosImpl;
 
 public class VentanaPrincipal implements ActionListener{
 	JFrame ventana;
-	JMenu opcion1, opcion2,opcion3,opcion4,opcion5;
+	JMenu opcion1, opcion2,opcion3,opcion4,opcion5,opcion6;
 	JMenuItem Sopcion1, Sopcion2, Sopcion3, Sopcion4,Sopcion5,Sopcion6,Sopcion7,Sopcion8,Sopcion9,Sopcion10;
-	JMenuItem sub1,sub2,sub3,sub4,sub5;
+	JMenuItem sub1,sub2,sub3,sub4,sub5,sub6,sub7;
 	JMenuBar menubar;
 	ServiceDTO control;
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
@@ -40,11 +40,9 @@ public class VentanaPrincipal implements ActionListener{
 		opcion4.setMnemonic(KeyEvent.VK_F);
 		opcion5 = new JMenu("Clientes");
 		opcion5.setMnemonic(KeyEvent.VK_C);
+		opcion6 = new JMenu("Proveedores");
+		opcion6.setMnemonic(KeyEvent.VK_P);
 		
-		Sopcion1 = new JMenuItem("Clientes");
-		Sopcion1.setMnemonic(KeyEvent.VK_C);
-		Sopcion2 = new JMenuItem("Proveedores");
-		Sopcion2.setMnemonic(KeyEvent.VK_P);
 		Sopcion3 = new JMenuItem("Gesti\u00F3n Empresas");
 		Sopcion3.setMnemonic(KeyEvent.VK_G);
 		Sopcion4 = new JMenuItem("Costes");
@@ -62,15 +60,16 @@ public class VentanaPrincipal implements ActionListener{
 		sub2 = new JMenuItem("Listado Facturas");
 		sub4 = new JMenuItem("Gesti\u00F3n Clientes");
 		sub5 = new JMenuItem("Listado Clientes");
-		
+		sub6 = new JMenuItem("Gesti\u00F3n Proveedores");
+		sub7 = new JMenuItem("Listado Proveedores");
 
 		menubar.add(opcion1);
 		menubar.add(opcion2);
 		menubar.add(opcion3);
 		
 		opcion1.add(opcion5);
-		opcion1.add(Sopcion2);
 		opcion1.add(Sopcion4);
+		opcion1.add(opcion6);
 		
 		opcion2.add(Sopcion5);
 		opcion2.add(opcion4);
@@ -84,9 +83,9 @@ public class VentanaPrincipal implements ActionListener{
 
 		opcion5.add(sub4);
 		opcion5.add(sub5);
+		opcion6.add(sub6);
+		opcion6.add(sub7);
 		
-		Sopcion1.addActionListener(this);
-		Sopcion2.addActionListener(this);
 		Sopcion4.addActionListener(this);
 		Sopcion5.addActionListener(this);
 		Sopcion7.addActionListener(this);
@@ -97,6 +96,8 @@ public class VentanaPrincipal implements ActionListener{
 		sub2.addActionListener(this);
 		sub4.addActionListener(this);
 		sub5.addActionListener(this);
+		sub6.addActionListener(this);
+		sub7.addActionListener(this);
 		
 	}
 	
@@ -165,10 +166,14 @@ public class VentanaPrincipal implements ActionListener{
 				ventana.dispose();
 				ListadoClientes listadoClientes = new ListadoClientes(control);
 				break;
-			case "Proveedores":
+			case "Gesti\u00F3n Proveedores":
 				ventana.dispose();
 				VentanaProveedores proveedores = new VentanaProveedores(control);
 				break;
+			case "Listado Proveedores":
+				ventana.dispose();
+				ListadoProveedores listadoProveedores = new ListadoProveedores(control);
+				break;				
 			case "Costes":
 				ventana.dispose();
 				VentanaCostes costes = new VentanaCostes(control);

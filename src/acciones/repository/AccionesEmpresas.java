@@ -225,4 +225,25 @@ public class AccionesEmpresas{
 		}
 	}
 
+	public ArrayList<String> buscaDireccion(Integer idEmpresa) {
+		try {
+			Connection connection=accService.getConexion();
+			ResultSet result =null;
+			ArrayList<String> salida= new ArrayList<String>();
+			String peticion = "SELECT distinct(Poblacion) FROM empresas WHERE empresa = "+idEmpresa+" and TIPO = 'P' ORDER BY Poblacion";
+			Statement stmt = connection.createStatement();
+			result = stmt.executeQuery(peticion);
+			if (result.next());{
+				do {
+					salida.add(result.getString("Poblacion"));
+				}
+				while(result.next()); 
+				}
+				
+			return salida;
+		}catch(Exception ex){
+			System.out.println("Error en buscaDireccion: "+ex.getMessage().toString());
+			return null;
+		}	
+	}
 }
