@@ -117,7 +117,7 @@ public class ListadoProveedores {
 					for (var i = 0; i < cadena.size(); i++) {
 						poblacion.addItem(cadena.get(i));
 					}
-					poblacion.addItem(new ObjetoJComboBox(0, "Todos"));
+					poblacion.addItem("Todos");
 				}
 				JComboBox activo = new JComboBox();
 				activo.addItem("Sí");
@@ -134,7 +134,7 @@ public class ListadoProveedores {
 						temporal = (String) activo.getSelectedItem();
 						if (temporal == "Sí") {paramConsulta.setActivo("S");}
 						if (temporal == "No") {paramConsulta.setActivo("N");}
-						//if (temporal == "Todos") {paramConsulta.setActivo("0");}
+						if (temporal == "Todos") {paramConsulta.setActivo("Todos");}
 						paramConsulta.setIdEmpresa(sesionGlobal.getIdEmpresa());
 						Connection connection = accService.getConexion();
 						DefaultTableModel modelo = new DefaultTableModel();
