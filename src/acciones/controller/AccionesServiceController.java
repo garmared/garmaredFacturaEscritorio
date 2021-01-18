@@ -3,6 +3,8 @@ package acciones.controller;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
+import com.toedter.calendar.JDateChooser;
+
 import acciones.dto.ServiceDTO;
 
 //definicion de todas las acciones que tenemos en la aplicacion
@@ -12,4 +14,5 @@ public interface AccionesServiceController{
 	public Integer controlLogin(String usuario, String password);
 	public Connection getConexion();
 	public ResultSet getTabla(String Consulta, Connection connection);
+	public String obtenerFecha(JDateChooser fecha);
 }

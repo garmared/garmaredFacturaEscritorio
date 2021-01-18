@@ -40,4 +40,34 @@ public class AccionesProyectosImpl implements AccionesProyectosController{
 		public Integer buscaProyecto(String variable, int empresa) {
 			return accProyectos.buscaProyecto(variable,empresa);
 		}
+
+		public String creaConsulta(ProyectosDTO paramConsulta) {
+			String consulta, select, where, order, whereAND;
+			select = "select id_proyecto,fecha_ini,fecha_fin,fecha_cierre,id_cliente,descripcion,tipo_coste,importe,margen from proyectos ";
+			where = "WHERE id_empresa = "+paramConsulta.getEmpresa()+"";
+			order = " order by id_proyecto, fecha_ini,fecha_fin,fecha_cierre";
+			consulta = select + where;
+			if (paramConsulta.getFechaCierre() > 0) {
+				whereAND = " AND fecha_cierre = '"+paramConsulta.getFechaCierre()+"'";
+				consulta = consulta + whereAND;
+			}
+			if (paramConsulta.getFechaFin() > 0) {
+				whereAND = " AND fecha_fin = '"+paramConsulta.getFechaFin()+"'";
+				consulta = consulta + whereAND;
+			}
+			if (paramConsulta.getFechaIni() > 0) {
+				whereAND = " AND fecha_ini = '"+paramConsulta.getFechaIni()+"'";
+				consulta = consulta + whereAND;
+			}
+			if (paramConsulta.getCliente() != 0) {
+				whereAND = " AND id_cliente = '"+paramConsulta.getCliente()+"'";
+				consulta = consulta + whereAND;
+			}
+			if (paramConsulta.getDescripcion() != "") {
+				whereAND = " AND descripcion LIKE '%"+paramConsulta.getDescripcion()+"%'";
+				consulta = consulta + whereAND;
+			}
+
+			return consulta = consulta + order;
+		}
 }

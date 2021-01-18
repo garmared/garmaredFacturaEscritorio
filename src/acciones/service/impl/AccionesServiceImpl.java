@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Calendar;
+
+import com.toedter.calendar.JDateChooser;
 
 import acciones.controller.AccionesServiceController;
 import acciones.dto.ServiceDTO;
@@ -59,5 +62,24 @@ public class AccionesServiceImpl implements AccionesServiceController{
 		} catch(Exception e) {System.out.println(e.toString());}
 		return datos;
 	}
-		
+
+
+	@Override
+	public String obtenerFecha(JDateChooser fecha) {
+		String salida; 
+		if (fecha.getCalendar()==null) {
+			return salida = "0";
+		}else {
+			String dia = Integer.toString(fecha.getCalendar().get(Calendar.DAY_OF_MONTH));
+			if (fecha.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
+				dia = ("0"+dia);
+			}
+			String mes = Integer.toString(fecha.getCalendar().get(Calendar.MONTH)+1);
+			if (fecha.getCalendar().get(Calendar.MONTH)+1<10) {
+				mes = ("0"+mes);
+			}
+			String ano = Integer.toString(fecha.getCalendar().get(Calendar.YEAR));
+			return salida = (ano+mes+dia);	
+		}
+	}	
 }
