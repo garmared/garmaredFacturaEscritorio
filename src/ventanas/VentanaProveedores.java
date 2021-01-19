@@ -1,4 +1,4 @@
-package garmaredFacturaEscritorio;
+package ventanas;
 
 import java.awt.Color;
 import java.awt.EventQueue;

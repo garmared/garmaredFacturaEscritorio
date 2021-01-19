@@ -1,13 +1,12 @@
-package garmaredFacturaEscritorio;
+package ventanas;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -15,13 +14,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
-import acciones.dto.EmpresasDTO;
-import acciones.dto.ObjetoJComboBox;
+import acciones.dto.ClientesDTO;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.AccionesEmpresasImpl;
+import acciones.service.impl.AccionesClientesImpl;
 
 
-public class VentanaEmpresas {
+public class VentanaClientes {
 
 	private JFrame frame;
 	private JTextField textCif;
@@ -35,14 +33,14 @@ public class VentanaEmpresas {
 	private JTextField textPersonaContact;
 	private JTextField textMail;
 	private JTextField textWeb;
-	private JTextField textIban;
+	private JTextField textFP;
+	private JTextField textDiaPago;
+	private JTextField textMP;
 	private JTextField textObserv;
 	private JTextField textCP;
-	private JRadioButton rdbtnNo;
+
 	private JRadioButton rdbtnSi;
-	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
-	
-	private JComboBox comboCoste;
+	private JRadioButton rdbtnNo;
 	
 	private JLabel lblCif;
 	private JLabel lblNombre;
@@ -54,26 +52,30 @@ public class VentanaEmpresas {
 	private JLabel lblMvil1;
 	private JLabel lblPersonaContacto;
 	private JLabel lblCorreo;
+	private JLabel lblFPago;
 	private JLabel lblWeb;
+	private JLabel lblDiaPago;
 	private JLabel lblObservaciones;
-	private JLabel lblIban;
+	private JLabel lblModalidadDePago;
 	private JLabel lblCP;
 	private JLabel lblActivo;
+	private JLabel lblError;
+	
+	ClientesDTO cliente;
+	ServiceDTO control;
 	
 	static ServiceDTO sesionGlobal;
-	private Boolean accion;
-	private EmpresasDTO empresas;
-	private int idEmpresa;
-	private ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
-
+	private Integer idCliente;
+	private Boolean accion = false;
+	AccionesClientesImpl accClientes = new AccionesClientesImpl();
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public  void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaEmpresas window = new VentanaEmpresas(sesionGlobal);
+					VentanaClientes window = new VentanaClientes(control);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -85,254 +87,250 @@ public class VentanaEmpresas {
 	/**
 	 * Create the application.
 	 */
-	public VentanaEmpresas(ServiceDTO control) {
-		sesionGlobal = control;
-		initialize();
+	public VentanaClientes(ServiceDTO sesion) {
+		sesionGlobal = sesion;
+		initialize(sesion.getNombreEmpresa());
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		frame = new JFrame("Empresa");
-		frame.setBounds(100, 100, 540, 485);
+	private void initialize(String nombre) {
+		frame = new JFrame("Clientes de la empresa " + nombre);
+		frame.setBounds(100, 100, 450, 485);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		
+		lblCif = new JLabel("CIF");
 		textCif = new JTextField();
-		textCif.setBounds(116, 8, 96, 20);
+		textCif.setBounds(95, 11, 96, 20);
 		frame.getContentPane().add(textCif);
 		textCif.setColumns(10);
 				
-		JLabel lblCif = new JLabel("CIF");
 		lblCif.setBounds(10, 14, 48, 14);
 		frame.getContentPane().add(lblCif);
 		
-		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre = new JLabel("Nombre");
 		lblNombre.setBounds(10, 42, 48, 14);
 		frame.getContentPane().add(lblNombre);
 		
 		textNombre = new JTextField();
 		textNombre.setColumns(10);
-		textNombre.setBounds(116, 36, 96, 20);
+		textNombre.setBounds(95, 39, 96, 20);
 		frame.getContentPane().add(textNombre);
 		
-		JLabel lblDireccin = new JLabel("Direcci\u00F3n");
-		lblDireccin.setBounds(10, 70, 75, 14);
+		lblDireccin = new JLabel("Direcci\u00F3n");
+		lblDireccin.setBounds(10, 70, 48, 14);
 		frame.getContentPane().add(lblDireccin);
 		
 		textDireccion = new JTextField();
 		textDireccion.setColumns(10);
-		textDireccion.setBounds(116, 64, 96, 20);
+		textDireccion.setBounds(95, 67, 96, 20);
 		frame.getContentPane().add(textDireccion);
 		
-		JLabel lblPoblacin = new JLabel("Poblaci\u00F3n");
-		lblPoblacin.setBounds(10, 101, 75, 14);
+		lblPoblacin = new JLabel("Poblaci\u00F3n");
+		lblPoblacin.setBounds(10, 101, 48, 14);
 		frame.getContentPane().add(lblPoblacin);
 		
 		textPoblacion = new JTextField();
 		textPoblacion.setColumns(10);
-		textPoblacion.setBounds(116, 95, 96, 20);
+		textPoblacion.setBounds(95, 98, 96, 20);
 		frame.getContentPane().add(textPoblacion);
 		
-		JLabel lblProvincia = new JLabel("Provincia");
-		lblProvincia.setBounds(10, 129, 75, 14);
+		lblProvincia = new JLabel("Provincia");
+		lblProvincia.setBounds(10, 129, 48, 14);
 		frame.getContentPane().add(lblProvincia);
 		
 		textProvincia = new JTextField();
 		textProvincia.setColumns(10);
-		textProvincia.setBounds(116, 123, 96, 20);
+		textProvincia.setBounds(95, 126, 96, 20);
 		frame.getContentPane().add(textProvincia);
 		
-		JLabel lblTelfono = new JLabel("Tel\u00E9fono");
-		lblTelfono.setBounds(10, 157, 75, 14);
+		lblTelfono = new JLabel("Tel\u00E9fono");
+		lblTelfono.setBounds(10, 157, 48, 14);
 		frame.getContentPane().add(lblTelfono);
 		
 		textTelefono1 = new JTextField();
 		textTelefono1.setColumns(10);
-		textTelefono1.setBounds(116, 151, 96, 20);
+		textTelefono1.setBounds(95, 154, 96, 20);
 		frame.getContentPane().add(textTelefono1);
 		
-		JLabel lblMvil = new JLabel("M\u00F3vil 1");
+		lblMvil = new JLabel("M\u00F3vil 1");
 		lblMvil.setBounds(10, 179, 48, 14);
 		frame.getContentPane().add(lblMvil);
 		
 		textTelefono2 = new JTextField();
 		textTelefono2.setColumns(10);
-		textTelefono2.setBounds(116, 176, 96, 20);
+		textTelefono2.setBounds(95, 176, 96, 20);
 		frame.getContentPane().add(textTelefono2);
 		
-		JLabel lblMvil_1 = new JLabel("M\u00F3vil 2");
-		lblMvil_1.setBounds(255, 179, 48, 14);
-		frame.getContentPane().add(lblMvil_1);
+		lblMvil1 = new JLabel("M\u00F3vil 2");
+		lblMvil1.setBounds(241, 179, 48, 14);
+		frame.getContentPane().add(lblMvil1);
 		
 		textTelefono3 = new JTextField();
 		textTelefono3.setColumns(10);
-		textTelefono3.setBounds(354, 176, 96, 20);
+		textTelefono3.setBounds(316, 176, 96, 20);
 		frame.getContentPane().add(textTelefono3);
 		
-		JLabel lblPersonaContacto = new JLabel("Persona Contacto");
-		lblPersonaContacto.setBounds(10, 205, 105, 14);
+		lblPersonaContacto = new JLabel("Persona Contacto");
+		lblPersonaContacto.setBounds(10, 205, 75, 14);
 		frame.getContentPane().add(lblPersonaContacto);
 		
 		textPersonaContact = new JTextField();
 		textPersonaContact.setColumns(10);
-		textPersonaContact.setBounds(116, 202, 96, 20);
+		textPersonaContact.setBounds(95, 202, 96, 20);
 		frame.getContentPane().add(textPersonaContact);
 		
-		JLabel lblCorreo = new JLabel("Correo");
+		lblCorreo = new JLabel("Correo");
 		lblCorreo.setBounds(10, 233, 48, 14);
 		frame.getContentPane().add(lblCorreo);
 		
 		textMail = new JTextField();
 		textMail.setColumns(10);
-		textMail.setBounds(116, 233, 96, 20);
+		textMail.setBounds(95, 230, 96, 20);
 		frame.getContentPane().add(textMail);
 		
-		JLabel lblWeb = new JLabel("Web");
+		lblWeb = new JLabel("Web");
 		lblWeb.setBounds(10, 263, 48, 14);
 		frame.getContentPane().add(lblWeb);
 		
 		textWeb = new JTextField();
 		textWeb.setColumns(10);
-		textWeb.setBounds(116, 263, 96, 20);
+		textWeb.setBounds(95, 260, 96, 20);
 		frame.getContentPane().add(textWeb);
 		
+		lblFPago = new JLabel("Forma de Pago");
+		lblFPago.setBounds(10, 291, 75, 14);
+		frame.getContentPane().add(lblFPago);
 		
-		JLabel lblTipoCoste = new JLabel("Tipo de coste");
-		lblTipoCoste.setBounds(10, 291, 96, 14);
-		frame.getContentPane().add(lblTipoCoste);
+		textFP = new JTextField();
+		textFP.setColumns(10);
+		textFP.setBounds(95, 288, 96, 20);
+		frame.getContentPane().add(textFP);
 		
-		JLabel lblIban = new JLabel("IBAN");
-		lblIban.setBounds(10, 322, 75, 14);
-		frame.getContentPane().add(lblIban);
+		lblDiaPago = new JLabel("D\u00EDa de pago");
+		lblDiaPago.setBounds(241, 291, 77, 14);
+		frame.getContentPane().add(lblDiaPago);
 		
-		textIban = new JTextField();
-		textIban.setColumns(10);
-		textIban.setBounds(116, 322, 96, 20);
-		frame.getContentPane().add(textIban);
+		textDiaPago = new JTextField();
+		textDiaPago.setColumns(10);
+		textDiaPago.setBounds(328, 288, 96, 20);
+		frame.getContentPane().add(textDiaPago);
 		
-		JLabel lblActivo = new JLabel("Activo");
-		lblActivo.setBounds(255, 323, 48, 14);
+		lblModalidadDePago = new JLabel("Modalidad de pago");
+		lblModalidadDePago.setBounds(10, 322, 75, 14);
+		frame.getContentPane().add(lblModalidadDePago);
+		
+		textMP = new JTextField();
+		textMP.setColumns(10);
+		textMP.setBounds(95, 319, 96, 20);
+		frame.getContentPane().add(textMP);
+		
+		lblActivo = new JLabel("Activo");
+		lblActivo.setBounds(243, 319, 48, 14);
 		frame.getContentPane().add(lblActivo);
-		JLabel lblCP = new JLabel("C\u00F3digo Postal");
-		lblCP.setBounds(255, 129, 89, 14);
+		lblCP = new JLabel("C\u00F3digo Postal");
+		lblCP.setBounds(231, 154, 48, 14);
 		frame.getContentPane().add(lblCP);
 		
 		textCP = new JTextField();
 		textCP.setColumns(10);
-		textCP.setBounds(354, 123, 96, 20);
+		textCP.setBounds(316, 151, 96, 20);
 		frame.getContentPane().add(textCP);
 		
-		JLabel lblObservaciones = new JLabel("Observaciones");
-		lblObservaciones.setBounds(10, 350, 96, 14);
+		lblObservaciones = new JLabel("Observaciones");
+		lblObservaciones.setBounds(10, 350, 75, 14);
 		frame.getContentPane().add(lblObservaciones);
 		
 		textObserv = new JTextField();
 		textObserv.setColumns(10);
-		textObserv.setBounds(116, 350, 96, 20);
+		textObserv.setBounds(95, 347, 96, 20);
 		frame.getContentPane().add(textObserv);
-
+		
+		rdbtnSi = new JRadioButton("Si");
 		rdbtnNo = new JRadioButton("No");
 		
-		rdbtnNo.setBounds(354, 318, 44, 23);
-				
-		rdbtnNo.addActionListener(new ActionListener() {
+		rdbtnSi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rdbtnNo.setSelected(false);
 				rdbtnSi.setSelected(true);
 			}
 		});
+		rdbtnNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnNo.setSelected(true);
+				rdbtnSi.setSelected(false);
+			}
+		});
+		
+		rdbtnSi.setBounds(285, 318, 48, 23);
+		frame.getContentPane().add(rdbtnSi);
+		
+		rdbtnNo.setBounds(338, 318, 48, 23);
 		frame.getContentPane().add(rdbtnNo);
 		
-	
-		JLabel lblError = new JLabel("");
+		lblError = new JLabel("");
 		lblError.setBounds(10, 375, 414, 14);
 		frame.getContentPane().add(lblError);
 		
-		JButton btnAltaEmpresa = new JButton("Alta Empresa");
-		btnAltaEmpresa.setBounds(37, 400, 124, 23);
-		frame.getContentPane().add(btnAltaEmpresa);
-		btnAltaEmpresa.addActionListener(new ActionListener() {
+		JButton btnAltaCliente = new JButton("Alta Cliente");
+		btnAltaCliente.setBounds(37, 400, 105, 23);
+		frame.getContentPane().add(btnAltaCliente);
+		btnAltaCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String nombre, cif, direccion, poblacion, provincia, personaContacto, mail, web, observaciones,activo,iban;
-				Integer cp, telefono1, telefono2, telefono3,tipoCoste;
-				//Boolean accion = false;
-				//llenamos el DTO de empresas
-				EmpresasDTO entrada = new EmpresasDTO();
-				if (rdbtnNo.isSelected() == true) {
-					entrada.setActivo("S");
-				} else {entrada.setActivo("N");}
-				
-				entrada.setCif(textCif.getText());
-				entrada.setCp(Integer.valueOf(textCP.getText()));
-				entrada.setDireccion(textDireccion.getText());
-				temporal = (ObjetoJComboBox) comboCoste.getSelectedItem();
-				entrada.setTipoCoste(temporal.getNumero());
-				entrada.setMail(textMail.getText());
-				entrada.setIban(textIban.getText());
-				entrada.setNombre(textNombre.getText());
-				entrada.setObservaciones(textObserv.getText());
-				entrada.setPersonaContacto(textPersonaContact.getText());
-				entrada.setPoblacion(textPoblacion.getText());
-				entrada.setProvincia(textProvincia.getText());
-				entrada.setTelefono1(Integer.valueOf(textTelefono1.getText()));
-				entrada.setTelefono2(Integer.valueOf(textTelefono2.getText()));
-				entrada.setTelefono3(Integer.valueOf(textTelefono3.getText()));
-				entrada.setWeb(textWeb.getText());
-				entrada.setTipo("E");
-				
-				//grabamos los datos. Es igual que en proveedor pero el TIPO es "E" de empresas.
-				accion= accEmpresas.grabarEmpresas(entrada);
+				//llenamos el DTO de clientes
+				cliente=llenaCamposDto();
+				//grabamos los datos
+				accion= accClientes.grabarCliente(cliente);
 				if (accion) {
-					lblError.setText("Empresa dada de alta correctamente");
+					limpiaPantalla();
+					JOptionPane.showMessageDialog(null, "Cliente dado de alta correctamente");
 				}else {
-					lblError.setText("Error en el alta de empresa");
+					JOptionPane.showMessageDialog(null, "Error en el alta de cliente");
 				}
 			}
 		});
 		
 		
-		JButton btnBaja = new JButton("Baja Empresa");
-		btnBaja.addActionListener(new ActionListener() {
+		JButton btnBajaCliente = new JButton("Baja Cliente");
+		btnBajaCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea borrar la empresa?", "Confirmar borrado", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea borrar el cliente?", "Confirmar borrado", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (JOptionPane.OK_OPTION == confirmado) {
-					accion = accEmpresas.deleteEmpresa(idEmpresa);
+					accion = accClientes.deleteCliente(idCliente);
 					if (accion) {
-						initialize();
-						JOptionPane.showMessageDialog(null, "Empresa borrada correctamente");
+						limpiaPantalla();
+						JOptionPane.showMessageDialog(null, "Cliente borrado correctamente");
 					}else {
-						JOptionPane.showMessageDialog(null, "Error en el borrado de la empresa");
+						JOptionPane.showMessageDialog(null, "Error en el borrado del cliente");
 					}
 				} else System.out.println("vale... no borro nada...");
 			}
 		});
-
-		btnBaja.setBounds(171, 400, 123, 23);
-		frame.getContentPane().add(btnBaja);
+		btnBajaCliente.setBounds(152, 400, 105, 23);
+		frame.getContentPane().add(btnBajaCliente);
 		
-		JButton btnModificar = new JButton("Modificar Empresa");
-		btnModificar.addActionListener(new ActionListener() {
+		JButton btnModificarCliente = new JButton("Modificar Cliente");
+		//mirar si se puede añandir parametro con {}
+		btnModificarCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea modificar la empresa?", "Confirmar modificación", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea modificar el cliente?", "Confirmar modificación", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (JOptionPane.OK_OPTION == confirmado) {
-					empresas = llenaCamposDto();
-					accion = accEmpresas.updateEmpresas(empresas);
+					cliente=llenaCamposDto();
+					accion = accClientes.updateCliente(cliente);
 					if (accion) {
-						initialize();
-						JOptionPane.showMessageDialog(null, "Empresa modificado correctamente");
+						limpiaPantalla();
+						JOptionPane.showMessageDialog(null, "Cliente modificado correctamente");
 					}else {
-						JOptionPane.showMessageDialog(null, "error al modificar la empresa");
+						JOptionPane.showMessageDialog(null, "error al modificar el cliente");
 					}
 				} else System.out.println("vale... no hago nada...");
 			}
 		});
-
-		btnModificar.setBounds(304, 400, 160, 23);
-		frame.getContentPane().add(btnModificar);
+		btnModificarCliente.setBounds(269, 400, 115, 23);
+		frame.getContentPane().add(btnModificarCliente);
 		
 
 		JButton btnNewButton = new JButton("Volver");
@@ -343,8 +341,8 @@ public class VentanaEmpresas {
 				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
 			}
 		});
-		btnNewButton.setBounds(425, 11, 89, 23);
-		frame.getContentPane().add(btnNewButton);
+		btnNewButton.setBounds(335, 21, 89, 23);
+		frame.getContentPane().add(btnNewButton,BorderLayout.EAST);
 		
 		JSeparator separator = new JSeparator();
 		
@@ -357,43 +355,38 @@ public class VentanaEmpresas {
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize();
+				limpiaPantalla();
 			}
 		});
-		btnLimpiar.setBounds(425, 45, 89, 23);
-		frame.getContentPane().add(btnLimpiar);
+		btnLimpiar.setBounds(335, 55, 89, 23);
+		frame.getContentPane().add(btnLimpiar,BorderLayout.EAST);
 		
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String nomBuscado = JOptionPane.showInputDialog("Escribe la empresa a buscar");
+				String nomBuscado = JOptionPane.showInputDialog("Escribe el cliente a buscar");
 				if (nomBuscado != null){
 					if (nomBuscado == "" || nomBuscado.isEmpty()) {
 						activaCampos();
 					}else {
-						empresas = new EmpresasDTO();
-						empresas.setidEmpresa(0);
-						empresas.setNombre(nomBuscado);
-						empresas.setTipo("E");
-						empresas = accEmpresas.buscaEmpresa(empresas);
-						if (empresas.getidEmpresa().equals(0)) {
-							JOptionPane.showMessageDialog(null, "Empresa no encontrada");	
+						cliente = new ClientesDTO();
+						cliente.setIdEmpresa(sesionGlobal.getIdEmpresa());
+						cliente.setIdCliente(0);
+						cliente.setNombre(nomBuscado);
+						cliente = accClientes.buscaCliente(cliente);
+						if (cliente.getIdCliente().equals(0)) {
+							JOptionPane.showMessageDialog(null, "Cliente no encontrado");	
 						} else {
-							initialize();
-							llenaCamposPantalla(empresas);
+							limpiaPantalla();
+							llenaCamposPantalla(cliente);
 							lblError.setText("");
 						}
 					}
 				}				
 			}
 		});
-
-		btnBuscar.setBounds(425, 79, 89, 23);
-		frame.getContentPane().add(btnBuscar);
-		
-		JRadioButton rdbtnSi = new JRadioButton("Si");
-		rdbtnSi.setBounds(309, 318, 44, 23);
-		frame.getContentPane().add(rdbtnSi);
+		btnBuscar.setBounds(335, 89, 89, 23);
+		frame.getContentPane().add(btnBuscar,BorderLayout.EAST);
 		
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
@@ -401,6 +394,7 @@ public class VentanaEmpresas {
 	
 	public void ocultarCampos() {
 		//ocultamos todos los campos y etiquetas de pantalla excepto el NOMBRE
+		lblError.setText("");
 		textCif.setVisible(false);
 		textDireccion.setVisible(false);
 		textPoblacion.setVisible(false);
@@ -411,8 +405,9 @@ public class VentanaEmpresas {
 		textPersonaContact.setVisible(false);
 		textWeb.setVisible(false);
 		textMail.setVisible(false);
-		comboCoste.setVisible(false);
-		textIban.setVisible(false);
+		textFP.setVisible(false);
+		textDiaPago.setVisible(false);
+		textMP.setVisible(false);
 		textObserv.setVisible(false);
 		textCP.setVisible(false);
 		lblCif.setVisible(false);
@@ -424,12 +419,14 @@ public class VentanaEmpresas {
 		lblMvil1.setVisible(false);
 		lblPersonaContacto.setVisible(false);
 		lblCorreo.setVisible(false);
+		lblFPago.setVisible(false);
 		lblWeb.setVisible(false);
-		lblIban.setVisible(false);
+		lblDiaPago.setVisible(false);
 		lblObservaciones.setVisible(false);
+		lblModalidadDePago.setVisible(false);
 		lblCP.setVisible(false);
 		lblActivo.setVisible(false);
-		rdbtnNo.setVisible(false);
+		rdbtnSi.setVisible(false);
 		rdbtnNo.setVisible(false);
 	}
 	
@@ -445,7 +442,9 @@ public class VentanaEmpresas {
 		textPersonaContact.setVisible(true);
 		textWeb.setVisible(true);
 		textMail.setVisible(true);
-		textIban.setVisible(true);
+		textFP.setVisible(true);
+		textDiaPago.setVisible(true);
+		textMP.setVisible(true);
 		textObserv.setVisible(true);
 		textCP.setVisible(true);
 		lblCif.setVisible(true);
@@ -457,18 +456,20 @@ public class VentanaEmpresas {
 		lblMvil1.setVisible(true);
 		lblPersonaContacto.setVisible(true);
 		lblCorreo.setVisible(true);
+		lblFPago.setVisible(true);
 		lblWeb.setVisible(true);
+		lblDiaPago.setVisible(true);
 		lblObservaciones.setVisible(true);
-		lblIban.setVisible(true);
+		lblModalidadDePago.setVisible(true);
+		lblCP.setVisible(true);
 		lblActivo.setVisible(true);
 		rdbtnSi.setVisible(true);
 		rdbtnNo.setVisible(true);
 	}
-
-
-	private void llenaCamposPantalla(EmpresasDTO entrada) {
+	
+	private void llenaCamposPantalla(ClientesDTO entrada) {
 		//llenamos los campos de pantalla con el DTO de clientes
-		idEmpresa = entrada.getidEmpresa();
+		idCliente = entrada.getIdCliente();
 		textNombre.setText(entrada.getNombre());
 		textCif.setText(entrada.getCif());
 		textDireccion.setText(entrada.getDireccion());
@@ -480,43 +481,67 @@ public class VentanaEmpresas {
 		textPersonaContact.setText(entrada.getPersonaContacto());
 		textWeb.setText(entrada.getWeb());
 		textMail.setText(entrada.getMail());
-		
-		textIban.setText(entrada.getIban());
+		textFP.setText(entrada.getFp());
+		textDiaPago.setText(String.valueOf(entrada.getDiaPago()));
+		textMP.setText(entrada.getModaPago());
 		textObserv.setText(entrada.getObservaciones());
 		textCP.setText(String.valueOf(entrada.getCp()));
 		if (entrada.getActivo().equals("S")) {
-			rdbtnSi.setSelected(false);
+			rdbtnNo.setSelected(false);
 			rdbtnSi.setSelected(true);
 		} else {
 			rdbtnNo.setSelected(true);
-			rdbtnNo.setSelected(false);
+			rdbtnSi.setSelected(false);
 		}
 	}
 	
-	private  EmpresasDTO llenaCamposDto(){
+	private  ClientesDTO llenaCamposDto(){
 		//llenamos el DTO de clientes con los datos de pantalla
-		empresas = new EmpresasDTO();
-		empresas.setidEmpresa(idEmpresa);
-		empresas.setDireccion(textDireccion.getText());
-		empresas.setTipo("E");
-		empresas.setCif(textCif.getText());
-		empresas.setNombre(textNombre.getText());
-		empresas.setPoblacion(textPoblacion.getText());
-		empresas.setProvincia(textProvincia.getText());
-		empresas.setCp(Integer.valueOf(textCP.getText()));
-		empresas.setTelefono1(Integer.valueOf(textTelefono1.getText()));
-		empresas.setTelefono2(Integer.valueOf(textTelefono2.getText()));
-		empresas.setTelefono3(Integer.valueOf(textTelefono3.getText()));
-		empresas.setPersonaContacto(textPersonaContact.getText());
-		empresas.setMail(textMail.getText());
-		empresas.setWeb(textWeb.getText());
-		
-		empresas.setIban(textIban.getText());
-		empresas.setObservaciones(textObserv.getText());
+		cliente = new ClientesDTO();
+		cliente.setIdEmpresa(sesionGlobal.getIdEmpresa());
+		cliente.setIdCliente(idCliente);
+		cliente.setDireccion(textDireccion.getText());
+		cliente.setCif(textCif.getText());
+		cliente.setNombre(textNombre.getText());
+		cliente.setPoblacion(textPoblacion.getText());
+		cliente.setProvincia(textProvincia.getText());
+		cliente.setCp(Integer.valueOf(textCP.getText()));
+		cliente.setTelefono1(Integer.valueOf(textTelefono1.getText()));
+		cliente.setTelefono2(Integer.valueOf(textTelefono2.getText()));
+		cliente.setTelefono3(Integer.valueOf(textTelefono3.getText()));
+		cliente.setPersonaContacto(textPersonaContact.getText());
+		cliente.setMail(textMail.getText());
+		cliente.setWeb(textWeb.getText());
+		cliente.setFp(textFP.getText());
+		cliente.setDiaPago(Integer.valueOf(textDiaPago.getText()));
+		cliente.setModaPago(textMP.getText());
+		cliente.setObservaciones(textObserv.getText());
 		if (rdbtnSi.isSelected() == true) {
-			empresas.setActivo("S");
-		} else {empresas.setActivo("N");}
+			cliente.setActivo("S");
+		} else {cliente.setActivo("N");}
 				
-		return empresas;
+		return cliente;
 	}
+	
+	private void limpiaPantalla() {
+		textCif.setText(" ");
+		textNombre.setText(" ");
+		textDireccion.setText(" ");
+		textPoblacion.setText(" ");
+		textProvincia.setText(" ");
+		textTelefono1.setText(" ");
+		textTelefono2.setText(" ");
+		textTelefono3.setText(" ");
+		textPersonaContact.setText(" ");
+		textMail.setText(" ");
+		textWeb.setText(" ");
+		textFP.setText(" ");
+		textDiaPago.setText(" ");
+		textMP.setText(" ");
+		textObserv.setText(" ");
+		textCP.setText(" ");
+		rdbtnNo.setSelected(false);
+		rdbtnSi.setSelected(false);
+	}
+
 }
