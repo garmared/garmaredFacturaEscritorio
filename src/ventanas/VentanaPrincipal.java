@@ -134,6 +134,7 @@ public class VentanaPrincipal implements ActionListener{
 		
 	public VentanaPrincipal(ServiceDTO entrada) {
 		control = entrada;
+		control.setNoPrincipal("N");
 		if (entrada.getNombreEmpresa() == null) {
 			seleccionEmpresa(entrada);
 		}

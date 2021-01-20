@@ -3,6 +3,9 @@ package ventanas;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -43,7 +46,7 @@ import acciones.service.impl.AccionesServiceImpl;
 import estructuras.DatosClientes;
 import estructuras.DatosFacturas;
 
-public class ListadoClientes {
+public class ListadoClientes extends JFrame {
 
 	private JFrame frame;
 	static ServiceDTO sesionGlobal;
@@ -140,7 +143,20 @@ public class ListadoClientes {
 																
 						ResultSet rs = accService.getTabla(consulta, connection);
 						modelo.setColumnIdentifiers(new Object[]{"identificador","Nombre","CIF","Direccion","Poblacion","CP", "Telefono", "Persona de Contacto","mail","web","activo"});
-						JTable table = new JTable(modelo);
+						table = new JTable(modelo);
+						table.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseClicked(MouseEvent e) {
+								// TODO Auto-generated method stub
+								sesionGlobal.setNoPrincipal("S");
+								DefaultTableModel modeloAux = (DefaultTableModel) table.getModel();
+								if (table.getSelectedRow() !=-1) {
+									int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
+									sesionGlobal.setIdentificador(codigo);
+									VentanaClientes clientes = new VentanaClientes(sesionGlobal);
+								} else {JOptionPane.showMessageDialog(null, "Selecciona una única fila");}
+							}
+						});
 						try {
 								tablaPdf = new Table(11);
 								tablaPdf = llenaCabecera();
@@ -285,4 +301,6 @@ public class ListadoClientes {
 		String[] dato = {String.valueOf(datos.getIdentificador()),datos.getNombre(),datos.getCif(),datos.getDireccion(),datos.getPoblacion(),String.valueOf(datos.getcPostal()),
 				String.valueOf(datos.getTelefono()),datos.getPersonaContacto(),datos.getMail(),datos.getWeb(),datos.getActivo()};
 		datosCsv.add(indice,dato);
-	}}
+	}
+
+}

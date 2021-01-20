@@ -64,5 +64,10 @@ public class AccionesClientesImpl implements AccionesClientesController{
 		}
 		return consulta = consulta + order;
 	}
+
+	public ClientesDTO buscaCliente(Integer identificador, Integer empresa) {
+		// TODO Auto-generated method stub
+		return accClientes.buscaCliente(identificador,empresa);
+	}
 	
 }

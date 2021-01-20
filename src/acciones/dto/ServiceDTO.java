@@ -2,8 +2,8 @@ package acciones.dto;
 
 public class ServiceDTO{
 
-	private Integer altoVentana, anchoVentana, acceso, idEmpresa;
-	private String nombreEmpresa;
+	private Integer altoVentana, anchoVentana, acceso, idEmpresa, identificador;
+	private String nombreEmpresa, noPrincipal;
 
 	public Integer getAltoVentana() {
 		return altoVentana;
@@ -53,6 +53,22 @@ public class ServiceDTO{
 
 	public void setNombreEmpresa(String nombreEmpresa) {
 		this.nombreEmpresa = nombreEmpresa;
+	}
+
+	public String getNoPrincipal() {
+		return noPrincipal;
+	}
+
+	public void setNoPrincipal(String noPrincipal) {
+		this.noPrincipal = noPrincipal;
+	}
+
+	public Integer getIdentificador() {
+		return identificador;
+	}
+
+	public void setIdentificador(Integer identificador) {
+		this.identificador = identificador;
 	}
 	
 	

@@ -69,27 +69,21 @@ public class VentanaClientes {
 	private Boolean accion = false;
 	AccionesClientesImpl accClientes = new AccionesClientesImpl();
 	/**
-	 * Launch the application.
-	 */
-	public  void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaClientes window = new VentanaClientes(control);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public VentanaClientes(ServiceDTO sesion) {
 		sesionGlobal = sesion;
 		initialize(sesion.getNombreEmpresa());
+		if (sesionGlobal.getNoPrincipal()=="S") {
+			llenaPantalla();
+		}
+	}
+
+	private void llenaPantalla() {
+		// TODO Auto-generated method stub
+		cliente = new ClientesDTO();
+		cliente=accClientes.buscaCliente(sesionGlobal.getIdentificador(),sesionGlobal.getIdEmpresa());
+		llenaCamposPantalla(cliente);
 	}
 
 	/**
@@ -338,7 +332,9 @@ public class VentanaClientes {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
 				frame.dispose(); //esto cierra la ventana
+				if (sesionGlobal.getNoPrincipal()=="N") {
 				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
+				}
 			}
 		});
 		btnNewButton.setBounds(335, 21, 89, 23);

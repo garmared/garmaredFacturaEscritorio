@@ -218,4 +218,44 @@ public class AccionesClientes {
 			return null;
 		}	
 	}
+
+	public ClientesDTO buscaCliente(Integer identificador, Integer empresa) {
+		ClientesDTO salida = new ClientesDTO();
+		try {
+			Connection connection=accService.getConexion();
+			ResultSet result =null;	
+			String peticion = "SELECT * FROM clientes WHERE id_cliente = '"+identificador+"' AND id_empresa = "+empresa+"";
+			Statement stmt = connection.createStatement();
+			result = stmt.executeQuery(peticion);
+			//result.next();
+			if (result.next()){
+				salida.setIdCliente(result.getInt("id_cliente"));
+				salida.setCif(result.getString("CIF"));
+				salida.setNombre(result.getString("Nombre"));
+				salida.setDireccion(result.getString("Direccion"));
+				salida.setPoblacion(result.getString("Poblacion"));
+				salida.setProvincia(result.getString("Provincia"));
+				salida.setCp(result.getInt("CP"));
+				salida.setTelefono1(result.getInt("Telefono1"));
+				salida.setTelefono2(result.getInt("Telefono2"));
+				salida.setTelefono3(result.getInt("Telefono3"));
+				salida.setPersonaContacto(result.getString("Persona_contacto"));
+				salida.setMail(result.getString("mail"));
+				salida.setWeb(result.getString("web"));
+				salida.setFp(result.getString("fp"));
+				salida.setDiaPago(result.getInt("dia_pago"));
+				salida.setModaPago(result.getString("modo_pago"));
+				salida.setObservaciones(result.getString("observaciones"));
+				salida.setActivo(result.getString("activo"));
+				salida.setIdEmpresa(result.getInt("id_empresa"));
+				return salida;
+			} else {
+				salida.setIdCliente(0);
+				return salida;
+			}
+		}catch(Exception ex){
+			System.out.println("Error en buscaCliente: "+ex.getMessage().toString());
+			return null;
+		}	
+	}
 }
