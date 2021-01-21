@@ -17,6 +17,10 @@ public class AccionesFacturaImpl implements AccionesFacturaController {
 		return accFactura.buscaFactura(factura);
 	}
 
+	public FacturasDTO buscaFactura(int identificador, int empresa) {
+		return accFactura.buscaFactura(identificador,empresa);
+	}
+	
 	public Boolean deleteFactura(int idFactura) {
 		return accFactura.deleteFactura(idFactura);
 	}

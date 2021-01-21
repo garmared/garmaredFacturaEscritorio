@@ -79,6 +79,41 @@ public class AccionesFactura{
 		}
 	}
 
+	public FacturasDTO buscaFactura(int identificador, int empresa) {
+		try {
+			FacturasDTO salida = new FacturasDTO();
+			Connection connection=accService.getConexion();
+			ResultSet result =null;	
+			String peticion = "SELECT * FROM factura WHERE id_factura = '"+identificador+"' AND id_empresa = "+empresa+"";
+			Statement stmt = connection.createStatement();
+			result = stmt.executeQuery(peticion);
+			if (result.next()){
+				salida.setIdFactura(result.getInt("id_factura"));
+				salida.setBaseImpo(result.getDouble("base_impo"));
+				salida.setCliente(result.getInt("id_cliente"));
+				salida.setConcepto(result.getInt("id_concepto"));
+				salida.setCoste(result.getInt("id_coste"));
+				salida.setDescuento(result.getDouble("descuento"));
+				salida.setEmpresa(result.getInt("id_empresa"));
+				salida.setFecha(result.getInt("fecha"));
+				salida.setIban(result.getString("IBAN"));
+				salida.setIrpf(result.getDouble("IRPF"));
+				salida.setIva(result.getDouble("IVA"));
+				salida.setProveedor(result.getInt("id_proveedor"));
+				salida.setProyecto(result.getInt("id_proyecto"));
+				salida.setTasa(result.getDouble("tasa"));
+				salida.setVencimiento(result.getInt("vencimiento"));
+				salida.setPagado(result.getString("pagado"));
+				return salida;
+			} else {
+				salida.setIdFactura(0);
+				return salida;
+			}
+		}catch(Exception ex){
+			System.out.println("Error en buscaFactura: "+ex.getMessage().toString());
+			return null;
+		}
+	}
 	public Boolean deleteFactura(int idFactura) {
 		try{
 			Connection connection=accService.getConexion();

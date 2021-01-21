@@ -64,27 +64,21 @@ public class VentanaFacturas {
 	AccionesProyectosImpl accProyecto = new AccionesProyectosImpl();
 	AccionesClientesImpl accClientes = new AccionesClientesImpl();
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaFacturas window = new VentanaFacturas(sesionGlobal);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public VentanaFacturas(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize(sesionGlobal.getNombreEmpresa());
+		if (sesionGlobal.getNoPrincipal()=="S") {
+			llenaPantalla();
+		}
+	}
+
+	private void llenaPantalla() {
+		// TODO Auto-generated method stub
+		factura = new FacturasDTO();
+		factura=accFactura.buscaFactura(sesionGlobal.getIdentificador(),sesionGlobal.getIdEmpresa());
+		llenaCamposPantalla(factura);
 	}
 
 	/**
