@@ -28,4 +28,6 @@ public interface AccionesProyectosController {
 	//identificador de proyecto a partir de nombre
 	public Integer buscaProyecto(String variable, int empresa);
 	
+	public ProyectosDTO buscaProyecto(int variable, int empresa);
+	
 }

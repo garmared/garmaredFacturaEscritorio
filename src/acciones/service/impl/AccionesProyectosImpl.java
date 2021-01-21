@@ -70,4 +70,10 @@ public class AccionesProyectosImpl implements AccionesProyectosController{
 
 			return consulta = consulta + order;
 		}
+
+		@Override
+		public ProyectosDTO buscaProyecto(int variable, int empresa) {
+			// TODO Auto-generated method stub
+			return accProyectos.buscaProyecto(variable,empresa);
+		}
 }

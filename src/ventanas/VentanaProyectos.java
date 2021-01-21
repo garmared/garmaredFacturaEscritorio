@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
+import acciones.dto.ClientesDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ProyectosDTO;
 import acciones.dto.ServiceDTO;
@@ -25,6 +26,7 @@ import acciones.service.impl.AccionesClientesImpl;
 import acciones.service.impl.AccionesCostesImpl;
 import acciones.service.impl.AccionesEmpresasImpl;
 import acciones.service.impl.AccionesProyectosImpl;
+import acciones.service.impl.AccionesServiceImpl;
 
 public class VentanaProyectos {
 
@@ -63,6 +65,7 @@ public class VentanaProyectos {
 	AccionesCostesImpl accCostes = new AccionesCostesImpl();
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	AccionesProyectosImpl accProyectos = new AccionesProyectosImpl();
+	AccionesServiceImpl accService = new AccionesServiceImpl();
 	private String dia,mes,ano,varFecha,fecha; 
 	private SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
 	/**
@@ -87,6 +90,16 @@ public class VentanaProyectos {
 	public VentanaProyectos(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize();
+		if (sesionGlobal.getNoPrincipal()=="S") {
+			llenaPantalla();
+		}
+	}
+
+	private void llenaPantalla() {
+		// TODO Auto-generated method stub
+		proyecto = new ProyectosDTO();
+		proyecto=accProyectos.buscaProyecto(sesionGlobal.getIdentificador(),sesionGlobal.getIdEmpresa());
+		llenaCamposPantalla(proyecto);
 	}
 
 	/**
@@ -220,7 +233,7 @@ public class VentanaProyectos {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
 				frame.dispose(); //esto cierra la ventana
-				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
+				accService.abrirVentanaPrincipal(sesionGlobal);
 			}
 		});
 		btnVolver.setBounds(446, 23, 89, 23);

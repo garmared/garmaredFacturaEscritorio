@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import acciones.dto.ConceptosDTO;
 import acciones.dto.ServiceDTO;
 import acciones.service.impl.AccionesConceptosImpl;
+import acciones.service.impl.AccionesServiceImpl;
 
 public class VentanaConceptos {
 
@@ -23,6 +24,7 @@ public class VentanaConceptos {
 	private ConceptosDTO conceptos;
 	private int idConcepto;
 	AccionesConceptosImpl accConceptos = new AccionesConceptosImpl();
+	AccionesServiceImpl accService = new AccionesServiceImpl();
 
 	/**
 	 * Launch the application.
@@ -136,7 +138,7 @@ public class VentanaConceptos {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
 				frame.dispose(); //esto cierra la ventana
-				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
+				accService.abrirVentanaPrincipal(sesionGlobal);
 			}
 		});
 		btnVolver.setBounds(317, 34, 89, 23);

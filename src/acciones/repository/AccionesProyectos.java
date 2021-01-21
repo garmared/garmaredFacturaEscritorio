@@ -177,5 +177,40 @@ public class AccionesProyectos{
 			}
 		}
 
+		public ProyectosDTO buscaProyecto(int variable, int empresa) {
+			// TODO Auto-generated method stub
+			ProyectosDTO salida = new ProyectosDTO();
+			try {
+				Connection connection=accService.getConexion();
+				ResultSet result =null;	
+				String peticion = "SELECT * FROM proyectos WHERE id_proyecto = '"+variable+"' AND id_empresa = '"+empresa+"'";
+				Statement stmt = connection.createStatement();
+				result = stmt.executeQuery(peticion);
+				//result.next();
+				if (result.next()){
+					salida.setIdProyecto(result.getInt("id_proyecto"));
+					salida.setEmpresa(result.getInt("id_empresa"));
+					salida.setFechaIni(result.getInt("fecha_ini"));
+					salida.setFechaFin(result.getInt("fecha_fin"));
+					salida.setFechaCierre(result.getInt("fecha_cierre"));
+					salida.setCliente(result.getInt("id_cliente"));
+					salida.setDescripcion(result.getString("descripcion"));
+					salida.setWeb(result.getString("web"));
+					salida.setCoste(result.getInt("Tipo_coste"));
+					salida.setObservaciones(result.getString("observaciones"));
+					salida.setImporte(result.getDouble("importe"));
+					salida.setMargen(result.getDouble("margen"));
+					salida.setIban(result.getString("IBAN"));
+					return salida;
+				} else {
+					salida.setIdProyecto(0);
+					return salida;
+				}
+			}catch(Exception ex){
+				System.out.println("Error en buscaProyecto: "+ex.getMessage().toString());
+				return null;
+			}	
+		}
+
 
 }
