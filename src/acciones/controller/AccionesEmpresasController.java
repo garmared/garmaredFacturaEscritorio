@@ -23,4 +23,8 @@ public interface AccionesEmpresasController {
 	//consulta identificador de empresa o proveedor segun nombre y tipo
 	public Integer buscaId(String variable, String string);
 	
+	public String creaConsulta(EmpresasDTO paramConsulta);
+	
+	public EmpresasDTO buscaProveedor (int identificador, int empresa);
+	
 }

@@ -15,4 +15,5 @@ public interface AccionesServiceController{
 	public Connection getConexion();
 	public ResultSet getTabla(String Consulta, Connection connection);
 	public String obtenerFecha(JDateChooser fecha);
+	public void abrirVentanaPrincipal(ServiceDTO sesionGlobal);
 }

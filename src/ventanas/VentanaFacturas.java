@@ -327,7 +327,9 @@ public class VentanaFacturas {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
 				frame.dispose(); //esto cierra la ventana
-				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
+				if (sesionGlobal.getNoPrincipal()=="N") {
+					VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
+				}
 			}
 		});
 		btnNewButton.setBounds(335, 21, 89, 23);

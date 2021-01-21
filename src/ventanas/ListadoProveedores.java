@@ -1,6 +1,8 @@
 package ventanas;
 
 import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -144,6 +146,19 @@ public class ListadoProveedores {
 						ResultSet rs = accService.getTabla(consulta, connection);
 						modelo.setColumnIdentifiers(new Object[]{"identificador","Nombre","CIF","Direccion","Poblacion","CP", "Telefono", "Persona de Contacto","mail","web","activo"});
 						JTable table = new JTable(modelo);
+						table.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseClicked(MouseEvent e) {
+								// TODO Auto-generated method stub
+								sesionGlobal.setNoPrincipal("S");
+								DefaultTableModel modeloAux = (DefaultTableModel) table.getModel();
+								if (table.getSelectedRow() !=-1) {
+									int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
+									sesionGlobal.setIdentificador(codigo);
+									VentanaFacturas ventana = new VentanaFacturas(sesionGlobal);
+								} else {JOptionPane.showMessageDialog(null, "Selecciona una única fila");}
+							}
+						});
 						try {
 								tablaPdf = new Table(11);
 								tablaPdf = llenaCabecera();

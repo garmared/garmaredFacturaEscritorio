@@ -15,11 +15,13 @@ import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
+import acciones.dto.ClientesDTO;
 import acciones.dto.EmpresasDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
 import acciones.service.impl.AccionesCostesImpl;
 import acciones.service.impl.AccionesEmpresasImpl;
+import acciones.service.impl.AccionesServiceImpl;
 
 public class VentanaProveedores {
 
@@ -42,6 +44,7 @@ public class VentanaProveedores {
 	private JRadioButton rdbtnNo;
 	
 	AccionesCostesImpl accCostes = new AccionesCostesImpl();
+	AccionesServiceImpl accService = new AccionesServiceImpl();
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	private JComboBox comboCoste;
 	
@@ -69,27 +72,21 @@ public class VentanaProveedores {
 	private ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaProveedores window = new VentanaProveedores(sesionGlobal);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public VentanaProveedores(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize(control.getNombreEmpresa());
+		if (sesionGlobal.getNoPrincipal()=="S") {
+			llenaPantalla();
+		}
+	}
+
+	private void llenaPantalla() {
+		// TODO Auto-generated method stub
+		empresas = new EmpresasDTO();
+		empresas=accEmpresas.buscaProveedor(sesionGlobal.getIdentificador(),sesionGlobal.getIdEmpresa());
+		llenaCamposPantalla(empresas);
 	}
 
 	/**
@@ -355,7 +352,7 @@ public class VentanaProveedores {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
 				frame.dispose(); //esto cierra la ventana
-				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
+				accService.abrirVentanaPrincipal(sesionGlobal);
 			}
 		});
 		btnNewButton.setBounds(425, 11, 89, 23);

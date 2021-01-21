@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import acciones.dto.ClientesDTO;
 import acciones.dto.ServiceDTO;
 import acciones.service.impl.AccionesClientesImpl;
+import acciones.service.impl.AccionesServiceImpl;
 
 
 public class VentanaClientes {
@@ -68,6 +69,7 @@ public class VentanaClientes {
 	private Integer idCliente;
 	private Boolean accion = false;
 	AccionesClientesImpl accClientes = new AccionesClientesImpl();
+	AccionesServiceImpl accService = new AccionesServiceImpl();
 	/**
 	 * Create the application.
 	 */
@@ -332,9 +334,7 @@ public class VentanaClientes {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
 				frame.dispose(); //esto cierra la ventana
-				if (sesionGlobal.getNoPrincipal()=="N") {
-				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
-				}
+				accService.abrirVentanaPrincipal(sesionGlobal);
 			}
 		});
 		btnNewButton.setBounds(335, 21, 89, 23);

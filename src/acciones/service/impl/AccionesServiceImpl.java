@@ -10,6 +10,7 @@ import com.toedter.calendar.JDateChooser;
 
 import acciones.controller.AccionesServiceController;
 import acciones.dto.ServiceDTO;
+import ventanas.VentanaPrincipal;
 
 public class AccionesServiceImpl implements AccionesServiceController{
 	@Override
@@ -81,5 +82,15 @@ public class AccionesServiceImpl implements AccionesServiceController{
 			String ano = Integer.toString(fecha.getCalendar().get(Calendar.YEAR));
 			return salida = (ano+mes+dia);	
 		}
+	}
+
+
+	@Override
+	public void abrirVentanaPrincipal(ServiceDTO sesionGlobal) {
+		// TODO Auto-generated method stub
+		if (sesionGlobal.getNoPrincipal()=="N") {
+			VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
+		}
 	}	
+	
 }

@@ -68,4 +68,10 @@ public class AccionesEmpresasImpl implements AccionesEmpresasController{
 		return accEmpresa.buscaDireccion(idEmpresa);
 	}
 
+	@Override
+	public EmpresasDTO buscaProveedor(int identificador, int empresa) {
+		// TODO Auto-generated method stub
+		return accEmpresa.buscaProveedor(identificador,empresa);
+	}
+
 }
