@@ -143,38 +143,21 @@ public class ListadoFacturas {
 				estadoFactura.addItem("Pagado");
 				estadoFactura.addItem("Todos");
 				
-				JRadioButton todasFechas = new JRadioButton();
-				JCalendar fecha = new JCalendar();
+				JDateChooser fecha = new JDateChooser();
 				Object [] mensaje= {
 						"Cliente:", cliente,
 						"Proveedor:", proveedor,
 						"Tipo Coste:", coste,
 						"Estado Factura:", estadoFactura,
-						"Fecha Inicio:", fecha,
-						"Todas las fechas? :" , todasFechas
+						"Fecha Inicio:", fecha
 				};
 				int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Búsqueda de Factura", JOptionPane.OK_CANCEL_OPTION);
 				if (opcion == JOptionPane.OK_OPTION){
-						String dia = Integer.toString(fecha.getCalendar().get(Calendar.DAY_OF_MONTH));
-						if (fecha.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
-							dia=("0"+dia);
-						}
-						String mes = Integer.toString(fecha.getCalendar().get(Calendar.MONTH)+1);
-						if (fecha.getCalendar().get(Calendar.MONTH)+1<10) {
-							mes=("0"+mes);
-						}
-						String ano = Integer.toString(fecha.getCalendar().get(Calendar.YEAR));
-						String varFecha = (ano+mes+dia);
-						
 						paramConsulta.setEmpresa(sesionGlobal.getIdEmpresa());
 						ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
 						temporal = (ObjetoJComboBox) cliente.getSelectedItem();
 						paramConsulta.setCliente(temporal.getNumero());			
-						if (todasFechas.isSelected() == true) {
-							paramConsulta.setFecha(0);
-						} else {
-							paramConsulta.setFecha(Integer.valueOf(varFecha));
-						}
+						paramConsulta.setFecha(Integer.valueOf(accService.obtenerFecha(fecha)));
 						temporal = (ObjetoJComboBox) proveedor.getSelectedItem();
 						paramConsulta.setProveedor(temporal.getNumero());
 						temporal = (ObjetoJComboBox) coste.getSelectedItem();
@@ -188,7 +171,7 @@ public class ListadoFacturas {
 						consulta=accFactura.creaConsulta(paramConsulta);
 																
 						ResultSet rs = accService.getTabla(consulta, connection);
-						modelo.setColumnIdentifiers(new Object[]{"Fecha","num Factura","Vencimiento","Proyecto","Cliente","Concepto", "Coste", "Proveedor","Estado"});
+						modelo.setColumnIdentifiers(new Object[]{"identificador","Fecha","Vencimiento","Proyecto","Cliente","Concepto", "Coste", "Proveedor","Estado"});
 						JTable table = new JTable(modelo);
 						table.addMouseListener(new MouseAdapter() {
 							@Override
@@ -209,7 +192,7 @@ public class ListadoFacturas {
 								int indice= 0;
 								while (rs.next()) {
 									datosFact = llenaJtable(rs);
-									modelo.addRow(new Object[] {rs.getInt("fecha"), rs.getInt("id_factura"), rs.getInt("vencimiento"), datosFact.getProyecto(), datosFact.getNombreCliente(), datosFact.getConcepto(),datosFact.getCoste(),datosFact.getProveedor(),datosFact.getEstado()});
+									modelo.addRow(new Object[] {rs.getInt("id_factura"),rs.getInt("fecha"), rs.getInt("vencimiento"), datosFact.getProyecto(), datosFact.getNombreCliente(), datosFact.getConcepto(),datosFact.getCoste(),datosFact.getProveedor(),datosFact.getEstado()});
 									llenaTablaPdf(datosFact);	
 									llenaDatosCsv(datosFact,indice);
 									indice++;
@@ -278,7 +261,7 @@ public class ListadoFacturas {
 		String nomFichero = ("csv/factura/"+JOptionPane.showInputDialog("Escribe el nombre del fichero a generar")+".csv");
 		try {
 			CSVWriter csv = new CSVWriter(new FileWriter(nomFichero));
-			String [] cabecera = {"Fecha", "Factura", "Vencimiento", "Proyecto","Cliente","Concepto","Coste","Proveedor","Estado"};
+			String [] cabecera = {"Factura", "Fecha", "Vencimiento", "Proyecto","Cliente","Concepto","Coste","Proveedor","Estado"};
 			csv.writeNext(cabecera);
 			csv.writeAll(datosCsv);
 			csv.close();
@@ -292,8 +275,8 @@ public class ListadoFacturas {
 	
 	private Table llenaCabecera() {
 		
-		tablaPdf.addHeaderCell("Fecha");
 		tablaPdf.addHeaderCell("Factura");
+		tablaPdf.addHeaderCell("Fecha");
 		tablaPdf.addHeaderCell("Vencimiento");
 		tablaPdf.addHeaderCell("Proyecto");
 		tablaPdf.addHeaderCell("Cliente");
@@ -306,8 +289,8 @@ public class ListadoFacturas {
 	}	
 	
 	private void llenaTablaPdf(DatosFacturas datosFact) {
-		tablaPdf.addCell(datosFact.getFecha());
 		tablaPdf.addCell(datosFact.getFactura());
+		tablaPdf.addCell(datosFact.getFecha());
 		tablaPdf.addCell(datosFact.getVencimiento());
 		tablaPdf.addCell(datosFact.getProyecto());
 		tablaPdf.addCell(datosFact.getNombreCliente());
@@ -337,7 +320,7 @@ public class ListadoFacturas {
 	}
 
 	private void llenaDatosCsv(DatosFacturas datosFact, int indice) {
-		String[] dato = {datosFact.getFecha(), datosFact.getFactura(), datosFact.getVencimiento(),datosFact.getProyecto(), datosFact.getNombreCliente(), 
+		String[] dato = {datosFact.getFactura(), datosFact.getFecha(), datosFact.getVencimiento(),datosFact.getProyecto(), datosFact.getNombreCliente(), 
 					datosFact.getConcepto(), datosFact.getCoste(), datosFact.getProveedor(), datosFact.getEstado()};
 		datosCsv.add(indice,dato);
 	}

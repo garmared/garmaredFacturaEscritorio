@@ -155,7 +155,7 @@ public class ListadoProveedores {
 								if (table.getSelectedRow() !=-1) {
 									int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
 									sesionGlobal.setIdentificador(codigo);
-									VentanaEmpresas ventana = new VentanaEmpresas(sesionGlobal);
+									VentanaProveedores ventana = new VentanaProveedores(sesionGlobal);
 								} else {JOptionPane.showMessageDialog(null, "Selecciona una única fila");}
 							}
 						});
