@@ -69,27 +69,11 @@ public class VentanaProyectos {
 	private String dia,mes,ano,varFecha,fecha; 
 	private SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaProyectos window = new VentanaProyectos(sesionGlobal);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public VentanaProyectos(ServiceDTO control) {
 		sesionGlobal = control;
-		initialize();
+		initialize(control.getNombreEmpresa());
 		if (sesionGlobal.getNoPrincipal()=="S") {
 			llenaPantalla();
 		}
@@ -105,8 +89,8 @@ public class VentanaProyectos {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		frame = new JFrame("Proyecto");
+	private void initialize(String nombre) {
+		frame = new JFrame("Proyecto de la empresa " + nombre);
 		frame.setBounds(100, 100, 575, 498);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -308,7 +292,7 @@ public class VentanaProyectos {
 				if (JOptionPane.OK_OPTION == confirmado) {
 					accion = accProyectos.deleteProyecto(idProyecto);
 					if (accion) {
-						initialize();
+						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Proyecto borrado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "Error en el borrado del proyecto");
@@ -328,7 +312,7 @@ public class VentanaProyectos {
 					proyecto = llenaCamposDto();
 					accion = accProyectos.updateProyectos(proyecto);
 					if (accion) {
-						initialize();
+						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Proyecto modificado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "error al modificar el proyecto");
@@ -343,8 +327,10 @@ public class VentanaProyectos {
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize();
+				limpiaPantalla();
 			}
+
+
 		});
 		btnLimpiar.setBounds(446, 51, 89, 23);
 		frame.getContentPane().add(btnLimpiar);
@@ -387,7 +373,7 @@ public class VentanaProyectos {
 						if (proyecto.getIdProyecto().equals(0)) {
 							JOptionPane.showMessageDialog(null, "Proyecto no encontrado");	
 						} else {
-							initialize();
+							limpiaPantalla();
 							llenaCamposPantalla(proyecto);
 							lblError.setText("");
 						}
@@ -522,6 +508,19 @@ public class VentanaProyectos {
 		valorCombo = accClientes.buscaNombre(entrada.getCliente());
 		comboCliente.getModel().setSelectedItem(valorCombo);
 		
+		
+	}
+	private void limpiaPantalla() {
+		// TODO Auto-generated method stub
+		textDescripcion.setText(" ");
+		textFCierre.setDate(null);
+		textFFin.setDate(null);
+		textFIni.setDate(null);
+		textIban.setText(" ");
+		textImporte.setText(" ");
+		textMargen.setText(" ");
+		textObservaciones.setText(" ");
+		textWeb.setText(" ");
 		
 	}
 }

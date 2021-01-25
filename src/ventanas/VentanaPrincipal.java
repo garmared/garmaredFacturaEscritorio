@@ -27,101 +27,156 @@ public class VentanaPrincipal implements ActionListener{
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	static int sesion; //variable para pasar el tipo de sesion que estamos utilizando (gestion o usuario) al resto de pantallas.
 	
-	public void CrearMenu() {
+	public void CrearMenu(ServiceDTO entrada) {
 		menubar = new JMenuBar();
 		
-		opcion1 = new JMenu("Ficheros");
-		opcion1.setMnemonic(KeyEvent.VK_F);
-		opcion2 = new JMenu("Gesti\u00F3n");
-		opcion2.setMnemonic(KeyEvent.VK_G);
-		opcion3 = new JMenu("Administraci\u00F3n");
-		opcion3.setMnemonic(KeyEvent.VK_A);
-		opcion4 = new JMenu("Facturas");
-		opcion4.setMnemonic(KeyEvent.VK_F);
-		opcion5 = new JMenu("Clientes");
-		opcion5.setMnemonic(KeyEvent.VK_C);
-		opcion6 = new JMenu("Proveedores");
-		opcion6.setMnemonic(KeyEvent.VK_P);
-		opcion7 = new JMenu("Proyectos");
-		opcion7.setMnemonic(KeyEvent.VK_R);
+		montaGestion(entrada);
+		montaProyectos();
+		montaFacturas();
+		montaClientes();
+		montaProveedores();
 		
-		Sopcion3 = new JMenuItem("Gesti\u00F3n Empresas");
-		Sopcion3.setMnemonic(KeyEvent.VK_G);
-		Sopcion4 = new JMenuItem("Costes");
-		Sopcion4.setMnemonic(KeyEvent.VK_O);
-		Sopcion7 = new JMenuItem("Cambio sesi\u00F3n");
-		Sopcion7.setMnemonic(KeyEvent.VK_M);
-		Sopcion9 = new JMenuItem("Conceptos");
-		Sopcion9.setMnemonic(KeyEvent.VK_N);
-		Sopcion10 = new JMenuItem("Selecci\u00F3n empresa");
-		Sopcion10.setMnemonic(KeyEvent.VK_S);
+	}
+	
+	private void montaGestion(ServiceDTO entrada) {
+		//menu con datos de gestion de la aplicacion
+		//primer nivel
+		opcion1 = new JMenu("Gesti\u00F3n");
+		opcion1.setMnemonic(KeyEvent.VK_G);
+		//segundo nivel
+		Sopcion1 = new JMenu("Empresas");
+		Sopcion1.setMnemonic(KeyEvent.VK_E);
+		Sopcion2 = new JMenuItem("Conceptos");
+		Sopcion2.setMnemonic(KeyEvent.VK_C);
+		Sopcion3 = new JMenuItem("Costes");
+		Sopcion3.setMnemonic(KeyEvent.VK_O);
+		if (entrada.getAcceso() == 1) {
+			Sopcion4 = new JMenuItem("Usuarios");
+			Sopcion4.setMnemonic(KeyEvent.VK_U);
+		}
+		Sopcion5 = new JMenuItem("Cambio sesi\u00F3n");
+		Sopcion5.setMnemonic(KeyEvent.VK_M);
+		Sopcion6 = new JMenuItem("Cerrar Aplicaci\u00F3n");
+		Sopcion6.setMnemonic(KeyEvent.VK_C);
+		//tercer nivel
+		sub1 = new JMenuItem("Gesti\u00F3n Empresas");
+		sub1.setMnemonic(KeyEvent.VK_G);
+		sub2 = new JMenuItem("Selecci\u00F3n empresa");
+		sub2.setMnemonic(KeyEvent.VK_S);
 		
-		sub1 = new JMenuItem("Gesti\u00F3n Factura");
-		sub2 = new JMenuItem("Listado Facturas");
-		sub4 = new JMenuItem("Gesti\u00F3n Clientes");
-		sub5 = new JMenuItem("Listado Clientes");
-		sub6 = new JMenuItem("Gesti\u00F3n Proveedores");
-		sub7 = new JMenuItem("Listado Proveedores");
-		sub8 = new JMenuItem("Gesti\u00F3n Proyectos");
-		sub9 = new JMenuItem("Listado Proyectos");
-		
-		menubar.add(opcion1);
-		menubar.add(opcion2);
-		menubar.add(opcion3);
-		
-		opcion1.add(opcion5);
-		opcion1.add(Sopcion4);
-		opcion1.add(opcion6);
-		
-		opcion2.add(opcion7);
-		opcion2.add(opcion4);
-				
-		opcion3.add(Sopcion10);
-		opcion3.add(Sopcion7);
-		opcion3.add(Sopcion9);
-		
-		opcion4.add(sub1);
-		opcion4.add(sub2);
 
-		opcion5.add(sub4);
-		opcion5.add(sub5);
-		opcion6.add(sub6);
-		opcion6.add(sub7);
-		opcion7.add(sub8);
-		opcion7.add(sub9);
+		Sopcion1.add(sub1);
+		Sopcion1.add(sub2);
 		
-		Sopcion4.addActionListener(this);
-		Sopcion7.addActionListener(this);
-		Sopcion9.addActionListener(this);
-		Sopcion10.addActionListener(this);
+		opcion1.add(Sopcion1);
+		opcion1.add(Sopcion2);
+		opcion1.add(Sopcion3);
+		
+		if (entrada.getAcceso() == 1) {
+			opcion1.add(Sopcion4);
+		}
+		opcion1.add(Sopcion5);
+		opcion1.add(Sopcion6);
+
 		
 		sub1.addActionListener(this);
 		sub2.addActionListener(this);
-		sub4.addActionListener(this);
-		sub5.addActionListener(this);
-		sub6.addActionListener(this);
-		sub7.addActionListener(this);
-		sub8.addActionListener(this);
-		sub9.addActionListener(this);
+		Sopcion2.addActionListener(this);
+		Sopcion3.addActionListener(this);
+		if (entrada.getAcceso() == 1) {
+			Sopcion4.addActionListener(this);
+		}
+		Sopcion5.addActionListener(this);
+		Sopcion6.addActionListener(this);
+		menubar.add(opcion1);
 	}
 	
-	public void CrearMenuAdministracion() {
-		CrearMenu();
-				
-		Sopcion8 = new JMenuItem("Usuarios");
-		Sopcion8.setMnemonic(KeyEvent.VK_U);
-					
-		opcion3.add(Sopcion3);
-		opcion3.add(Sopcion7);
-		opcion3.add(Sopcion8);
+	private void montaProyectos() {
+		//primer nivel
+		opcion1 = new JMenu("Proyectos");
+		opcion1.setMnemonic(KeyEvent.VK_P);
+		//segundo nivel
+		Sopcion1 = new JMenuItem("Gesti\u00F3n Proyectos");
+		Sopcion1.setMnemonic(KeyEvent.VK_G);
+		Sopcion2 = new JMenuItem("Listado Proyectos");
+		Sopcion2.setMnemonic(KeyEvent.VK_L);
 		
-		Sopcion3.addActionListener(this);
-		Sopcion7.addActionListener(this);
-		Sopcion8.addActionListener(this);
+		opcion1.add(Sopcion1);
+		opcion1.add(Sopcion2);
 		
+		Sopcion1.addActionListener(this);
+		Sopcion2.addActionListener(this);
+		
+		menubar.add(opcion1);
+	}
+
+	private void montaFacturas() {
+		//primer nivel
+		opcion1 = new JMenu("Facturas");
+		opcion1.setMnemonic(KeyEvent.VK_F);
+		//segundo nivel
+		Sopcion1 = new JMenu("Emitidas");
+		Sopcion1.setMnemonic(KeyEvent.VK_E);
+		Sopcion2 = new JMenu("Recibidas");
+		Sopcion2.setMnemonic(KeyEvent.VK_R);
+		//tercer nivel
+		sub1 = new JMenuItem("Gesti\u00F3n Emitidas");
+		sub2 = new JMenuItem("Listado Emitidas");
+		sub3 = new JMenuItem("Gesti\u00F3n Recibidas");
+		sub4 = new JMenuItem("Listado Recibidas");
+		
+		
+		Sopcion1.add(sub1);
+		Sopcion1.add(sub2);
+		Sopcion2.add(sub3);
+		Sopcion2.add(sub4);
+		opcion1.add(Sopcion1);
+		opcion1.add(Sopcion2);
+		
+		sub1.addActionListener(this);
+		sub2.addActionListener(this);
+		sub3.addActionListener(this);
+		sub4.addActionListener(this);
+		
+		menubar.add(opcion1);
 	}	
-	
-	
+
+	private void montaClientes() {
+		//primer nivel
+		opcion1 = new JMenu("Clientes");
+		opcion1.setMnemonic(KeyEvent.VK_C);
+		//segundo nivel
+		sub1 = new JMenuItem("Gesti\u00F3n Clientes");
+		sub2 = new JMenuItem("Listado Clientes");
+				
+		
+		opcion1.add(sub1);
+		opcion1.add(sub2);
+		
+		sub1.addActionListener(this);
+		sub2.addActionListener(this);
+		
+		menubar.add(opcion1);
+	}
+
+	private void montaProveedores() {
+		//primer nivel
+		opcion1 = new JMenu("Proveedores");
+		opcion1.setMnemonic(KeyEvent.VK_P);
+		//segundo nivel
+		sub1 = new JMenuItem("Gesti\u00F3n Proveedores");
+		sub2 = new JMenuItem("Listado Proveedores");
+				
+		
+		opcion1.add(sub1);
+		opcion1.add(sub2);
+
+		sub1.addActionListener(this);
+		sub2.addActionListener(this);
+		menubar.add(opcion1);
+
+	}
+
 	public void CrearVentana() {
 		ventana = new JFrame("Garmared Factura 1.0");
 		ventana.getContentPane().setLayout(new BoxLayout(ventana.getContentPane(), BoxLayout.Y_AXIS));
@@ -139,11 +194,7 @@ public class VentanaPrincipal implements ActionListener{
 			seleccionEmpresa(entrada);
 		}
 		
-		if (entrada.getAcceso() == 1) {
-			CrearMenuAdministracion();
-		} else {
-			CrearMenu();
-		}
+		CrearMenu(control);
 		CrearVentana();
 		
 	}
@@ -191,9 +242,21 @@ public class VentanaPrincipal implements ActionListener{
 				ventana.dispose();
 				ListadoProyectos listadoProyectos = new ListadoProyectos(control);
 				break;
-			case "Gesti\u00F3n Factura":
+			case "Gesti\u00F3n Emitidas":
 				ventana.dispose();
-				VentanaFacturas facturas = new VentanaFacturas(control);
+				VentanaFacturasE facturas = new VentanaFacturasE(control);
+				break;
+			case "Listado Emitidas":
+				ventana.dispose();
+				ListadoFacturasE listadoFacturas = new ListadoFacturasE(control);
+				break;
+			case "Gesti\u00F3n Recibidas":
+				ventana.dispose();
+				VentanaFacturasR facturasR = new VentanaFacturasR(control);
+				break;
+			case "Listado Recibidas":
+				ventana.dispose();
+				ListadoFacturasR listadoFacturasR = new ListadoFacturasR(control);
 				break;
 			case "Conceptos":
 				ventana.dispose();
@@ -213,10 +276,8 @@ public class VentanaPrincipal implements ActionListener{
 				ventana.dispose();
 				VentanaEmpresas empresas = new VentanaEmpresas(control);
 				break;
-			case "Listado Facturas":
-				ventana.dispose();
-				ListadoFacturas listadoFacturas = new ListadoFacturas(control);
-				break;
+			case "Cerrar Aplicaci\u00F3n":
+				System.exit(0);
 		}
 	}
 	}
