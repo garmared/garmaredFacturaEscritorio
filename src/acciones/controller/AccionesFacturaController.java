@@ -12,8 +12,7 @@ public interface AccionesFacturaController {
 	public Boolean deleteFactura(int idFactura);
 	//modificacion de un afactura por identificador
 	public Boolean updateFactura(FacturasDTO factura);
-	//listado de facturas
-	public ArrayList buscaFacturas(FacturasDTO factura);
 	//prepara la consutla db2 según parámetro
-	public String creaConsulta(FacturasDTO factura);
+	public String creaConsultaEmitida(FacturasDTO factura);
+	public String creaConsultaRecibida(FacturasDTO factura);
 }

@@ -21,18 +21,16 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
-import acciones.dto.ClientesDTO;
 import acciones.dto.FacturasDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.AccionesClientesImpl;
 import acciones.service.impl.AccionesConceptosImpl;
 import acciones.service.impl.AccionesCostesImpl;
 import acciones.service.impl.AccionesEmpresasImpl;
 import acciones.service.impl.AccionesFacturaImpl;
 import acciones.service.impl.AccionesProyectosImpl;
 
-public class VentanaFacturas {
+public class VentanaFacturasR {
 
 	private JFrame frame;
 	private JDateChooser textVencimiento;
@@ -44,15 +42,12 @@ public class VentanaFacturas {
 	private JTextField textIva;
 	private JDateChooser textFecha;
 	
-	ClientesDTO cliente;
-
 	Boolean accion = false;
 	static ServiceDTO sesionGlobal;
 	private int idFactura;
 	private FacturasDTO factura;
 	//private JComboBox comboEmpresa;
 	private JComboBox comboProyecto;
-	private JComboBox comboCliente;
 	private JComboBox comboConcepto;
 	private JComboBox comboCoste;
 	private JComboBox comboProveedor;
@@ -62,11 +57,10 @@ public class VentanaFacturas {
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	AccionesFacturaImpl accFactura = new AccionesFacturaImpl();
 	AccionesProyectosImpl accProyecto = new AccionesProyectosImpl();
-	AccionesClientesImpl accClientes = new AccionesClientesImpl();
 	/**
 	 * Create the application.
 	 */
-	public VentanaFacturas(ServiceDTO control) {
+	public VentanaFacturasR(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize(sesionGlobal.getNombreEmpresa());
 		if (sesionGlobal.getNoPrincipal()=="S") {
@@ -85,7 +79,7 @@ public class VentanaFacturas {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(String nombre) {
-		frame = new JFrame("Facturas de la empresa " + nombre);
+		frame = new JFrame("Facturas recibidas de la empresa " + nombre);
 		frame.setBounds(100, 100, 450, 485);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -111,10 +105,6 @@ public class VentanaFacturas {
 		lblProyecto.setBounds(10, 101, 96, 14);
 		frame.getContentPane().add(lblProyecto);
 		
-		JLabel lblCliente = new JLabel("Cliente");
-		lblCliente.setBounds(10, 129, 48, 14);
-		frame.getContentPane().add(lblCliente);
-		
 		comboProyecto = new JComboBox();
 		comboProyecto.setBounds(128, 95, 96, 22);
 		frame.getContentPane().add(comboProyecto);
@@ -125,19 +115,6 @@ public class VentanaFacturas {
 		if (proyectos != null) {
 			for (var i = 0; i < proyectos.size(); i++) {
 				comboProyecto.addItem(proyectos.get(i));
-			}
-		}
-		
-		comboCliente = new JComboBox();
-		comboCliente.setBounds(128, 122, 96, 22);
-		frame.getContentPane().add(comboCliente);
-		comboCliente.addItem("----");
-		
-		ArrayList<ObjetoJComboBox> clientes = accClientes.consultaClientes(sesionGlobal.getIdEmpresa());
-		
-		if (clientes != null) {
-			for (var i = 0; i < clientes.size(); i++) {
-				comboCliente.addItem(clientes.get(i));
 			}
 		}
 		
@@ -355,26 +332,17 @@ public class VentanaFacturas {
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JComboBox cliente = new JComboBox();
-				ArrayList<ObjetoJComboBox> cadena = accClientes.consultaClientes(sesionGlobal.getIdEmpresa());
-				if (cadena != null) {
-					for (var i = 0; i < cadena.size(); i++) {
-						cliente.addItem(cadena.get(i));
-					}
-				}
-				JCalendar fecha = new JCalendar();
+				JDateChooser fecha = new JDateChooser();
 				Object [] mensaje= {
-						"Cliente:", cliente,
-						"Fecha Inicio:", fecha
+					"Fecha Inicio:", fecha
 				};
-				//Object opcion = JOptionPane.showInputDialog(null,"Seleccione una opción","",JOptionPane.PLAIN_MESSAGE,null,cliente.toArray(),null);
 				int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Búsqueda de Factura", JOptionPane.OK_CANCEL_OPTION);
 				if (opcion == JOptionPane.OK_OPTION){
 						factura = new FacturasDTO();
 						factura.setIdEmpresa(sesionGlobal.getIdEmpresa());
 						ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
-						temporal = (ObjetoJComboBox) cliente.getSelectedItem();
-						factura.setCliente(temporal.getNumero());
+						//en las facturas recibidas no hay cliente
+						factura.setCliente(0);
 						String dia = Integer.toString(fecha.getCalendar().get(Calendar.DAY_OF_MONTH));
 						if (fecha.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
 							dia = ("0"+dia);
@@ -407,7 +375,7 @@ public class VentanaFacturas {
 	}
 	
 	private void llenaCamposPantalla(FacturasDTO entrada) {
-		//llenamos los campos de pantalla con el DTO de clientes
+		//llenamos los campos de pantalla con el DTO de facturas
 		idFactura = entrada.getIdFactura();
 		textBaseImponible.setText(String.valueOf(entrada.getBaseImpo()));
 		textDescuento.setText(String.valueOf(entrada.getDescuento()));
@@ -432,11 +400,7 @@ public class VentanaFacturas {
 			e.printStackTrace();
 		}
 				
-		/*String valorCombo = accEmpresas.buscaNombre(entrada.getEmpresa(),"E");
-		comboEmpresa.getModel().setSelectedItem(valorCombo);*/
-		String valorCombo = accClientes.buscaNombre(entrada.getCliente());
-		comboCliente.getModel().setSelectedItem(valorCombo);
-		valorCombo = accConceptos.buscaDescripcion(entrada.getConcepto());
+		String valorCombo = accConceptos.buscaDescripcion(entrada.getConcepto());
 		comboConcepto.getModel().setSelectedItem(valorCombo);
 		valorCombo = accCostes.buscaDescripcion(entrada.getCoste());
 		comboCoste.getModel().setSelectedItem(valorCombo);
@@ -448,7 +412,7 @@ public class VentanaFacturas {
 	}
 	
 	private  FacturasDTO llenaCamposDto(){
-		//llenamos el DTO de clientes con los datos de pantalla
+		//llenamos el DTO de facturas con los datos de pantalla
 		factura = new FacturasDTO();
 		
 		factura.setBaseImpo(Double.valueOf(textBaseImponible.getText()));
@@ -482,11 +446,10 @@ public class VentanaFacturas {
 		ano = Integer.toString(textVencimiento.getCalendar().get(Calendar.YEAR));
 		varFecha = (ano+mes+dia);
 		factura.setVencimiento(Integer.valueOf(varFecha));				
+		//en las facturas emitidas el cliente es 0
+		factura.setCliente(0);
 		
-		String variable = (String) comboCliente.getSelectedItem().toString();
-		factura.setCliente(accClientes.buscaCliente(variable));
-		
-		variable = (String) comboConcepto.getSelectedItem().toString();
+		String variable = (String) comboConcepto.getSelectedItem().toString();
 		factura.setConcepto(accConceptos.buscaConcepto(variable));
 		
 		variable = (String) comboCoste.getSelectedItem().toString();
@@ -514,7 +477,6 @@ public class VentanaFacturas {
 		textIva.setText(" ");
 		textTasa.setText(" ");
 		textVencimiento.setDate(null);
-		comboCliente.getModel().setSelectedItem("----");
 		comboConcepto.getModel().setSelectedItem("----");
 		comboCoste.getModel().setSelectedItem("----");
 		comboProveedor.getModel().setSelectedItem("----");

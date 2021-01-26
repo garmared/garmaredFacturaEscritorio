@@ -56,8 +56,8 @@ public class VentanaPrincipal implements ActionListener{
 		}
 		Sopcion5 = new JMenuItem("Cambio sesi\u00F3n");
 		Sopcion5.setMnemonic(KeyEvent.VK_M);
-		Sopcion6 = new JMenuItem("Cerrar Aplicaci\u00F3n");
-		Sopcion6.setMnemonic(KeyEvent.VK_C);
+		Sopcion6 = new JMenuItem("Salir");
+		Sopcion6.setMnemonic(KeyEvent.VK_S);
 		//tercer nivel
 		sub1 = new JMenuItem("Gesti\u00F3n Empresas");
 		sub1.setMnemonic(KeyEvent.VK_G);
@@ -276,7 +276,7 @@ public class VentanaPrincipal implements ActionListener{
 				ventana.dispose();
 				VentanaEmpresas empresas = new VentanaEmpresas(control);
 				break;
-			case "Cerrar Aplicaci\u00F3n":
+			case "Salir":
 				System.exit(0);
 		}
 	}
