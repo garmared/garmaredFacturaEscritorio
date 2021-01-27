@@ -48,7 +48,7 @@ public class VentanaPrincipal implements ActionListener{
 		Sopcion1.setMnemonic(KeyEvent.VK_E);
 		Sopcion2 = new JMenuItem("Conceptos");
 		Sopcion2.setMnemonic(KeyEvent.VK_C);
-		Sopcion3 = new JMenuItem("Costes");
+		Sopcion3 = new JMenu("Costes");
 		Sopcion3.setMnemonic(KeyEvent.VK_O);
 		if (entrada.getAcceso() == 1) {
 			Sopcion4 = new JMenuItem("Usuarios");
@@ -63,10 +63,14 @@ public class VentanaPrincipal implements ActionListener{
 		sub1.setMnemonic(KeyEvent.VK_G);
 		sub2 = new JMenuItem("Selecci\u00F3n empresa");
 		sub2.setMnemonic(KeyEvent.VK_S);
+		sub3 = new JMenuItem("Tipos de costes");
+		sub4 = new JMenuItem("Gesti\u00F3n costes indirectos");
 		
 
 		Sopcion1.add(sub1);
 		Sopcion1.add(sub2);
+		Sopcion3.add(sub3);
+		Sopcion3.add(sub4);
 		
 		opcion1.add(Sopcion1);
 		opcion1.add(Sopcion2);
@@ -81,6 +85,8 @@ public class VentanaPrincipal implements ActionListener{
 		
 		sub1.addActionListener(this);
 		sub2.addActionListener(this);
+		sub3.addActionListener(this);
+		sub4.addActionListener(this);
 		Sopcion2.addActionListener(this);
 		Sopcion3.addActionListener(this);
 		if (entrada.getAcceso() == 1) {
@@ -230,10 +236,16 @@ public class VentanaPrincipal implements ActionListener{
 				ventana.dispose();
 				ListadoProveedores listadoProveedores = new ListadoProveedores(control);
 				break;				
-			case "Costes":
+			case "Tipos de costes":
+				sub4 = new JMenuItem("Gesti\u00F3n costes indirectos");
 				ventana.dispose();
 				VentanaCostes costes = new VentanaCostes(control);
 				break;
+			case "Gesti\u00F3n costes indirectos":
+				ventana.dispose();
+				VentanaCostesIndirectos costesIndirectos = new VentanaCostesIndirectos(control);
+				break;
+
 			case "Gesti\u00F3n Proyectos":
 				ventana.dispose();
 				VentanaProyectos proyecto = new VentanaProyectos(control);

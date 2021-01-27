@@ -50,5 +50,15 @@ public class AccionesCostesImpl implements AccionesCostesController{
 
 	public Integer buscaCoste(String variable) {
 		return accCostes.buscaCoste(variable);
+	}
+
+	public Boolean grabarCosteIndirecto(CostesDTO entrada) {
+		// TODO Auto-generated method stub
+		return accCostes.grabarCosteIndirecto(entrada);
+	}
+
+	public CostesDTO buscaCostesIndirectos(CostesDTO varCostes) {
+		// TODO Auto-generated method stub
+		return accCostes.buscaCosteIndirectos(varCostes);
 	}		
 }

@@ -180,6 +180,55 @@ public class AccionesCostes{
 			System.out.println("Error en buscaCoste: "+ex.getMessage().toString());
 			return null;
 		}
+	}
+
+	public Boolean grabarCosteIndirecto(CostesDTO entrada) {
+		// TODO Auto-generated method stub
+		try {
+			Connection connection=accService.getConexion();						
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO costesindirectos VALUES(NULL,?,?,?,?,?,?)");
+			stmt.setInt(1, entrada.getTipoCoste());
+			stmt.setInt(2, entrada.getIdEmpresa());
+			stmt.setInt(3, entrada.getProyecto());
+			stmt.setInt(4, entrada.getConcepto());
+			stmt.setDouble(5, entrada.getImporte());
+			stmt.setString(6, entrada.getDescripcion());
+			stmt.executeUpdate();
+		
+			stmt.close();
+			connection.close();
+			return true;
+		}catch(Exception ex){
+			System.out.println("Error en insert de costes: "+ex.getMessage().toString());
+			return false;
+		}
+	}
+
+	public CostesDTO buscaCosteIndirectos(CostesDTO varCostes) {
+		CostesDTO salida = new CostesDTO();
+		try {
+			Connection connection=accService.getConexion();
+			ResultSet result =null;	
+			String peticion = "SELECT * FROM costesindirectos WHERE id_proyecto = '"+varCostes.getProyecto()+"' AND id_concepto = '"+varCostes.getConcepto()+"' AND empresa = "+varCostes.getIdEmpresa()+"";
+			Statement stmt = connection.createStatement();
+			result = stmt.executeQuery(peticion);
+			//result.next();
+			if (result.next()){
+				salida.setIdCoste(result.getInt("id_costeInd"));
+				salida.setDescripcion(result.getString("descripcion"));
+				salida.setIdEmpresa(result.getInt("empresa"));
+				salida.setConcepto(result.getInt("id_concepto"));
+				salida.setTipoCoste(result.getInt("id_coste"));
+				salida.setImporte(result.getDouble("importe"));
+				return salida;
+			} else {
+				salida.setIdCoste(0);
+				return salida;
+			}
+		}catch(Exception ex){
+			System.out.println("Error en buscaCoste: "+ex.getMessage().toString());
+			return null;
+		}
 	}		
 		
 }
