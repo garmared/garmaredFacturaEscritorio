@@ -37,6 +37,7 @@ public class ListadoCostesIndirectos extends JFrame {
 	static ServiceDTO sesionGlobal;
 	private FacturasDTO factura;
 	private DatosCostes datos;
+	CostesDTO paramConsulta;
 
 	AccionesFacturaImpl accFactura = new AccionesFacturaImpl();
 	AccionesClientesImpl accClientes = new AccionesClientesImpl();
@@ -49,29 +50,25 @@ public class ListadoCostesIndirectos extends JFrame {
 
 	private JTable table;
 	DefaultTableModel modelo = new DefaultTableModel();
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ListadoCostesIndirectos window = new ListadoCostesIndirectos(sesionGlobal);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the application.
 	 */
 	public ListadoCostesIndirectos(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize(sesionGlobal.getNombreEmpresa());
+		if (sesionGlobal.getNoPrincipal()=="S") {
+			CostesDTO paramConsulta = llenaParamConsulta(sesionGlobal);
+			llenaListado(paramConsulta);
+		}
+	}
+
+	private CostesDTO llenaParamConsulta(ServiceDTO sesionGlobal2) {
+		CostesDTO salida = new CostesDTO();
+		salida.setTipoCoste(sesionGlobal.getInt1());
+		salida.setProyecto(sesionGlobal.getInt2());
+		salida.setConcepto(sesionGlobal.getInt3());
+		salida.setIdEmpresa(sesionGlobal.getInt4());	
+		return salida;
 	}
 
 	/**
@@ -97,7 +94,7 @@ public class ListadoCostesIndirectos extends JFrame {
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CostesDTO paramConsulta = new CostesDTO();
+				paramConsulta = new CostesDTO();
 				JComboBox proyecto = new JComboBox();
 				ArrayList<ObjetoJComboBox> cadena = accProyecto.consultaProyectos(sesionGlobal.getIdEmpresa());
 				if (cadena != null) {
@@ -134,7 +131,9 @@ public class ListadoCostesIndirectos extends JFrame {
 					temporal = (ObjetoJComboBox) concepto.getSelectedItem();
 					paramConsulta.setConcepto((temporal.getNumero()));
 					paramConsulta.setIdEmpresa(sesionGlobal.getIdEmpresa());
-					Connection connection = accService.getConexion();
+					guardaConsulta(paramConsulta);
+					llenaListado(paramConsulta);
+					/*Connection connection = accService.getConexion();
 					DefaultTableModel modelo = new DefaultTableModel();
 					String consulta;
 					consulta = accCostes.creaConsulta(paramConsulta);
@@ -151,6 +150,7 @@ public class ListadoCostesIndirectos extends JFrame {
 							if (table.getSelectedRow() != -1) {
 								int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
 								sesionGlobal.setIdentificador(codigo);
+								frame.dispose(); // esto cierra la ventana
 								VentanaCostesIndirectos ventana = new VentanaCostesIndirectos(sesionGlobal);
 							} else {
 								JOptionPane.showMessageDialog(null, "Selecciona una única fila");
@@ -174,7 +174,7 @@ public class ListadoCostesIndirectos extends JFrame {
 					JScrollPane scrollPane = new JScrollPane(table);
 					scrollPane.setBounds(17, 75, 800, 800);
 					frame.getContentPane().add(scrollPane);
-
+*/
 				}
 			}
 
@@ -185,6 +185,57 @@ public class ListadoCostesIndirectos extends JFrame {
 
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+	}
+
+	protected void llenaListado(CostesDTO paramConsulta) {
+		Connection connection = accService.getConexion();
+		DefaultTableModel modelo = new DefaultTableModel();
+		String consulta;
+		consulta = accCostes.creaConsulta(paramConsulta);
+
+		ResultSet rs = accService.getTabla(consulta, connection);
+		modelo.setColumnIdentifiers(new Object[] { "identificador", "Tipo Coste", "Proyecto", "Concepto","Importe", "Descripción"});
+		table = new JTable(modelo);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				sesionGlobal.setNoPrincipal("S");
+				DefaultTableModel modeloAux = (DefaultTableModel) table.getModel();
+				if (table.getSelectedRow() != -1) {
+					int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
+					sesionGlobal.setIdentificador(codigo);
+					frame.dispose(); // esto cierra la ventana
+					VentanaCostesIndirectos ventana = new VentanaCostesIndirectos(sesionGlobal);
+				} else {
+					JOptionPane.showMessageDialog(null, "Selecciona una única fila");
+				}
+			}
+		});
+		try {
+			while (rs.next()) {
+				datos = llenaJtable(rs);
+				modelo.addRow(new Object[] {datos.getIdentificador(), datos.getTipoCoste(), datos.getProyecto(), datos.getConcepto(), datos.getImporte(), datos.getDescripcion() });
+			}
+			table.setModel(modelo);
+			if (table.getRowCount() == 0) {
+				JOptionPane.showMessageDialog(null, "Costes indirectos no encontrados para esta selección");
+			}
+			rs.close();
+			connection.close();
+		} catch (Exception e1) {
+			System.out.println(e1);
+		}
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(17, 75, 800, 800);
+		frame.getContentPane().add(scrollPane);		
+	}
+
+	protected void guardaConsulta(CostesDTO paramConsulta) {
+		sesionGlobal.setInt1(paramConsulta.getTipoCoste());
+		sesionGlobal.setInt2(paramConsulta.getProyecto());
+		sesionGlobal.setInt3(paramConsulta.getConcepto());
+		sesionGlobal.setInt4(paramConsulta.getIdEmpresa());		
 	}
 
 	private DatosCostes llenaJtable(ResultSet rs) {

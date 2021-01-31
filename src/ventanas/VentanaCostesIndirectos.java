@@ -146,7 +146,7 @@ public class VentanaCostesIndirectos {
 				frame.dispose(); //esto cierra la ventana
 				if (sesionGlobal.getNoPrincipal()=="N") {
 					VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
-				}
+				}else {ListadoCostesIndirectos listado = new ListadoCostesIndirectos(sesionGlobal);}
 			}
 		});
 		btnVolver.setBounds(564, 34, 89, 23);
@@ -229,14 +229,14 @@ public class VentanaCostesIndirectos {
 		btnBaja.setBounds(181, 416, 114, 23);
 		btnBaja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea borrar la factura?", "Confirmar borrado", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea borrar el coste?", "Confirmar borrado", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (JOptionPane.OK_OPTION == confirmado) {
 					accion = accCostes.deleteCosteIndirecto(idCoste);
 					if (accion) {
 						limpiaPantalla();
-						JOptionPane.showMessageDialog(null, "Factura borrada correctamente");
+						JOptionPane.showMessageDialog(null, "Coste borrado correctamente");
 					}else {
-						JOptionPane.showMessageDialog(null, "Error en el borrado de la factura");
+						JOptionPane.showMessageDialog(null, "Error en el borrado del coste");
 					}
 				} else System.out.println("vale... no borro nada...");
 				}
@@ -248,15 +248,15 @@ public class VentanaCostesIndirectos {
 		btnModificar.setBounds(327, 416, 135, 23);
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea modificar la factura?", "Confirmar modificación", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea modificar el coste?", "Confirmar modificación", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (JOptionPane.OK_OPTION == confirmado) {
 					costesInd = llenaCamposDto();
 					accion = accCostes.updateCosteIndirecto(costesInd);
 					if (accion) {
 						limpiaPantalla();
-						JOptionPane.showMessageDialog(null, "Factura modificada correctamente");
+						JOptionPane.showMessageDialog(null, "Coste modificado correctamente");
 					}else {
-						JOptionPane.showMessageDialog(null, "error al modificar la factura");
+						JOptionPane.showMessageDialog(null, "error al modificar el coste");
 					}
 				} else System.out.println("vale... no hago nada...");
 			}

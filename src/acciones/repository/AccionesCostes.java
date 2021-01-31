@@ -279,7 +279,7 @@ public class AccionesCostes{
 	public Boolean updateCosteIndirectos(CostesDTO costes) {
 		try{
 			Connection connection=accService.getConexion();						
-		    PreparedStatement stmt = connection.prepareStatement("UPDATE costesindirectos set descripcion = ?, id_coste=?, id_proyecto=?,id_concepto=?,importe=? WHERE id_coste = ?");
+		    PreparedStatement stmt = connection.prepareStatement("UPDATE costesindirectos set descripcion = ?, id_coste=?, id_proyecto=?,id_concepto=?,importe=? WHERE id_costeInd = ?");
 			stmt.setString(1, costes.getDescripcion());
 			stmt.setInt(2, costes.getTipoCoste());
 			stmt.setInt(3, costes.getProyecto());

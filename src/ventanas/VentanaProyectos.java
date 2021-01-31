@@ -427,8 +427,8 @@ public class VentanaProyectos {
 		varFecha = (ano+mes+dia);
 		proyecto.setFechaIni(Integer.valueOf(varFecha));	
 		proyecto.setIban(textIban.getText());
-		proyecto.setImporte(Integer.valueOf(textImporte.getText()));
-		proyecto.setMargen(Integer.valueOf(textMargen.getText()));
+		proyecto.setImporte(Double.valueOf(textImporte.getText()));
+		proyecto.setMargen(Double.valueOf(textMargen.getText()));
 		proyecto.setObservaciones(textObservaciones.getText());
 		proyecto.setWeb(textWeb.getText());
 		
