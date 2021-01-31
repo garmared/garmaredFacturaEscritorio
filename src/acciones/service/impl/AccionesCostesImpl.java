@@ -60,5 +60,40 @@ public class AccionesCostesImpl implements AccionesCostesController{
 	public CostesDTO buscaCostesIndirectos(CostesDTO varCostes) {
 		// TODO Auto-generated method stub
 		return accCostes.buscaCosteIndirectos(varCostes);
+	}
+
+	public CostesDTO buscaCostesIndirectos(int identificador, int empresa) {
+		// TODO Auto-generated method stub
+		return accCostes.buscaCosteIndirectos(identificador,empresa);
+	}
+	public String creaConsulta(CostesDTO paramConsulta) {
+		String consulta, select, where, order, whereAND;
+		select = "select id_costeInd, empresa, id_coste, id_proyecto, id_concepto, importe, descripcion from costesindirectos ";
+		where = "WHERE empresa = "+paramConsulta.getIdEmpresa()+"";
+		order = " order by id_costeInd";
+		consulta = select + where;
+		if (paramConsulta.getTipoCoste() > 0) {
+			whereAND = " AND id_coste = '"+paramConsulta.getTipoCoste()+"'";
+			consulta = consulta + whereAND;
+		}
+		if (paramConsulta.getProyecto() > 0){
+			whereAND = " AND id_proyecto = '"+paramConsulta.getProyecto()+"'";
+			consulta = consulta + whereAND;
+		}
+		if (paramConsulta.getConcepto() > 0){
+			whereAND = " AND id_concepto = '"+paramConsulta.getConcepto()+"'";
+			consulta = consulta + whereAND;
+		}
+		return consulta = consulta + order;
+	}
+
+	public Boolean deleteCosteIndirecto(int idCoste) {
+		// TODO Auto-generated method stub
+		return accCostes.deleteCosteIndirecto(idCoste);
+	}
+
+	public Boolean updateCosteIndirecto(CostesDTO costes) {
+		// TODO Auto-generated method stub
+		return accCostes.updateCosteIndirectos(costes);
 	}		
 }

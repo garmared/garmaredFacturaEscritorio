@@ -40,12 +40,23 @@ public class VentanaCostesIndirectos {
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	AccionesProyectosImpl accProyecto = new AccionesProyectosImpl();
 	Boolean accion = false;
-	private CostesDTO costes;
+	private CostesDTO costesInd;
+	private int idCoste;
 	
 	
 	public VentanaCostesIndirectos(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize(control.getNombreEmpresa());
+		if (sesionGlobal.getNoPrincipal()=="S") {
+			llenaPantalla();
+		}
+	}
+
+	private void llenaPantalla() {
+		// TODO Auto-generated method stub
+		costesInd = new CostesDTO();
+		costesInd=accCostes.buscaCostesIndirectos(sesionGlobal.getIdentificador(),sesionGlobal.getIdEmpresa());
+		llenaCamposPantalla(costesInd);
 	}
 
 	/**
@@ -171,8 +182,7 @@ public class VentanaCostesIndirectos {
 						"Proyecto:", proyecto,
 						"Concepto:", concepto
 				};
-				//Object opcion = JOptionPane.showInputDialog(null,"Seleccione una opción","",JOptionPane.PLAIN_MESSAGE,null,cliente.toArray(),null);
-				int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Búsqueda de Factura", JOptionPane.OK_CANCEL_OPTION);
+				int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Búsqueda de Costes indirectos", JOptionPane.OK_CANCEL_OPTION);
 				if (opcion == JOptionPane.OK_OPTION){
 						CostesDTO varCostes = new CostesDTO();
 						varCostes.setIdEmpresa(sesionGlobal.getIdEmpresa());
@@ -217,10 +227,40 @@ public class VentanaCostesIndirectos {
 		
 		JButton btnBaja = new JButton("Baja Coste");
 		btnBaja.setBounds(181, 416, 114, 23);
+		btnBaja.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea borrar la factura?", "Confirmar borrado", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (JOptionPane.OK_OPTION == confirmado) {
+					accion = accCostes.deleteCosteIndirecto(idCoste);
+					if (accion) {
+						limpiaPantalla();
+						JOptionPane.showMessageDialog(null, "Factura borrada correctamente");
+					}else {
+						JOptionPane.showMessageDialog(null, "Error en el borrado de la factura");
+					}
+				} else System.out.println("vale... no borro nada...");
+				}
+			});
+
 		frame.getContentPane().add(btnBaja);
 		
 		JButton btnModificar = new JButton("Modificar Coste");
 		btnModificar.setBounds(327, 416, 135, 23);
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea modificar la factura?", "Confirmar modificación", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (JOptionPane.OK_OPTION == confirmado) {
+					costesInd = llenaCamposDto();
+					accion = accCostes.updateCosteIndirecto(costesInd);
+					if (accion) {
+						limpiaPantalla();
+						JOptionPane.showMessageDialog(null, "Factura modificada correctamente");
+					}else {
+						JOptionPane.showMessageDialog(null, "error al modificar la factura");
+					}
+				} else System.out.println("vale... no hago nada...");
+			}
+		});
 		frame.getContentPane().add(btnModificar);
 		
 		frame.setVisible(true);
@@ -238,6 +278,7 @@ public class VentanaCostesIndirectos {
 	
 	private CostesDTO llenaCamposDto() {
 		CostesDTO salida = new CostesDTO();
+		salida.setIdCoste(idCoste);
 		salida.setIdEmpresa(sesionGlobal.getIdEmpresa());
 		salida.setDescripcion(textDescripcion.getText());
 		String variable = (String) comboConcepto.getSelectedItem().toString();
@@ -251,11 +292,12 @@ public class VentanaCostesIndirectos {
 	}
 	
 	private void llenaCamposPantalla(CostesDTO varCostes) {
+		idCoste = varCostes.getIdCoste();
 		textImporte.setText(String.valueOf(varCostes.getImporte()));
 		textDescripcion.setText(varCostes.getDescripcion());
 		String valorCombo = accConceptos.buscaDescripcion(varCostes.getConcepto());
 		comboConcepto.getModel().setSelectedItem(valorCombo);
-		valorCombo = accCostes.buscaDescripcion(varCostes.getIdCoste());
+		valorCombo = accCostes.buscaDescripcion(varCostes.getTipoCoste());
 		comboCoste.getModel().setSelectedItem(valorCombo);
 		valorCombo = accProyecto.buscaDescripcion(varCostes.getProyecto(),sesionGlobal.getIdEmpresa());
 		comboProyecto.getModel().setSelectedItem(valorCombo);
