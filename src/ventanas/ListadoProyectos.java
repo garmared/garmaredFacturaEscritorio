@@ -31,6 +31,7 @@ import com.itextpdf.layout.element.Table;
 import com.opencsv.CSVWriter;
 import com.toedter.calendar.JDateChooser;
 
+import acciones.dto.CostesDTO;
 import acciones.dto.FacturasDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ProyectosDTO;
@@ -65,27 +66,27 @@ public class ListadoProyectos {
 	Table tablaPdf;
 	DefaultTableModel modelo = new DefaultTableModel();
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ListadoProyectos window = new ListadoProyectos(sesionGlobal);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public ListadoProyectos(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize(sesionGlobal.getNombreEmpresa());
+		if (sesionGlobal.getNoPrincipal()=="S") {
+			ProyectosDTO paramConsulta = llenaParamConsulta();
+			llenaListado(paramConsulta);
+		}
+	}
+
+	private ProyectosDTO llenaParamConsulta() {
+		ProyectosDTO salida = new ProyectosDTO();
+		salida.setEmpresa(sesionGlobal.getIdEmpresa());
+		salida.setCliente(sesionGlobal.getInt1());
+		salida.setDescripcion(sesionGlobal.getChar1());
+		salida.setFechaIni(sesionGlobal.getInt2());
+		salida.setFechaFin(sesionGlobal.getInt3());	
+		salida.setFechaCierre(sesionGlobal.getInt4());
+		return salida;
+		
 	}
 
 	/**
@@ -142,52 +143,9 @@ public class ListadoProyectos {
 						paramConsulta.setFechaCierre(Integer.valueOf(accService.obtenerFecha(fechaCierre)));
 						paramConsulta.setEmpresa(sesionGlobal.getIdEmpresa());
 						
-						Connection connection = accService.getConexion();
-						DefaultTableModel modelo = new DefaultTableModel();
-						
-						String consulta;
-						consulta=accProyecto.creaConsulta(paramConsulta);
-																
-						ResultSet rs = accService.getTabla(consulta, connection);
-						modelo.setColumnIdentifiers(new Object[]{"identificador","Descripción","Fecha Inicio","Fecha Fin","Fecha Cierre","Cliente", "Coste", "Importe","Margen"});
-						JTable table = new JTable(modelo);
-						table.addMouseListener(new MouseAdapter() {
-							@Override
-							public void mouseClicked(MouseEvent e) {
-								// TODO Auto-generated method stub
-								sesionGlobal.setNoPrincipal("S");
-								DefaultTableModel modeloAux = (DefaultTableModel) table.getModel();
-								if (table.getSelectedRow() !=-1) {
-									int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
-									sesionGlobal.setIdentificador(codigo);
-									VentanaProyectos ventana = new VentanaProyectos(sesionGlobal);
-								} else {JOptionPane.showMessageDialog(null, "Selecciona una única fila");}
-							}
-						});
-						
-						try {
-								tablaPdf = new Table(9);
-								tablaPdf = llenaCabecera();
-								int indice= 0;
-								while (rs.next()) {
-									datos = llenaJtable(rs);
-									modelo.addRow(new Object[] {rs.getInt("id_proyecto"), rs.getString("descripcion"), rs.getInt("fecha_ini"), rs.getInt("fecha_fin"),rs.getInt("fecha_cierre"),
-											datos.getCliente(),datos.getCoste(),rs.getInt("importe"),rs.getInt("margen")});
-									llenaTablaPdf(datos);	
-									llenaDatosCsv(datos,indice);
-									indice++;
-								}
-								table.setModel(modelo);
-								if (table.getRowCount()==0) {
-									JOptionPane.showMessageDialog(null, "Proveedores no encontrados para esta selección");
-								}
-								rs.close();
-								connection.close();
-						} catch (Exception e1) {System.out.println(e1);}
-						JScrollPane scrollPane = new JScrollPane(table);
-						scrollPane.setBounds(17, 75, 800, 800);
-						frame.getContentPane().add(scrollPane);
-					
+						guardaConsulta(paramConsulta);
+						llenaListado(paramConsulta);			
+											
 				}
 			}
 
@@ -217,6 +175,56 @@ public class ListadoProyectos {
 	
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+	}
+
+	protected void llenaListado(ProyectosDTO paramConsulta) {
+		Connection connection = accService.getConexion();
+		DefaultTableModel modelo = new DefaultTableModel();
+		
+		String consulta;
+		consulta=accProyecto.creaConsulta(paramConsulta);
+												
+		ResultSet rs = accService.getTabla(consulta, connection);
+		modelo.setColumnIdentifiers(new Object[]{"identificador","Descripción","Fecha Inicio","Fecha Fin","Fecha Cierre","Cliente", "Coste", "Importe","Margen"});
+		JTable table = new JTable(modelo);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				sesionGlobal.setNoPrincipal("S");
+				DefaultTableModel modeloAux = (DefaultTableModel) table.getModel();
+				if (table.getSelectedRow() !=-1) {
+					int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
+					sesionGlobal.setIdentificador(codigo);
+					frame.dispose();
+					VentanaProyectos ventana = new VentanaProyectos(sesionGlobal);
+				} else {JOptionPane.showMessageDialog(null, "Selecciona una única fila");}
+			}
+		});
+		
+		try {
+				tablaPdf = new Table(9);
+				tablaPdf = llenaCabecera();
+				int indice= 0;
+				while (rs.next()) {
+					datos = llenaJtable(rs);
+					modelo.addRow(new Object[] {rs.getInt("id_proyecto"), rs.getString("descripcion"), rs.getInt("fecha_ini"), rs.getInt("fecha_fin"),rs.getInt("fecha_cierre"),
+							datos.getCliente(),datos.getCoste(),rs.getInt("importe"),rs.getInt("margen")});
+					llenaTablaPdf(datos);	
+					llenaDatosCsv(datos,indice);
+					indice++;
+				}
+				table.setModel(modelo);
+				if (table.getRowCount()==0) {
+					JOptionPane.showMessageDialog(null, "Proveedores no encontrados para esta selección");
+				}
+				rs.close();
+				connection.close();
+		} catch (Exception e1) {System.out.println(e1);}
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(17, 75, 800, 800);
+		frame.getContentPane().add(scrollPane);
+
 	}
 
 	private void creaPdf(Table tabla) {
@@ -303,4 +311,13 @@ public class ListadoProyectos {
 		String[] dato = {String.valueOf(datos.getIdentificador()),datos.getDescripcion(),datos.getFechaIni(),datos.getFechaFin(),datos.getFechaCierre(),
 				datos.getCliente(),datos.getCoste(),String.valueOf(datos.getImporte()),String.valueOf(datos.getMargen())};
 		datosCsv.add(indice,dato);
-	}}
+	}
+	
+	protected void guardaConsulta(ProyectosDTO paramConsulta) {
+		sesionGlobal.setInt1(paramConsulta.getCliente());
+		sesionGlobal.setInt2(paramConsulta.getFechaIni());
+		sesionGlobal.setInt3(paramConsulta.getFechaFin());
+		sesionGlobal.setInt4(paramConsulta.getFechaCierre());
+		sesionGlobal.setChar1(paramConsulta.getDescripcion());
+	}
+}

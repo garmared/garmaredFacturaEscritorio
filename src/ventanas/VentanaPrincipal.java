@@ -106,7 +106,7 @@ public class VentanaPrincipal implements ActionListener{
 	private void montaProyectos() {
 		//primer nivel
 		opcion1 = new JMenu("Proyectos");
-		opcion1.setMnemonic(KeyEvent.VK_P);
+		opcion1.setMnemonic(KeyEvent.VK_Y);
 		//segundo nivel
 		Sopcion1 = new JMenuItem("Gesti\u00F3n Proyectos");
 		Sopcion1.setMnemonic(KeyEvent.VK_G);

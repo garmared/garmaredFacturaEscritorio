@@ -218,6 +218,9 @@ public class VentanaProyectos {
 				frame.setVisible(false);
 				frame.dispose(); //esto cierra la ventana
 				accService.abrirVentanaPrincipal(sesionGlobal);
+				if (sesionGlobal.getNoPrincipal()=="S") {
+					ListadoProyectos listado = new ListadoProyectos(sesionGlobal);
+				}
 			}
 		});
 		btnVolver.setBounds(446, 23, 89, 23);
@@ -234,8 +237,6 @@ public class VentanaProyectos {
 				entrada.setIban(textIban.getText());
 				entrada.setObservaciones(textObservaciones.getText());
 				entrada.setEmpresa(sesionGlobal.getIdEmpresa());
-				temporal = (ObjetoJComboBox) comboCoste.getSelectedItem();
-				entrada.setCoste(temporal.getNumero());
 				dia = Integer.toString(textFIni.getCalendar().get(Calendar.DAY_OF_MONTH));
 				if (textFIni.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
 					dia = ("0"+dia);
@@ -269,13 +270,17 @@ public class VentanaProyectos {
 				ano = Integer.toString(textFCierre.getCalendar().get(Calendar.YEAR));
 				varFecha = (ano+mes+dia);
 				entrada.setFechaCierre(Integer.valueOf(varFecha));
-				temporal = (ObjetoJComboBox) comboCliente.getSelectedItem();
-				entrada.setCliente(temporal.getNumero());
+				String variable = (String) comboCliente.getSelectedItem().toString();
+				entrada.setCliente(accClientes.buscaCliente(variable));
+				variable = (String) comboCoste.getSelectedItem().toString();
+				entrada.setCoste(accCostes.buscaCoste(variable));
+				
 				entrada.setImporte(Double.valueOf(textImporte.getText()));
 				entrada.setMargen(Double.valueOf(textMargen.getText()));
 				//grabamos los datos. 
 				accion= accProyectos.grabarProyectos(entrada);
 				if (accion) {
+					limpiaPantalla();
 					JOptionPane.showMessageDialog(null, "Proyecto dado de alta");
 				}else {
 					JOptionPane.showMessageDialog(null, "Error en el alta del proyecto");
@@ -345,7 +350,7 @@ public class VentanaProyectos {
 						cliente.addItem(cadena.get(i));
 					}
 				}
-				JCalendar fecha = new JCalendar();
+				JDateChooser fecha = new JDateChooser();
 				Object [] mensaje= {
 						"Cliente:", cliente,
 						"Fecha Inicio:", fecha
