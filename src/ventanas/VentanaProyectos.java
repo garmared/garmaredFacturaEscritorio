@@ -1,6 +1,5 @@
 package ventanas;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -15,10 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
-import acciones.dto.ClientesDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ProyectosDTO;
 import acciones.dto.ServiceDTO;

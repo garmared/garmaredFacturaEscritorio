@@ -4,10 +4,9 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,7 +16,6 @@ import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
 import acciones.dto.UsuariosDTO;
 import acciones.service.impl.AccionesUsuariosImpl;
-import javax.swing.JComboBox;
 
 public class VentanaUsuarios {
 

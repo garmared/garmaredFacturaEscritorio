@@ -1,6 +1,5 @@
 package ventanas;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -40,7 +39,6 @@ import acciones.service.impl.AccionesFacturaImpl;
 import acciones.service.impl.AccionesProyectosImpl;
 import acciones.service.impl.AccionesServiceImpl;
 import estructuras.DatosCostes;
-import estructuras.DatosFacturas;
 
 public class ListadoCostesIndirectos extends JFrame {
 

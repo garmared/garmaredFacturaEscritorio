@@ -1,10 +1,9 @@
 package ventanas;
 
-import java.awt.EventQueue;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,14 +11,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -29,12 +26,9 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Table;
 import com.opencsv.CSVWriter;
-import com.toedter.calendar.JCalendar;
 
-import acciones.dto.ClientesDTO;
 import acciones.dto.EmpresasDTO;
 import acciones.dto.FacturasDTO;
-import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
 import acciones.service.impl.AccionesClientesImpl;
 import acciones.service.impl.AccionesConceptosImpl;
@@ -44,7 +38,6 @@ import acciones.service.impl.AccionesFacturaImpl;
 import acciones.service.impl.AccionesProyectosImpl;
 import acciones.service.impl.AccionesServiceImpl;
 import estructuras.DatosClientes;
-import estructuras.DatosFacturas;
 
 public class ListadoProveedores {
 

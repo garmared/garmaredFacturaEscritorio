@@ -1,14 +1,12 @@
 package ventanas;
 
-import java.awt.EventQueue;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +29,6 @@ import com.itextpdf.layout.element.Table;
 import com.opencsv.CSVWriter;
 import com.toedter.calendar.JDateChooser;
 
-import acciones.dto.CostesDTO;
 import acciones.dto.FacturasDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ProyectosDTO;
@@ -43,7 +40,6 @@ import acciones.service.impl.AccionesEmpresasImpl;
 import acciones.service.impl.AccionesFacturaImpl;
 import acciones.service.impl.AccionesProyectosImpl;
 import acciones.service.impl.AccionesServiceImpl;
-import estructuras.DatosClientes;
 import estructuras.DatosProyectos;
 
 public class ListadoProyectos {

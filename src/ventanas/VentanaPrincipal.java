@@ -15,7 +15,6 @@ import javax.swing.JOptionPane;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
 import acciones.service.impl.AccionesEmpresasImpl;
-import acciones.service.impl.AccionesUsuariosImpl;
 
 public class VentanaPrincipal implements ActionListener{
 	JFrame ventana;
