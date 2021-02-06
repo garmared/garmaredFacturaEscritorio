@@ -50,7 +50,6 @@ public class VentanaFacturasE {
 	static ServiceDTO sesionGlobal;
 	private int idFactura;
 	private FacturasDTO factura;
-	//private JComboBox comboEmpresa;
 	private JComboBox comboProyecto;
 	private JComboBox comboCliente;
 	private JComboBox comboConcepto;
@@ -312,7 +311,7 @@ public class VentanaFacturasE {
 				frame.dispose(); //esto cierra la ventana
 				if (sesionGlobal.getNoPrincipal()=="N") {
 					VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
-				}
+				}else {ListadoFacturasE listado = new ListadoFacturasE(sesionGlobal);}
 			}
 		});
 		btnNewButton.setBounds(335, 21, 89, 23);

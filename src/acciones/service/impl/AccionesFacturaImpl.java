@@ -44,7 +44,7 @@ public class AccionesFacturaImpl implements AccionesFacturaController {
 			whereAND = " AND id_cliente = '"+entrada.getCliente()+"'";
 			consulta = consulta + whereAND;
 		}
-		if (entrada.getFecha()!=0){
+		if (entrada.getFecha()>0){
 			whereAND = " AND fecha = '"+entrada.getFecha()+"'";
 			consulta = consulta + whereAND;
 		}

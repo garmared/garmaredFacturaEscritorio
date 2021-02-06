@@ -63,6 +63,66 @@ public class ListadoFacturasR {
 	public ListadoFacturasR(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize(sesionGlobal.getNombreEmpresa());
+		if (sesionGlobal.getNoPrincipal()=="S") {
+			FacturasDTO paramConsulta = llenaParamConsulta();
+			llenaListado(paramConsulta);
+		}
+	}
+
+	private void llenaListado(FacturasDTO paramConsulta) {
+		Connection connection = accService.getConexion();
+		DefaultTableModel modelo = new DefaultTableModel();
+		String consulta;
+		consulta=accFactura.creaConsultaRecibida(paramConsulta);
+												
+		ResultSet rs = accService.getTabla(consulta, connection);
+		modelo.setColumnIdentifiers(new Object[]{"identificador","Fecha","Vencimiento","Proyecto","Concepto", "Coste", "Proveedor","Estado"});
+		JTable table = new JTable(modelo);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				sesionGlobal.setNoPrincipal("S");
+				DefaultTableModel modeloAux = (DefaultTableModel) table.getModel();
+				if (table.getSelectedRow() !=-1) {
+					int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
+					sesionGlobal.setIdentificador(codigo);
+					VentanaFacturasE ventana = new VentanaFacturasE(sesionGlobal);
+				} else {JOptionPane.showMessageDialog(null, "Selecciona una única fila");}
+			}
+		});
+		try {
+				tablaPdf = new Table(8);
+				tablaPdf = llenaCabecera();
+				int indice= 0;
+				while (rs.next()) {
+					datosFact = llenaJtable(rs);
+					modelo.addRow(new Object[] {rs.getInt("id_factura"),rs.getInt("fecha"), rs.getInt("vencimiento"), datosFact.getProyecto(), datosFact.getConcepto(),datosFact.getCoste(),datosFact.getProveedor(),datosFact.getEstado()});
+					llenaTablaPdf(datosFact);	
+					llenaDatosCsv(datosFact,indice);
+					indice++;
+				}
+				table.setModel(modelo);
+				if (table.getRowCount()==0) {
+					JOptionPane.showMessageDialog(null, "Facturas no encontradas para esta selección");
+				}
+				rs.close();
+				connection.close();
+		} catch (Exception e1) {System.out.println(e1);}
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(17, 75, 800, 800);
+		frame.getContentPane().add(scrollPane);
+		
+	}
+
+	private FacturasDTO llenaParamConsulta() {
+		FacturasDTO salida = new FacturasDTO();
+		salida.setProveedor(sesionGlobal.getInt1());
+		salida.setPagado(sesionGlobal.getChar1());
+		salida.setCoste(sesionGlobal.getInt2());
+		salida.setFecha(sesionGlobal.getInt3());
+		salida.setEmpresa(sesionGlobal.getInt4());	
+		return salida;
 	}
 
 	/**
@@ -131,51 +191,8 @@ public class ListadoFacturasR {
 						temporal = (ObjetoJComboBox) coste.getSelectedItem();
 						paramConsulta.setCoste(temporal.getNumero());
 						paramConsulta.setPagado((String) estadoFactura.getSelectedItem());
-						
-						//array con tantas filas cómo columnas queramos en el listado
-						Connection connection = accService.getConexion();
-						DefaultTableModel modelo = new DefaultTableModel();
-						String consulta;
-						consulta=accFactura.creaConsultaRecibida(paramConsulta);
-																
-						ResultSet rs = accService.getTabla(consulta, connection);
-						modelo.setColumnIdentifiers(new Object[]{"identificador","Fecha","Vencimiento","Proyecto","Concepto", "Coste", "Proveedor","Estado"});
-						JTable table = new JTable(modelo);
-						table.addMouseListener(new MouseAdapter() {
-							@Override
-							public void mouseClicked(MouseEvent e) {
-								// TODO Auto-generated method stub
-								sesionGlobal.setNoPrincipal("S");
-								DefaultTableModel modeloAux = (DefaultTableModel) table.getModel();
-								if (table.getSelectedRow() !=-1) {
-									int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
-									sesionGlobal.setIdentificador(codigo);
-									VentanaFacturasE ventana = new VentanaFacturasE(sesionGlobal);
-								} else {JOptionPane.showMessageDialog(null, "Selecciona una única fila");}
-							}
-						});
-						try {
-								tablaPdf = new Table(8);
-								tablaPdf = llenaCabecera();
-								int indice= 0;
-								while (rs.next()) {
-									datosFact = llenaJtable(rs);
-									modelo.addRow(new Object[] {rs.getInt("id_factura"),rs.getInt("fecha"), rs.getInt("vencimiento"), datosFact.getProyecto(), datosFact.getConcepto(),datosFact.getCoste(),datosFact.getProveedor(),datosFact.getEstado()});
-									llenaTablaPdf(datosFact);	
-									llenaDatosCsv(datosFact,indice);
-									indice++;
-								}
-								table.setModel(modelo);
-								if (table.getRowCount()==0) {
-									JOptionPane.showMessageDialog(null, "Facturas no encontradas para esta selección");
-								}
-								rs.close();
-								connection.close();
-						} catch (Exception e1) {System.out.println(e1);}
-						JScrollPane scrollPane = new JScrollPane(table);
-						scrollPane.setBounds(17, 75, 800, 800);
-						frame.getContentPane().add(scrollPane);
-					
+						guardaConsulta(paramConsulta);
+						llenaListado(paramConsulta);					
 				}
 			}
 
@@ -206,6 +223,15 @@ public class ListadoFacturasR {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
+	
+	protected void guardaConsulta(FacturasDTO paramConsulta) {
+		sesionGlobal.setInt1(paramConsulta.getProveedor());
+		sesionGlobal.setInt2(paramConsulta.getCoste());
+		sesionGlobal.setInt3(paramConsulta.getFecha());
+		sesionGlobal.setInt4(paramConsulta.getEmpresa());
+		sesionGlobal.setChar1(paramConsulta.getPagado());
+	}
+
 
 	private void creaPdf(Table tabla) {
 		String nomFichero = JOptionPane.showInputDialog("Escribe el nombre del fichero a generar");

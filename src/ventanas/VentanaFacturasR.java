@@ -46,7 +46,6 @@ public class VentanaFacturasR {
 	static ServiceDTO sesionGlobal;
 	private int idFactura;
 	private FacturasDTO factura;
-	//private JComboBox comboEmpresa;
 	private JComboBox comboProyecto;
 	private JComboBox comboConcepto;
 	private JComboBox comboCoste;
@@ -306,7 +305,7 @@ public class VentanaFacturasR {
 				frame.dispose(); //esto cierra la ventana
 				if (sesionGlobal.getNoPrincipal()=="N") {
 					VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
-				}
+				}else {ListadoFacturasR listado = new ListadoFacturasR(sesionGlobal);}
 			}
 		});
 		btnNewButton.setBounds(335, 21, 89, 23);
