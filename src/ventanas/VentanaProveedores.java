@@ -353,6 +353,9 @@ public class VentanaProveedores {
 				frame.setVisible(false);
 				frame.dispose(); //esto cierra la ventana
 				accService.abrirVentanaPrincipal(sesionGlobal);
+				if (sesionGlobal.getNoPrincipal()=="S") {
+					ListadoProveedores listado = new ListadoProveedores(sesionGlobal);
+				}
 			}
 		});
 		btnNewButton.setBounds(425, 11, 89, 23);
