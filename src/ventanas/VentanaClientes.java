@@ -334,7 +334,9 @@ public class VentanaClientes {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
 				frame.dispose(); //esto cierra la ventana
-				accService.abrirVentanaPrincipal(sesionGlobal);
+				if (sesionGlobal.getNoPrincipal()=="N") {
+					accService.abrirVentanaPrincipal(sesionGlobal);
+				}else {ListadoClientes listado = new ListadoClientes(sesionGlobal);}
 			}
 		});
 		btnNewButton.setBounds(335, 21, 89, 23);

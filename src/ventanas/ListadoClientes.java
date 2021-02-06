@@ -33,6 +33,7 @@ import com.opencsv.CSVWriter;
 import com.toedter.calendar.JCalendar;
 
 import acciones.dto.ClientesDTO;
+import acciones.dto.CostesDTO;
 import acciones.dto.FacturasDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
@@ -66,29 +67,74 @@ public class ListadoClientes extends JFrame {
 	Table tablaPdf;
 	DefaultTableModel modelo = new DefaultTableModel();
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ListadoClientes window = new ListadoClientes(sesionGlobal);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public ListadoClientes(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize(sesionGlobal.getNombreEmpresa());
+		if (sesionGlobal.getNoPrincipal()=="S") {
+			ClientesDTO paramConsulta = llenaParamConsulta();
+			llenaListado(paramConsulta);
+		}
 	}
 
+	private void llenaListado(ClientesDTO paramConsulta) {
+		Connection connection = accService.getConexion();
+		DefaultTableModel modelo = new DefaultTableModel();
+		String consulta;
+		consulta=accClientes.creaConsulta(paramConsulta);
+												
+		ResultSet rs = accService.getTabla(consulta, connection);
+		modelo.setColumnIdentifiers(new Object[]{"identificador","Nombre","CIF","Direccion","Poblacion","CP", "Telefono", "Persona de Contacto","mail","web","activo"});
+		table = new JTable(modelo);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				sesionGlobal.setNoPrincipal("S");
+				DefaultTableModel modeloAux = (DefaultTableModel) table.getModel();
+				if (table.getSelectedRow() !=-1) {
+					int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
+					sesionGlobal.setIdentificador(codigo);
+					frame.dispose(); // esto cierra la ventana
+					VentanaClientes clientes = new VentanaClientes(sesionGlobal);
+				} else {JOptionPane.showMessageDialog(null, "Selecciona una única fila");}
+			}
+		});
+		try {
+				tablaPdf = new Table(11);
+				tablaPdf = llenaCabecera();
+				int indice= 0;
+				while (rs.next()) {
+					datos = llenaJtable(rs);
+					modelo.addRow(new Object[] {rs.getInt("id_cliente"), rs.getString("Nombre"), rs.getString("CIF"), rs.getString("Direccion"),rs.getString("Poblacion"),
+							rs.getInt("CP"),rs.getInt("Telefono1"),rs.getString("Persona_contacto"),rs.getString("mail"),rs.getString("web"),rs.getString("activo"),});
+					llenaTablaPdf(datos);	
+					llenaDatosCsv(datos,indice);
+					indice++;
+				}
+				table.setModel(modelo);
+				if (table.getRowCount()==0) {
+					JOptionPane.showMessageDialog(null, "Clientes no encontrados para esta selección");
+				}
+				rs.close();
+				connection.close();
+		} catch (Exception e1) {System.out.println(e1);}
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(17, 75, 800, 800);
+		frame.getContentPane().add(scrollPane);
+
+		
+	}
+
+	private ClientesDTO llenaParamConsulta() {
+		ClientesDTO salida = new ClientesDTO();
+		salida.setActivo(sesionGlobal.getChar1());
+		salida.setPoblacion(sesionGlobal.getChar2());
+		salida.setIdEmpresa(sesionGlobal.getInt1());	
+		return salida;
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -131,55 +177,15 @@ public class ListadoClientes extends JFrame {
 				};
 				int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Búsqueda de cliente", JOptionPane.OK_CANCEL_OPTION);
 				if (opcion == JOptionPane.OK_OPTION){
-						paramConsulta.setPoblacion((String) poblacion.getSelectedItem());
-						paramConsulta.setActivo((String)activo.getSelectedItem());
-						if (paramConsulta.getActivo()=="Sí") {paramConsulta.setActivo("S");}
-						if (paramConsulta.getActivo()=="No") {paramConsulta.setActivo("N");}
-						paramConsulta.setIdEmpresa(sesionGlobal.getIdEmpresa());
-						Connection connection = accService.getConexion();
-						DefaultTableModel modelo = new DefaultTableModel();
-						String consulta;
-						consulta=accClientes.creaConsulta(paramConsulta);
-																
-						ResultSet rs = accService.getTabla(consulta, connection);
-						modelo.setColumnIdentifiers(new Object[]{"identificador","Nombre","CIF","Direccion","Poblacion","CP", "Telefono", "Persona de Contacto","mail","web","activo"});
-						table = new JTable(modelo);
-						table.addMouseListener(new MouseAdapter() {
-							@Override
-							public void mouseClicked(MouseEvent e) {
-								// TODO Auto-generated method stub
-								sesionGlobal.setNoPrincipal("S");
-								DefaultTableModel modeloAux = (DefaultTableModel) table.getModel();
-								if (table.getSelectedRow() !=-1) {
-									int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
-									sesionGlobal.setIdentificador(codigo);
-									VentanaClientes clientes = new VentanaClientes(sesionGlobal);
-								} else {JOptionPane.showMessageDialog(null, "Selecciona una única fila");}
-							}
-						});
-						try {
-								tablaPdf = new Table(11);
-								tablaPdf = llenaCabecera();
-								int indice= 0;
-								while (rs.next()) {
-									datos = llenaJtable(rs);
-									modelo.addRow(new Object[] {rs.getInt("id_cliente"), rs.getString("Nombre"), rs.getString("CIF"), rs.getString("Direccion"),rs.getString("Poblacion"),
-											rs.getInt("CP"),rs.getInt("Telefono1"),rs.getString("Persona_contacto"),rs.getString("mail"),rs.getString("web"),rs.getString("activo"),});
-									llenaTablaPdf(datos);	
-									llenaDatosCsv(datos,indice);
-									indice++;
-								}
-								table.setModel(modelo);
-								if (table.getRowCount()==0) {
-									JOptionPane.showMessageDialog(null, "Clientes no encontrados para esta selección");
-								}
-								rs.close();
-								connection.close();
-						} catch (Exception e1) {System.out.println(e1);}
-						JScrollPane scrollPane = new JScrollPane(table);
-						scrollPane.setBounds(17, 75, 800, 800);
-						frame.getContentPane().add(scrollPane);
-					
+					ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
+					temporal = (ObjetoJComboBox) poblacion.getSelectedItem();
+					paramConsulta.setPoblacion(temporal.getNombre());
+					paramConsulta.setActivo((String)activo.getSelectedItem());
+					if (paramConsulta.getActivo()=="Sí") {paramConsulta.setActivo("S");}
+					if (paramConsulta.getActivo()=="No") {paramConsulta.setActivo("N");}
+					paramConsulta.setIdEmpresa(sesionGlobal.getIdEmpresa());
+					guardaConsulta(paramConsulta);
+					llenaListado(paramConsulta);											
 				}
 			}
 
@@ -209,6 +215,13 @@ public class ListadoClientes extends JFrame {
 	
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+	}
+
+	protected void guardaConsulta(ClientesDTO paramConsulta) {
+		sesionGlobal.setChar1(paramConsulta.getActivo());
+		sesionGlobal.setChar2(paramConsulta.getPoblacion());
+		sesionGlobal.setInt1(paramConsulta.getIdEmpresa());		
+		
 	}
 
 	private void creaPdf(Table tabla) {
