@@ -3,6 +3,7 @@ package acciones.repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -17,29 +18,34 @@ public class AccionesEmpresas{
 	public Boolean grabarEmpresas(EmpresasDTO entrada) {
 		try{
 			Connection connection=accService.getConexion();						
-			PreparedStatement stmt = connection.prepareStatement("INSERT INTO empresas VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			PreparedStatement stmt;
 			//las empresas no necesitan relacionarse con sigo mismas los proveedores se han de relacionar con una empresa.
+			int ind=0;
 			if (entrada.getTipo()=="E") {
+				stmt = connection.prepareStatement("INSERT INTO empresas VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				stmt.setInt(1, 0);
 			}else {
-				stmt.setInt(1, entrada.getEmpresa());
+				stmt = connection.prepareStatement("INSERT INTO empresas VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				stmt.setInt(1, entrada.getIdEmpresa());
+				stmt.setInt(2, entrada.getEmpresa());
+				ind = 1;
 			}
-			stmt.setString(2, entrada.getCif());
-			stmt.setString(3, entrada.getTipo());
-			stmt.setString(4,entrada.getNombre());
-			stmt.setString(5,entrada.getDireccion());
-			stmt.setString(6,entrada.getPoblacion());
-			stmt.setString(7,entrada.getProvincia());
-			stmt.setInt(8,entrada.getCp());
-			stmt.setInt(9,entrada.getTelefono1());
-			stmt.setInt(10,entrada.getTelefono2());
-			stmt.setInt(11,entrada.getTelefono3());
-			stmt.setString(12,entrada.getPersonaContacto());
-			stmt.setString(13,entrada.getMail());
-			stmt.setString(14,entrada.getWeb());
-			stmt.setString(15,entrada.getIban());
-			stmt.setString(16,entrada.getObservaciones());
-			stmt.setString(17,entrada.getActivo());
+			stmt.setString(ind+2, entrada.getCif());
+			stmt.setString(ind+3, entrada.getTipo());
+			stmt.setString(ind+4,entrada.getNombre());
+			stmt.setString(ind+5,entrada.getDireccion());
+			stmt.setString(ind+6,entrada.getPoblacion());
+			stmt.setString(ind+7,entrada.getProvincia());
+			stmt.setInt(ind+8,entrada.getCp());
+			stmt.setInt(ind+9,entrada.getTelefono1());
+			stmt.setInt(ind+10,entrada.getTelefono2());
+			stmt.setInt(ind+11,entrada.getTelefono3());
+			stmt.setString(ind+12,entrada.getPersonaContacto());
+			stmt.setString(ind+13,entrada.getMail());
+			stmt.setString(ind+14,entrada.getWeb());
+			stmt.setString(ind+15,entrada.getIban());
+			stmt.setString(ind+16,entrada.getObservaciones());
+			stmt.setString(ind+17,entrada.getActivo());
 			stmt.executeUpdate();
 			stmt.close();
 			connection.close();
@@ -110,7 +116,7 @@ public class AccionesEmpresas{
 			result = stmt.executeQuery(peticion);
 			//result.next();
 			if (result.next()){
-				salida.setidEmpresa(result.getInt("id_empresa"));
+				salida.setIdEmpresa(result.getInt("id_empresa"));
 				salida.setEmpresa(result.getInt("empresa"));
 				salida.setCif(result.getString("CIF"));
 				salida.setTipo(result.getString("tipo"));
@@ -130,7 +136,7 @@ public class AccionesEmpresas{
 				salida.setActivo(result.getString("activo"));
 				return salida;
 			} else {
-				salida.setidEmpresa(0);
+				salida.setIdEmpresa(0);
 				return salida;
 			}
 		}catch(Exception ex){
@@ -158,26 +164,25 @@ public class AccionesEmpresas{
 	public Boolean updateEmpresas(EmpresasDTO empresas) {
 		try{
 			Connection connection=accService.getConexion();						
-		    PreparedStatement stmt = connection.prepareStatement("UPDATE empresas set empresa=?, CIF = ?, tipo = ?, Nombre = ?, Direccion = ?, Poblacion = ?, Provincia = ?, CP = ?, Telefono1=?, "
+		    PreparedStatement stmt = connection.prepareStatement("UPDATE empresas set CIF = ?, tipo = ?, Nombre = ?, Direccion = ?, Poblacion = ?, Provincia = ?, CP = ?, Telefono1=?, "
 		    		+ "Telefono2=?, Telefono3=?, Persona_contacto=?,mail=?,web=?,IBAN=?,observaciones=?,activo=? WHERE id_empresa = ?");
-		    stmt.setInt(1, empresas.getEmpresa());
-		    stmt.setString(2, empresas.getCif());
-		    stmt.setString(3,empresas.getTipo());
-		    stmt.setString(4,empresas.getNombre());
-		    stmt.setString(5,empresas.getDireccion());
-			stmt.setString(6,empresas.getPoblacion());
-			stmt.setString(7,empresas.getProvincia());
-			stmt.setInt(8,empresas.getCp());
-			stmt.setInt(9, empresas.getTelefono1());
-			stmt.setInt(10, empresas.getTelefono2());
-			stmt.setInt(11, empresas.getTelefono3());
-			stmt.setString(12,empresas.getPersonaContacto());
-			stmt.setString(13,empresas.getMail());
-			stmt.setString(14,empresas.getWeb());
-			stmt.setString(15, empresas.getIban());
-			stmt.setString(16,empresas.getObservaciones());
-			stmt.setString(17,empresas.getActivo());
-			stmt.setInt(18, empresas.getidEmpresa());
+		    stmt.setString(1, empresas.getCif());
+		    stmt.setString(2,empresas.getTipo());
+		    stmt.setString(3,empresas.getNombre());
+		    stmt.setString(4,empresas.getDireccion());
+			stmt.setString(5,empresas.getPoblacion());
+			stmt.setString(6,empresas.getProvincia());
+			stmt.setInt(7,empresas.getCp());
+			stmt.setInt(8, empresas.getTelefono1());
+			stmt.setInt(9, empresas.getTelefono2());
+			stmt.setInt(10, empresas.getTelefono3());
+			stmt.setString(11,empresas.getPersonaContacto());
+			stmt.setString(12,empresas.getMail());
+			stmt.setString(13,empresas.getWeb());
+			stmt.setString(14, empresas.getIban());
+			stmt.setString(15,empresas.getObservaciones());
+			stmt.setString(16,empresas.getActivo());
+			stmt.setInt(17, empresas.getIdEmpresa());
 			
 			stmt.executeUpdate();
 			stmt.close();
@@ -185,7 +190,41 @@ public class AccionesEmpresas{
 			return true;
 		}catch(Exception ex){
 			System.out.println("Error en updateEmpresas: "+ex.getMessage().toString());
-			return null;
+			return false;
+		}
+	}
+	
+	public Boolean updateProveedor(EmpresasDTO empresas) {
+		try{
+			Connection connection=accService.getConexion();						
+		    PreparedStatement stmt = connection.prepareStatement("UPDATE empresas set CIF = ?, tipo = ?, Nombre = ?, Direccion = ?, Poblacion = ?, Provincia = ?, CP = ?, Telefono1=?, "
+		    		+ "Telefono2=?, Telefono3=?, Persona_contacto=?,mail=?,web=?,IBAN=?,observaciones=?,activo=? WHERE id_empresa = ? AND empresa = ?");
+		    stmt.setString(1, empresas.getCif());
+		    stmt.setString(2,empresas.getTipo());
+		    stmt.setString(3,empresas.getNombre());
+		    stmt.setString(4,empresas.getDireccion());
+			stmt.setString(5,empresas.getPoblacion());
+			stmt.setString(6,empresas.getProvincia());
+			stmt.setInt(7,empresas.getCp());
+			stmt.setInt(8, empresas.getTelefono1());
+			stmt.setInt(9, empresas.getTelefono2());
+			stmt.setInt(10, empresas.getTelefono3());
+			stmt.setString(11,empresas.getPersonaContacto());
+			stmt.setString(12,empresas.getMail());
+			stmt.setString(13,empresas.getWeb());
+			stmt.setString(14, empresas.getIban());
+			stmt.setString(15,empresas.getObservaciones());
+			stmt.setString(16,empresas.getActivo());
+			stmt.setInt(17, empresas.getIdEmpresa());
+			stmt.setInt(18, empresas.getEmpresa());
+			
+			stmt.executeUpdate();
+			stmt.close();
+			connection.close();
+			return true;
+		}catch(Exception ex){
+			System.out.println("Error en updateProveedor: "+ex.getMessage().toString());
+			return false;
 		}
 	}
 
@@ -230,7 +269,7 @@ public class AccionesEmpresas{
 			Connection connection=accService.getConexion();
 			ResultSet result =null;
 			ArrayList<String> salida= new ArrayList<String>();
-			String peticion = "SELECT distinct(Poblacion) FROM empresas WHERE empresa = "+idEmpresa+" and TIPO = 'P' ORDER BY Poblacion";
+			String peticion = "SELECT distinct(Poblacion) FROM empresas WHERE id_empresa = "+idEmpresa+" and TIPO = 'P' ORDER BY Poblacion";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next());{
@@ -253,12 +292,12 @@ public class AccionesEmpresas{
 		try {
 			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			String peticion = "SELECT * FROM empresas WHERE empresa = '"+empresa+"' AND id_empresa = '"+identificador+"' AND tipo = 'P'";
+			String peticion = "SELECT * FROM empresas WHERE empresa = '"+identificador+"' AND id_empresa = '"+empresa+"' AND tipo = 'P'";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			//result.next();
 			if (result.next()){
-				salida.setidEmpresa(result.getInt("id_empresa"));
+				salida.setIdEmpresa(result.getInt("id_empresa"));
 				salida.setEmpresa(result.getInt("empresa"));
 				salida.setCif(result.getString("CIF"));
 				salida.setTipo(result.getString("tipo"));
@@ -278,12 +317,31 @@ public class AccionesEmpresas{
 				salida.setActivo(result.getString("activo"));
 				return salida;
 			} else {
-				salida.setidEmpresa(0);
+				salida.setIdEmpresa(0);
 				return salida;
 			}
 		}catch(Exception ex){
 			System.out.println("Error en buscaEmpresa: "+ex.getMessage().toString());
 			return null;
 		}	
+	}
+
+	public Integer numeraProveedor(Integer identificador) {
+		int salida=0;
+		Connection connection=accService.getConexion();
+		ResultSet result =null;	
+		String peticion = "SELECT IFNULL(MAX(empresa), 0) as valor FROM empresas WHERE id_empresa = '"+identificador+"' AND tipo = 'P'";
+		Statement stmt;
+		try {
+			stmt = connection.createStatement();
+			result = stmt.executeQuery(peticion);
+			result.next();
+			salida = result.getInt("valor");
+		} catch (SQLException e) {
+			System.out.println("Error en numeraProveedor: "+e.getMessage().toString());
+			e.printStackTrace();
+		}
+		return salida;
+		
 	}
 }

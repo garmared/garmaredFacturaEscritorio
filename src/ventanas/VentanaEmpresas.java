@@ -41,8 +41,6 @@ public class VentanaEmpresas {
 	private JRadioButton rdbtnSi;
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	
-	private JComboBox comboCoste;
-	
 	private JLabel lblCif;
 	private JLabel lblNombre;
 	private JLabel lblDireccin;
@@ -199,11 +197,6 @@ public class VentanaEmpresas {
 		textWeb.setBounds(116, 263, 96, 20);
 		frame.getContentPane().add(textWeb);
 		
-		
-		JLabel lblTipoCoste = new JLabel("Tipo de coste");
-		lblTipoCoste.setBounds(10, 291, 96, 14);
-		frame.getContentPane().add(lblTipoCoste);
-		
 		JLabel lblIban = new JLabel("IBAN");
 		lblIban.setBounds(10, 322, 75, 14);
 		frame.getContentPane().add(lblIban);
@@ -234,14 +227,22 @@ public class VentanaEmpresas {
 		textObserv.setBounds(116, 350, 96, 20);
 		frame.getContentPane().add(textObserv);
 
-		rdbtnNo = new JRadioButton("No");
+		rdbtnSi = new JRadioButton("Si");
+		rdbtnSi.setBounds(309, 318, 44, 23);
+		frame.getContentPane().add(rdbtnSi);
 		
+		rdbtnNo = new JRadioButton("No");
 		rdbtnNo.setBounds(354, 318, 44, 23);
-				
-		rdbtnNo.addActionListener(new ActionListener() {
+		rdbtnSi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rdbtnNo.setSelected(false);
 				rdbtnSi.setSelected(true);
+			}
+		});				
+		rdbtnNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnSi.setSelected(false);
+				rdbtnNo.setSelected(true);
 			}
 		});
 		frame.getContentPane().add(rdbtnNo);
@@ -257,19 +258,17 @@ public class VentanaEmpresas {
 		btnAltaEmpresa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombre, cif, direccion, poblacion, provincia, personaContacto, mail, web, observaciones,activo,iban;
-				Integer cp, telefono1, telefono2, telefono3,tipoCoste;
+				Integer cp, telefono1, telefono2, telefono3;
 				//Boolean accion = false;
 				//llenamos el DTO de empresas
 				EmpresasDTO entrada = new EmpresasDTO();
-				if (rdbtnNo.isSelected() == true) {
+				if (rdbtnSi.isSelected() == true) {
 					entrada.setActivo("S");
 				} else {entrada.setActivo("N");}
 				
 				entrada.setCif(textCif.getText());
 				entrada.setCp(Integer.valueOf(textCP.getText()));
 				entrada.setDireccion(textDireccion.getText());
-				temporal = (ObjetoJComboBox) comboCoste.getSelectedItem();
-				entrada.setTipoCoste(temporal.getNumero());
 				entrada.setMail(textMail.getText());
 				entrada.setIban(textIban.getText());
 				entrada.setNombre(textNombre.getText());
@@ -286,9 +285,10 @@ public class VentanaEmpresas {
 				//grabamos los datos. Es igual que en proveedor pero el TIPO es "E" de empresas.
 				accion= accEmpresas.grabarEmpresas(entrada);
 				if (accion) {
-					lblError.setText("Empresa dada de alta correctamente");
+					limpiaPantalla();
+					JOptionPane.showMessageDialog(null, "Empresa dada de alta correctamente");
 				}else {
-					lblError.setText("Error en el alta de empresa");
+					JOptionPane.showMessageDialog(null, "Error en el alta de empresa");
 				}
 			}
 		});
@@ -301,7 +301,7 @@ public class VentanaEmpresas {
 				if (JOptionPane.OK_OPTION == confirmado) {
 					accion = accEmpresas.deleteEmpresa(idEmpresa);
 					if (accion) {
-						initialize();
+						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Empresa borrada correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "Error en el borrado de la empresa");
@@ -356,7 +356,7 @@ public class VentanaEmpresas {
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize();
+				limpiaPantalla();
 			}
 		});
 		btnLimpiar.setBounds(425, 45, 89, 23);
@@ -371,11 +371,11 @@ public class VentanaEmpresas {
 						activaCampos();
 					}else {
 						empresas = new EmpresasDTO();
-						empresas.setidEmpresa(0);
+						empresas.setIdEmpresa(0);
 						empresas.setNombre(nomBuscado);
 						empresas.setTipo("E");
 						empresas = accEmpresas.buscaEmpresa(empresas);
-						if (empresas.getidEmpresa().equals(0)) {
+						if (empresas.getIdEmpresa().equals(0)) {
 							JOptionPane.showMessageDialog(null, "Empresa no encontrada");	
 						} else {
 							initialize();
@@ -389,11 +389,7 @@ public class VentanaEmpresas {
 
 		btnBuscar.setBounds(425, 79, 89, 23);
 		frame.getContentPane().add(btnBuscar);
-		
-		JRadioButton rdbtnSi = new JRadioButton("Si");
-		rdbtnSi.setBounds(309, 318, 44, 23);
-		frame.getContentPane().add(rdbtnSi);
-		
+	
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
@@ -410,7 +406,6 @@ public class VentanaEmpresas {
 		textPersonaContact.setVisible(false);
 		textWeb.setVisible(false);
 		textMail.setVisible(false);
-		comboCoste.setVisible(false);
 		textIban.setVisible(false);
 		textObserv.setVisible(false);
 		textCP.setVisible(false);
@@ -428,7 +423,7 @@ public class VentanaEmpresas {
 		lblObservaciones.setVisible(false);
 		lblCP.setVisible(false);
 		lblActivo.setVisible(false);
-		rdbtnNo.setVisible(false);
+		rdbtnSi.setVisible(false);
 		rdbtnNo.setVisible(false);
 	}
 	
@@ -467,7 +462,7 @@ public class VentanaEmpresas {
 
 	private void llenaCamposPantalla(EmpresasDTO entrada) {
 		//llenamos los campos de pantalla con el DTO de clientes
-		idEmpresa = entrada.getidEmpresa();
+		idEmpresa = entrada.getIdEmpresa();
 		textNombre.setText(entrada.getNombre());
 		textCif.setText(entrada.getCif());
 		textDireccion.setText(entrada.getDireccion());
@@ -484,18 +479,18 @@ public class VentanaEmpresas {
 		textObserv.setText(entrada.getObservaciones());
 		textCP.setText(String.valueOf(entrada.getCp()));
 		if (entrada.getActivo().equals("S")) {
-			rdbtnSi.setSelected(false);
+			rdbtnNo.setSelected(false);
 			rdbtnSi.setSelected(true);
 		} else {
 			rdbtnNo.setSelected(true);
-			rdbtnNo.setSelected(false);
+			rdbtnSi.setSelected(false);
 		}
 	}
 	
 	private  EmpresasDTO llenaCamposDto(){
 		//llenamos el DTO de clientes con los datos de pantalla
 		empresas = new EmpresasDTO();
-		empresas.setidEmpresa(idEmpresa);
+		empresas.setIdEmpresa(idEmpresa);
 		empresas.setDireccion(textDireccion.getText());
 		empresas.setTipo("E");
 		empresas.setCif(textCif.getText());
@@ -517,5 +512,24 @@ public class VentanaEmpresas {
 		} else {empresas.setActivo("N");}
 				
 		return empresas;
+	}
+	
+	private void limpiaPantalla() {
+		textNombre.setText(" ");
+		textCif.setText(" ");
+		textDireccion.setText(" ");
+		textPoblacion.setText(" ");
+		textProvincia.setText(" ");
+		textTelefono1.setText(" ");
+		textTelefono2.setText(" ");
+		textTelefono3.setText(" ");
+		textPersonaContact.setText(" ");
+		textWeb.setText(" ");
+		textMail.setText(" ");
+		textIban.setText(" ");
+		textObserv.setText(" ");
+		textCP.setText(" ");
+		rdbtnSi.setSelected(false);
+		rdbtnNo.setSelected(false);
 	}
 }

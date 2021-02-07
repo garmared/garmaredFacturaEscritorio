@@ -15,6 +15,11 @@ import acciones.repository.AccionesEmpresas;
 public class AccionesEmpresasImpl implements AccionesEmpresasController{
 	AccionesEmpresas accEmpresa = new AccionesEmpresas();
 	public Boolean grabarEmpresas(EmpresasDTO entrada) {
+		if (entrada.getTipo()=="P") {
+			int numero = accEmpresa.numeraProveedor(entrada.getIdEmpresa());
+			numero ++;
+			entrada.setEmpresa(numero);
+		}
 		return accEmpresa.grabarEmpresas(entrada);	
 	}
 
@@ -39,6 +44,9 @@ public class AccionesEmpresasImpl implements AccionesEmpresasController{
 		return accEmpresa.updateEmpresas(empresas);
 	}
 
+	public Boolean updateProveedor(EmpresasDTO empresas) {
+		return accEmpresa.updateProveedor(empresas);
+	}
 	public String buscaNombre(Integer empresa, String tipo) {
 		return accEmpresa.buscaNombre(empresa, tipo);
 	}
@@ -49,8 +57,8 @@ public class AccionesEmpresasImpl implements AccionesEmpresasController{
 
 	public String creaConsulta(EmpresasDTO paramConsulta) {
 		String consulta, select, where, order, whereAND;
-		select = "select id_empresa, Nombre, CIF, Direccion, Poblacion, CP, Telefono1, Persona_contacto, mail, web, activo  from empresas ";
-		where = "WHERE empresa = "+paramConsulta.getIdEmpresa()+" AND tipo = 'P' ";
+		select = "select empresa, Nombre, CIF, Direccion, Poblacion, CP, Telefono1, Persona_contacto, mail, web, activo  from empresas ";
+		where = "WHERE id_empresa = "+paramConsulta.getIdEmpresa()+" AND tipo = 'P' ";
 		order = " order by nombre, id_empresa";
 		consulta = select + where;
 		if (paramConsulta.getActivo()!="Todos") {

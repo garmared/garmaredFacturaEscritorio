@@ -99,7 +99,7 @@ public class ListadoProveedores {
 				int indice= 0;
 				while (rs.next()) {
 					datos = llenaJtable(rs);
-					modelo.addRow(new Object[] {rs.getInt("id_empresa"), rs.getString("Nombre"), rs.getString("CIF"), rs.getString("Direccion"),rs.getString("Poblacion"),
+					modelo.addRow(new Object[] {rs.getInt("empresa"), rs.getString("Nombre"), rs.getString("CIF"), rs.getString("Direccion"),rs.getString("Poblacion"),
 							rs.getInt("CP"),rs.getInt("telefono1"),rs.getString("Persona_contacto"),rs.getString("mail"),rs.getString("web"),rs.getString("activo"),});
 					llenaTablaPdf(datos);	
 					llenaDatosCsv(datos,indice);
@@ -123,6 +123,7 @@ public class ListadoProveedores {
 		salida.setActivo(sesionGlobal.getChar1());
 		salida.setPoblacion(sesionGlobal.getChar2());
 		salida.setEmpresa(sesionGlobal.getInt1());	
+		salida.setIdEmpresa(sesionGlobal.getInt2());
 		return salida;
 	}
 
@@ -212,6 +213,7 @@ public class ListadoProveedores {
 		sesionGlobal.setChar1(paramConsulta.getActivo());
 		sesionGlobal.setChar2(paramConsulta.getPoblacion());
 		sesionGlobal.setInt1(paramConsulta.getEmpresa());
+		sesionGlobal.setInt2(paramConsulta.getIdEmpresa());
 	}
 	
 	private void creaPdf(Table tabla) {
@@ -286,7 +288,7 @@ public class ListadoProveedores {
 			datos.setCif(rs.getString("CIF"));
 			datos.setcPostal(rs.getInt("CP"));
 			datos.setDireccion(rs.getString("Direccion"));
-			datos.setIdentificador(rs.getInt("id_empresa"));
+			datos.setIdentificador(rs.getInt("empresa"));
 			datos.setMail(rs.getString("mail"));
 			datos.setNombre(rs.getString("Nombre"));
 			datos.setPersonaContacto(rs.getString("Persona_contacto"));

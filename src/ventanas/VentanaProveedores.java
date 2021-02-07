@@ -17,7 +17,6 @@ import javax.swing.JTextField;
 import acciones.dto.EmpresasDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
-import acciones.service.impl.AccionesCostesImpl;
 import acciones.service.impl.AccionesEmpresasImpl;
 import acciones.service.impl.AccionesServiceImpl;
 
@@ -41,10 +40,8 @@ public class VentanaProveedores {
 	private JRadioButton rdbtnSi;
 	private JRadioButton rdbtnNo;
 	
-	AccionesCostesImpl accCostes = new AccionesCostesImpl();
 	AccionesServiceImpl accService = new AccionesServiceImpl();
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
-	private JComboBox comboCoste;
 	
 	private JLabel lblCif;
 	private JLabel lblNombre;
@@ -57,7 +54,6 @@ public class VentanaProveedores {
 	private JLabel lblPersonaContacto;
 	private JLabel lblCorreo;
 	private JLabel lblWeb;
-	private JLabel lblTipoCoste;
 	private JLabel lblObservaciones;
 	private JLabel lblIban;
 	private JLabel lblCP;
@@ -66,7 +62,7 @@ public class VentanaProveedores {
 	static ServiceDTO sesionGlobal;
 	private Boolean accion;
 	private EmpresasDTO empresas;
-	private int idEmpresa;
+	private int idEmpresa,empresa;
 	private ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
 
 	/**
@@ -197,25 +193,6 @@ public class VentanaProveedores {
 		textWeb.setBounds(116, 263, 96, 20);
 		frame.getContentPane().add(textWeb);
 		
-		
-		JLabel lblTipoCoste = new JLabel("Tipo de coste");
-		lblTipoCoste.setBounds(10, 291, 96, 14);
-		frame.getContentPane().add(lblTipoCoste);
-		
-		comboCoste = new JComboBox();
-		comboCoste.setBounds(116, 291, 96, 20);
-		frame.getContentPane().add(comboCoste);
-		comboCoste.addItem("----");
-		
-		ArrayList<ObjetoJComboBox> costes = accCostes.consultaCostes(sesionGlobal.getIdEmpresa());
-	
-		if (costes != null) {
-			for (var i = 0; i < costes.size(); i++) {
-				comboCoste.addItem(costes.get(i));
-			}
-		}
-
-		
 		JLabel lblIban = new JLabel("IBAN");
 		lblIban.setBounds(10, 322, 75, 14);
 		frame.getContentPane().add(lblIban);
@@ -246,14 +223,24 @@ public class VentanaProveedores {
 		textObserv.setBounds(116, 350, 96, 20);
 		frame.getContentPane().add(textObserv);
 
-		rdbtnNo = new JRadioButton("No");
+		rdbtnSi = new JRadioButton("Si");
+		rdbtnSi.setBounds(309, 318, 44, 23);
+		frame.getContentPane().add(rdbtnSi);
 		
+		rdbtnNo = new JRadioButton("No");
 		rdbtnNo.setBounds(354, 318, 44, 23);
 				
 		rdbtnNo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				rdbtnNo.setSelected(false);
+				rdbtnSi.setSelected(false);
 				rdbtnNo.setSelected(true);
+			}
+		});
+		
+		rdbtnSi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnSi.setSelected(true);
+				rdbtnNo.setSelected(false);
 			}
 		});
 		frame.getContentPane().add(rdbtnNo);
@@ -274,12 +261,10 @@ public class VentanaProveedores {
 				if (rdbtnNo.isSelected() == true) {
 					entrada.setActivo("S");
 				} else {entrada.setActivo("N");}
-				entrada.setEmpresa(sesionGlobal.getIdEmpresa());
+				entrada.setIdEmpresa(sesionGlobal.getIdEmpresa());
 				entrada.setCif(textCif.getText());
 				entrada.setCp(Integer.valueOf(textCP.getText()));
 				entrada.setDireccion(textDireccion.getText());
-				temporal = (ObjetoJComboBox) comboCoste.getSelectedItem();
-				entrada.setTipoCoste(temporal.getNumero());
 				entrada.setMail(textMail.getText());
 				entrada.setIban(textIban.getText());
 				entrada.setNombre(textNombre.getText());
@@ -330,7 +315,7 @@ public class VentanaProveedores {
 				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea modificar el proveedor?", "Confirmar modificación", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (JOptionPane.OK_OPTION == confirmado) {
 					empresas = llenaCamposDto();
-					accion = accEmpresas.updateEmpresas(empresas);
+					accion = accEmpresas.updateProveedor(empresas);
 					if (accion) {
 						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Proveedor modificado correctamente");
@@ -385,11 +370,11 @@ public class VentanaProveedores {
 						activaCampos();
 					}else {
 						empresas = new EmpresasDTO();
-						empresas.setidEmpresa(0);
+						empresas.setIdEmpresa(sesionGlobal.getIdEmpresa());
 						empresas.setNombre(nomBuscado);
 						empresas.setTipo("P");
 						empresas = accEmpresas.buscaEmpresa(empresas);
-						if (empresas.getidEmpresa().equals(0)) {
+						if (empresas.getEmpresa().equals(0)) {
 							JOptionPane.showMessageDialog(null, "Proveedor no encontrado");	
 						} else {
 							limpiaPantalla();
@@ -403,11 +388,7 @@ public class VentanaProveedores {
 
 		btnBuscar.setBounds(425, 79, 89, 23);
 		frame.getContentPane().add(btnBuscar);
-		
-		rdbtnSi = new JRadioButton("Si");
-		rdbtnSi.setBounds(309, 318, 44, 23);
-		frame.getContentPane().add(rdbtnSi);
-		
+			
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
@@ -424,7 +405,6 @@ public class VentanaProveedores {
 		textPersonaContact.setVisible(false);
 		textWeb.setVisible(false);
 		textMail.setVisible(false);
-		comboCoste.setVisible(false);
 		textIban.setVisible(false);
 		textObserv.setVisible(false);
 		textCP.setVisible(false);
@@ -437,7 +417,6 @@ public class VentanaProveedores {
 		lblMvil1.setVisible(false);
 		lblPersonaContacto.setVisible(false);
 		lblCorreo.setVisible(false);
-		lblTipoCoste.setVisible(false);
 		lblWeb.setVisible(false);
 		lblIban.setVisible(false);
 		lblObservaciones.setVisible(false);
@@ -459,7 +438,6 @@ public class VentanaProveedores {
 		textPersonaContact.setVisible(true);
 		textWeb.setVisible(true);
 		textMail.setVisible(true);
-		comboCoste.setVisible(true);
 		textIban.setVisible(true);
 		textObserv.setVisible(true);
 		textCP.setVisible(true);
@@ -473,7 +451,6 @@ public class VentanaProveedores {
 		lblPersonaContacto.setVisible(true);
 		lblCorreo.setVisible(true);
 		lblWeb.setVisible(true);
-		lblTipoCoste.setVisible(true);
 		lblObservaciones.setVisible(true);
 		lblIban.setVisible(true);
 		lblActivo.setVisible(true);
@@ -484,7 +461,8 @@ public class VentanaProveedores {
 
 	private void llenaCamposPantalla(EmpresasDTO entrada) {
 		//llenamos los campos de pantalla con el DTO de clientes
-		idEmpresa = entrada.getidEmpresa();
+		idEmpresa = entrada.getIdEmpresa();
+		empresa = entrada.getEmpresa();
 		textNombre.setText(entrada.getNombre());
 		textCif.setText(entrada.getCif());
 		textDireccion.setText(entrada.getDireccion());
@@ -496,9 +474,6 @@ public class VentanaProveedores {
 		textPersonaContact.setText(entrada.getPersonaContacto());
 		textWeb.setText(entrada.getWeb());
 		textMail.setText(entrada.getMail());
-		
-		String valorCoste = accCostes.buscaNombre(entrada.getTipoCoste());
-		comboCoste.getModel().setSelectedItem(valorCoste);
 		
 		textIban.setText(entrada.getIban());
 		textObserv.setText(entrada.getObservaciones());
@@ -524,7 +499,6 @@ public class VentanaProveedores {
 		textPersonaContact.setText(" ");
 		textWeb.setText(" ");
 		textMail.setText(" ");
-		comboCoste.getModel().setSelectedItem("----");
 		textIban.setText(" ");
 		textObserv.setText(" ");
 		textCP.setText(" ");
@@ -534,7 +508,8 @@ public class VentanaProveedores {
 	private  EmpresasDTO llenaCamposDto(){
 		//llenamos el DTO de clientes con los datos de pantalla
 		empresas = new EmpresasDTO();
-		empresas.setidEmpresa(idEmpresa);
+		empresas.setIdEmpresa(idEmpresa);
+		empresas.setEmpresa(empresa);
 		empresas.setDireccion(textDireccion.getText());
 		empresas.setTipo("P");
 		empresas.setCif(textCif.getText());
@@ -548,10 +523,7 @@ public class VentanaProveedores {
 		empresas.setPersonaContacto(textPersonaContact.getText());
 		empresas.setMail(textMail.getText());
 		empresas.setWeb(textWeb.getText());
-		
-		String variable = (String) comboCoste.getSelectedItem().toString();
-		empresas.setTipoCoste(accCostes.buscaIdCoste(variable));
-		
+
 		empresas.setIban(textIban.getText());
 		empresas.setObservaciones(textObserv.getText());
 		if (rdbtnNo.isSelected() == true) {
