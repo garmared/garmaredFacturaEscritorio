@@ -6,7 +6,6 @@ public class FacturasDTO extends GeneralDTO {
 	private Integer idFactura,empresa, proveedor, fecha, vencimiento, proyecto, cliente,coste, concepto;
 	private double irpf, descuento,baseImpo,iva,tasa;
 	
-	
 	public String getIban() {
 		return iban;
 	}

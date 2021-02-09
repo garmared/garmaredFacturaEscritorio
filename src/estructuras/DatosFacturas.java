@@ -2,6 +2,23 @@ package estructuras;
 
 public class DatosFacturas {
 	String proyecto, nombreCliente, concepto, coste, proveedor,fecha,factura,vencimiento,estado;
+	Double baseImpo,iva;
+	
+	public Double getBaseImpo() {
+		return baseImpo;
+	}
+
+	public void setBaseImpo(Double baseImpo) {
+		this.baseImpo = baseImpo;
+	}
+
+	public Double getIva() {
+		return iva;
+	}
+
+	public void setIva(Double iva) {
+		this.iva = iva;
+	}
 
 	public String getProyecto() {
 		return proyecto;

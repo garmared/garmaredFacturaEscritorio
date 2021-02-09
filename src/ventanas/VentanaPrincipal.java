@@ -130,6 +130,10 @@ public class VentanaPrincipal implements ActionListener{
 		Sopcion1.setMnemonic(KeyEvent.VK_E);
 		Sopcion2 = new JMenu("Recibidas");
 		Sopcion2.setMnemonic(KeyEvent.VK_R);
+		Sopcion3 = new JMenuItem("IVA");
+		Sopcion3.setMnemonic(KeyEvent.VK_I);
+		Sopcion4 = new JMenuItem("Modelo 347");
+		Sopcion4.setMnemonic(KeyEvent.VK_M);
 		//tercer nivel
 		sub1 = new JMenuItem("Gesti\u00F3n Emitidas");
 		sub2 = new JMenuItem("Listado Emitidas");
@@ -143,11 +147,15 @@ public class VentanaPrincipal implements ActionListener{
 		Sopcion2.add(sub4);
 		opcion1.add(Sopcion1);
 		opcion1.add(Sopcion2);
+		opcion1.add(Sopcion3);
+		opcion1.add(Sopcion4);
 		
 		sub1.addActionListener(this);
 		sub2.addActionListener(this);
 		sub3.addActionListener(this);
 		sub4.addActionListener(this);
+		Sopcion3.addActionListener(this);
+		Sopcion4.addActionListener(this);
 		
 		menubar.add(opcion1);
 	}	
@@ -296,6 +304,14 @@ public class VentanaPrincipal implements ActionListener{
 				ventana.dispose();
 				VentanaEmpresas empresas = new VentanaEmpresas(control);
 				break;
+			case "IVA":
+				ventana.dispose();
+				VentanaIva iva = new VentanaIva(control);
+				break;
+			case "Modelo 347":
+				ventana.dispose();
+				Ventana347 modelo347 = new Ventana347(control);
+				break;				
 			case "Salir":
 				System.exit(0);
 		}
