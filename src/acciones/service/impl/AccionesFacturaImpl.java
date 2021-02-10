@@ -129,4 +129,12 @@ public class AccionesFacturaImpl implements AccionesFacturaController {
 		
 		return consulta = consulta + order;
 	}
+
+	public String creaConsulta347R(FacturasDTO entrada) {
+		String consulta, select, where, order;
+		select = "select id_proveedor, sum(base_impo) as base_impo, sum(descuento) as descuento from factura ";
+		where = "WHERE id_empresa = "+entrada.getIdEmpresa()+" AND id_cliente = '0' and pagado = 'Abono'";
+		order = " group by id_proveedor";
+		consulta = select + where;
+		return consulta = consulta + order;	}
 }

@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -33,8 +32,6 @@ public class VentanaIva {
 
 	private JFrame frame;
 	static ServiceDTO sesionGlobal;
-	private FacturasDTO factura;
-
 	AccionesFacturaImpl accFactura = new AccionesFacturaImpl();
 	AccionesClientesImpl accClientes = new AccionesClientesImpl();
 	AccionesServiceImpl accService = new AccionesServiceImpl();
@@ -44,7 +41,6 @@ public class VentanaIva {
 	AccionesCostesImpl accCostes = new AccionesCostesImpl();
 	DatosFacturas datosFact = new DatosFacturas();
 	Color bg = new Color (192,192,192);
-	private JTable table;
 	DefaultTableModel modelo = new DefaultTableModel();
 	private JTextField textIVAE, textIVAR, textBaseE, textBaseR;
 	private Double sumaImporteE, sumaImporteR, sumaIVAE, sumaIVAR,varAux;
@@ -56,16 +52,6 @@ public class VentanaIva {
 		initialize(sesionGlobal.getNombreEmpresa());
 	}
 
-
-	private FacturasDTO llenaParamConsulta() {
-		FacturasDTO salida = new FacturasDTO();
-		salida.setCliente(sesionGlobal.getInt1());
-		salida.setPagado(sesionGlobal.getChar1());
-		salida.setCoste(sesionGlobal.getInt2());
-		salida.setFecha(sesionGlobal.getInt3());
-		salida.setEmpresa(sesionGlobal.getInt4());	
-		return salida;
-	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -123,7 +109,7 @@ public class VentanaIva {
 	protected JComboBox llenaAnyos() {
 		JComboBox salida = new JComboBox();
 		Connection connection = accService.getConexion();
-		DefaultTableModel modelo = new DefaultTableModel();
+		
 		String consulta;
 		consulta=accFactura.creaConsultaAnyos(sesionGlobal.getIdEmpresa());
 		ResultSet rs = accService.getTabla(consulta, connection);

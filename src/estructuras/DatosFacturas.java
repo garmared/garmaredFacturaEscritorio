@@ -2,8 +2,17 @@ package estructuras;
 
 public class DatosFacturas {
 	String proyecto, nombreCliente, concepto, coste, proveedor,fecha,factura,vencimiento,estado;
-	Double baseImpo,iva;
+	Double baseImpo,iva,descuento;
 	
+	
+	public Double getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(Double descuento) {
+		this.descuento = descuento;
+	}
+
 	public Double getBaseImpo() {
 		return baseImpo;
 	}
