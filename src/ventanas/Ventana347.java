@@ -24,6 +24,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -55,6 +60,7 @@ public class Ventana347 {
 	DatosFacturas datosFact = new DatosFacturas();
 	DefaultTableModel modelo = new DefaultTableModel();
 	List<String[]> datosCsv = new ArrayList<String[]>();
+	Map<String, Object[]> datosXsl = new TreeMap<String, Object[]>();
 	Table tablaPdf;
 	/**
 	 * Create the application.
@@ -119,7 +125,8 @@ public class Ventana347 {
 		JButton btnExportarExcel = new JButton("Exportar a Excel");
 		btnExportarExcel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				crearCsv();
+				//crearCsv();
+				crearXls();
 			}
 		});
 		btnExportarExcel.setBounds(364, 21, 134, 23);
@@ -129,6 +136,42 @@ public class Ventana347 {
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
 
+
+
+	protected void crearXls() {
+		XSSFWorkbook libro = new XSSFWorkbook();
+		XSSFSheet hoja = libro.createSheet("Modelo 347");
+
+		Set<String> keyset = datosXsl.keySet(); 
+		int rownum = 0; 
+		for (String key : keyset) { 
+			// this creates a new row in the sheet 
+			Row row = hoja.createRow(rownum++); 
+			Object[] objArr = datosXsl.get(key); 
+			int cellnum = 0; 
+			for (Object obj : objArr) { 
+				// this line creates a cell in the next column of that row 
+				Cell cell = row.createCell(cellnum++); 
+				if (obj instanceof String) 
+					cell.setCellValue((String)obj); 
+				else if (obj instanceof Integer) 
+					cell.setCellValue((Integer)obj); 
+			} 
+		} 
+		try { 
+			// this Writes the workbook 
+			String nomFichero = ("C:\\Users\\34666\\git\\garmaredFacturaEscritorio\\xls\\347\\"+JOptionPane.showInputDialog("Escribe el nombre del fichero a generar")+".xlsx");
+			FileOutputStream out = new FileOutputStream(new File(nomFichero)); 
+			libro.write(out); 
+			out.close(); 
+			libro.close();
+			JOptionPane.showMessageDialog(null, "Fichero "+nomFichero+" creado correctamente"); 
+		} 
+		catch (Exception e) { 
+			e.printStackTrace(); 
+			JOptionPane.showMessageDialog(null, "Error al exportar a Excel");
+		} 
+	}
 
 
 	private void creaPdf(Table tabla) {
@@ -214,12 +257,15 @@ public class Ventana347 {
 		try {
 			tablaPdf = new Table(3);
 			tablaPdf = llenaCabecera();
+			datosXsl = new TreeMap<String, Object[]>();
+			llenaCabeceraXsl();
 			int indice= 0;
 			while (rs.next()) {
 				datosFact = llenaJtable(rs);
 				modelo.addRow(new Object[] {datosFact.getProveedor(), rs.getDouble("base_impo"),rs.getDouble("descuento")});
 				llenaTablaPdf(datosFact);
 				llenaDatosCsv(datosFact,indice);
+				llenaDatosXsl(datosFact, indice);
 				indice++;
 			}
 			table.setModel(modelo);
@@ -248,6 +294,14 @@ public class Ventana347 {
 	private void llenaDatosCsv(DatosFacturas datos, int indice) {
 		String[] dato = {datos.getProveedor(),String.valueOf(datos.getBaseImpo()),String.valueOf(datos.getDescuento())};
 		datosCsv.add(indice,dato);
+	}
+	
+	private void llenaCabeceraXsl() {
+		datosXsl.put("1", new Object[]{ "Proveedor", "Base Imponible", "Descuento" });
+	}
+	private void llenaDatosXsl(DatosFacturas datos, int indice) {
+		int fila = indice + 2;
+		datosXsl.put(String.valueOf(fila), new Object[]{datos.getProveedor(),String.valueOf(datos.getBaseImpo()),String.valueOf(datos.getDescuento())}); 
 	}
 
 	private void llenaTablaPdf(DatosFacturas datos) {
