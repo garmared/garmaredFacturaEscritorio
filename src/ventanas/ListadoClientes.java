@@ -155,7 +155,7 @@ public class ListadoClientes extends JFrame {
 				JComboBox poblacion = new JComboBox();
 				ArrayList<String> cadena = accClientes.consultaPoblacion(sesionGlobal.getIdEmpresa());
 				if (cadena != null) {
-					for (var i = 0; i < cadena.size(); i++) {
+					for (int i = 0; i < cadena.size(); i++) {
 						poblacion.addItem(cadena.get(i));
 					}
 					poblacion.addItem(new ObjetoJComboBox(0, "Todos"));

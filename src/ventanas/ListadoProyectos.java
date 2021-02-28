@@ -112,7 +112,7 @@ public class ListadoProyectos {
 				JComboBox cliente = new JComboBox();
 				ArrayList<ObjetoJComboBox> cadena = accClientes.consultaClientes(sesionGlobal.getIdEmpresa());
 				if (cadena != null) {
-					for (var i = 0; i < cadena.size(); i++) {
+					for (int i = 0; i < cadena.size(); i++) {
 						cliente.addItem(cadena.get(i));
 					}
 					cliente.addItem(new ObjetoJComboBox(0, "Todos"));
@@ -182,7 +182,7 @@ public class ListadoProyectos {
 												
 		ResultSet rs = accService.getTabla(consulta, connection);
 		modelo.setColumnIdentifiers(new Object[]{"identificador","Descripción","Fecha Inicio","Fecha Fin","Fecha Cierre","Cliente", "Coste", "Importe","Margen"});
-		JTable table = new JTable(modelo);
+		final JTable table = new JTable(modelo);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -191,7 +191,7 @@ public class ListadoProyectos {
 				DefaultTableModel modeloAux = (DefaultTableModel) table.getModel();
 				if (table.getSelectedRow() !=-1) {
 					int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
-					sesionGlobal.setIdentificador(codigo);
+					sesionGlobal.setIdentificador(Integer.valueOf(codigo));
 					frame.dispose();
 					VentanaProyectos ventana = new VentanaProyectos(sesionGlobal);
 				} else {JOptionPane.showMessageDialog(null, "Selecciona una única fila");}

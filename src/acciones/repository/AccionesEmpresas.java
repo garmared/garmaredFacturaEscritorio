@@ -111,7 +111,7 @@ public class AccionesEmpresas{
 		try {
 			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			String peticion = "SELECT * FROM empresas WHERE Nombre = '"+empresas.getNombre()+"' AND tipo = '"+empresas.getTipo()+"'";
+			String peticion = "SELECT * FROM empresas WHERE Nombre = '"+empresas.getNombre()+"' AND tipo = '"+empresas.getTipo()+"' AND id_empresa = '"+empresas.getIdEmpresa()+"'";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			//result.next();

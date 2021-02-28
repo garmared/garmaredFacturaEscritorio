@@ -1,9 +1,10 @@
 package ventanas;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,6 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -35,7 +39,6 @@ import acciones.service.impl.AccionesEmpresasImpl;
 import acciones.service.impl.AccionesFacturaImpl;
 import acciones.service.impl.AccionesProyectosImpl;
 import acciones.service.impl.AccionesServiceImpl;
-import estructuras.DatosClientes;
 import estructuras.DatosFacturas;
 
 public class Ventana347 {
@@ -125,6 +128,8 @@ public class Ventana347 {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
+
+
 
 	private void creaPdf(Table tabla) {
 		String nomFichero = JOptionPane.showInputDialog("Escribe el nombre del fichero a generar");

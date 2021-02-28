@@ -3,9 +3,14 @@ package ventanas;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,6 +20,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Table;
+import com.opencsv.CSVWriter;
 
 import acciones.dto.FacturasDTO;
 import acciones.dto.ObjetoJComboBox;
@@ -41,7 +52,9 @@ public class VentanaIva {
 	AccionesCostesImpl accCostes = new AccionesCostesImpl();
 	DatosFacturas datosFact = new DatosFacturas();
 	Color bg = new Color (192,192,192);
+	Table tablaPdf;
 	DefaultTableModel modelo = new DefaultTableModel();
+	List<String[]> datosCsv = new ArrayList<String[]>();
 	private JTextField textIVAE, textIVAR, textBaseE, textBaseR;
 	private Double sumaImporteE, sumaImporteR, sumaIVAE, sumaIVAR,varAux;
 	/**
@@ -70,7 +83,7 @@ public class VentanaIva {
 				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
 			}
 		});
-		btnVolver.setBounds(159, 21, 89, 23);
+		btnVolver.setBounds(529, 21, 89, 23);
 		frame.getContentPane().add(btnVolver);
 				
 		JButton btnBuscar = new JButton("Buscar");
@@ -102,9 +115,62 @@ public class VentanaIva {
 		btnBuscar.setBounds(42, 21, 89, 23);
 		frame.getContentPane().add(btnBuscar);
 		
+		JButton btnExportarAPdf = new JButton("Exportar a PDF");
+		btnExportarAPdf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				creaPdf(tablaPdf);
+			}
+		});
+		btnExportarAPdf.setBounds(173, 21, 134, 23);
+		frame.getContentPane().add(btnExportarAPdf);
+		
+		JButton btnExportarExcel = new JButton("Exportar a Excel");
+		btnExportarExcel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				crearCsv();
+			}
+		});
+		btnExportarExcel.setBounds(364, 21, 134, 23);
+		frame.getContentPane().add(btnExportarExcel);
+
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
+
+	protected void crearCsv() {
+		String nomFichero = ("csv/iva/"+JOptionPane.showInputDialog("Escribe el nombre del fichero a generar")+".csv");
+		try {
+			CSVWriter csv = new CSVWriter(new FileWriter(nomFichero));
+			String [] cabecera = {"Clave", "Nombre", "Cif", "Dirección","Población","Código Postal","Teléfono","Persona de Contacto","Correo electrónico","Página Web","Activo"};
+			csv.writeNext(cabecera);
+			csv.writeAll(datosCsv);
+			csv.close();
+			JOptionPane.showMessageDialog(null, "Fichero "+nomFichero+" creado correctamente");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		}
+	}
+
+
+	protected void creaPdf(Table tabla) {
+		String nomFichero = JOptionPane.showInputDialog("Escribe el nombre del fichero a generar");
+		PdfDocument pdf=null;
+		try {
+			pdf = new PdfDocument(new PdfWriter("pdf/iva/"+nomFichero+".pdf"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al exportar a PDF");
+		}
+		
+		Document documento = new Document(pdf);
+		documento.add(tabla);
+		documento.close();
+		
+		JOptionPane.showMessageDialog(null, "Fichero "+nomFichero+" creado correctamente");
+	}
+
 
 	protected JComboBox llenaAnyos() {
 		JComboBox salida = new JComboBox();

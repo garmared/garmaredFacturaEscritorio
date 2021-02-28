@@ -92,6 +92,7 @@ public class VentanaCostes {
 				//grabamos los datos.
 				accion= accCostes.grabarCoste(costes);
 				if (accion) {
+					limpiaPantalla();
 					JOptionPane.showMessageDialog(null, "Coste dado de alta correctamente");
 				}else {
 					JOptionPane.showMessageDialog(null, "Error en el alta de costes");
@@ -108,7 +109,7 @@ public class VentanaCostes {
 				if (JOptionPane.OK_OPTION == confirmado) {
 					accion = accCostes.deleteCoste(idCoste);
 					if (accion) {
-						initialize(sesionGlobal.getNombreEmpresa());
+						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Coste borrado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "Error en el borrado del coste");
@@ -131,7 +132,7 @@ public class VentanaCostes {
 					
 					accion = accCostes.updateCoste(costes);
 					if (accion) {
-						initialize(sesionGlobal.getNombreEmpresa());
+						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Coste modificado correctamente");
 					}else {
 						JOptionPane.showMessageDialog(null, "error al modificar el coste");
@@ -157,7 +158,7 @@ public class VentanaCostes {
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize(sesionGlobal.getNombreEmpresa());
+				limpiaPantalla();
 			}
 		});
 		btnLimpiar.setBounds(317, 68, 89, 23);
@@ -190,5 +191,8 @@ public class VentanaCostes {
 		
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+	}
+	private void limpiaPantalla() {
+		textCoste.setText(" ");
 	}
 }

@@ -109,7 +109,7 @@ public class ListadoCostesIndirectos extends JFrame {
 				JComboBox proyecto = new JComboBox();
 				ArrayList<ObjetoJComboBox> cadena = accProyecto.consultaProyectos(sesionGlobal.getIdEmpresa());
 				if (cadena != null) {
-					for (var i = 0; i < cadena.size(); i++) {
+					for (int i = 0; i < cadena.size(); i++) {
 						proyecto.addItem(cadena.get(i));
 					}
 					proyecto.addItem(new ObjetoJComboBox(0, "Todos"));
@@ -117,7 +117,7 @@ public class ListadoCostesIndirectos extends JFrame {
 				JComboBox concepto = new JComboBox();
 				cadena = accConcepto.consultaConceptos(sesionGlobal.getIdEmpresa());
 				if (cadena != null) {
-					for (var i = 0; i < cadena.size(); i++) {
+					for (int i = 0; i < cadena.size(); i++) {
 						concepto.addItem(cadena.get(i));
 					}
 					concepto.addItem(new ObjetoJComboBox(0, "Todos"));
@@ -125,7 +125,7 @@ public class ListadoCostesIndirectos extends JFrame {
 				JComboBox tipoCoste = new JComboBox();
 				cadena = accCostes.consultaCostes(sesionGlobal.getIdEmpresa());
 				if (cadena != null) {
-					for (var i = 0; i < cadena.size(); i++) {
+					for (int i = 0; i < cadena.size(); i++) {
 						tipoCoste.addItem(cadena.get(i));
 					}
 					tipoCoste.addItem(new ObjetoJComboBox(0, "Todos"));

@@ -116,7 +116,7 @@ public class VentanaUsuarios {
 		lblNivelSegur.setBounds(69, 194, 89, 14);
 		frame.getContentPane().add(lblNivelSegur);
 		
-		JLabel lblError = new JLabel("");
+		final JLabel lblError = new JLabel("");
 		lblError.setBounds(69, 268, 189, 14);
 		frame.getContentPane().add(lblError);
 		

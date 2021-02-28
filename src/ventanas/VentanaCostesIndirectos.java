@@ -74,7 +74,7 @@ public class VentanaCostesIndirectos {
 		ArrayList<ObjetoJComboBox> proyectos = accProyecto.consultaProyectos(sesionGlobal.getIdEmpresa());
 		
 		if (proyectos != null) {
-			for (var i = 0; i < proyectos.size(); i++) {
+			for (int i = 0; i < proyectos.size(); i++) {
 				comboProyecto.addItem(proyectos.get(i));
 			}
 		}
@@ -86,7 +86,7 @@ public class VentanaCostesIndirectos {
 		ArrayList<ObjetoJComboBox> conceptos = accConceptos.consultaConceptos(sesionGlobal.getIdEmpresa());
 		
 		if (conceptos != null) {
-			for (var i = 0; i < conceptos.size(); i++) {
+			for (int i = 0; i < conceptos.size(); i++) {
 				comboConcepto.addItem(conceptos.get(i));
 			}
 		}
@@ -99,7 +99,7 @@ public class VentanaCostesIndirectos {
 		ArrayList<ObjetoJComboBox> costes = accCostes.consultaCostes(sesionGlobal.getIdEmpresa());
 	
 		if (costes != null) {
-			for (var i = 0; i < costes.size(); i++) {
+			for (int i = 0; i < costes.size(); i++) {
 				comboCoste.addItem(costes.get(i));
 			}
 		}
@@ -160,14 +160,14 @@ public class VentanaCostesIndirectos {
 				JComboBox proyecto = new JComboBox();
 				ArrayList<ObjetoJComboBox> cadena = accProyecto.consultaProyectos(sesionGlobal.getIdEmpresa());
 				if (cadena != null) {
-					for (var i = 0; i < cadena.size(); i++) {
+					for (int i = 0; i < cadena.size(); i++) {
 						proyecto.addItem(cadena.get(i));
 					}
 				}
 				JComboBox concepto = new JComboBox();
 				cadena = accConceptos.consultaConceptos(sesionGlobal.getIdEmpresa());
 				if (cadena != null) {
-					for (var i = 0; i < cadena.size(); i++) {
+					for (int i = 0; i < cadena.size(); i++) {
 						concepto.addItem(cadena.get(i));
 					}
 				}

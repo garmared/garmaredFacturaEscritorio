@@ -109,7 +109,7 @@ public class VentanaFacturasR {
 		ArrayList<ObjetoJComboBox> proyectos = accProyecto.consultaProyectos(sesionGlobal.getIdEmpresa());
 		
 		if (proyectos != null) {
-			for (var i = 0; i < proyectos.size(); i++) {
+			for (int i = 0; i < proyectos.size(); i++) {
 				comboProyecto.addItem(proyectos.get(i));
 			}
 		}
@@ -121,7 +121,7 @@ public class VentanaFacturasR {
 		ArrayList<ObjetoJComboBox> conceptos = accConceptos.consultaConceptos(sesionGlobal.getIdEmpresa());
 		
 		if (conceptos != null) {
-			for (var i = 0; i < conceptos.size(); i++) {
+			for (int i = 0; i < conceptos.size(); i++) {
 				comboConcepto.addItem(conceptos.get(i));
 			}
 		}
@@ -134,7 +134,7 @@ public class VentanaFacturasR {
 		ArrayList<ObjetoJComboBox> costes = accCostes.consultaCostes(sesionGlobal.getIdEmpresa());
 	
 		if (costes != null) {
-			for (var i = 0; i < costes.size(); i++) {
+			for (int i = 0; i < costes.size(); i++) {
 				comboCoste.addItem(costes.get(i));
 			}
 		}
@@ -147,7 +147,7 @@ public class VentanaFacturasR {
 		ArrayList<ObjetoJComboBox> proveedor = accEmpresas.consultaEmpresas("P", sesionGlobal.getIdEmpresa());
 		
 		if (proveedor != null) {
-			for (var i = 0; i < proveedor.size(); i++) {
+			for (int i = 0; i < proveedor.size(); i++) {
 				comboProveedor.addItem(proveedor.get(i));
 			}
 		}
@@ -230,7 +230,7 @@ public class VentanaFacturasR {
 		comboPagado.addItem("Pendiente");
 		comboPagado.addItem("Pagado");
 		
-		JLabel lblError = new JLabel("");
+		final JLabel lblError = new JLabel("");
 		lblError.setBounds(10, 375, 414, 14);
 		frame.getContentPane().add(lblError);
 		

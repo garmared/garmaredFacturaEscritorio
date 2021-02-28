@@ -248,7 +248,7 @@ public class VentanaEmpresas {
 		frame.getContentPane().add(rdbtnNo);
 		
 	
-		JLabel lblError = new JLabel("");
+		final JLabel lblError = new JLabel("");
 		lblError.setBounds(10, 375, 414, 14);
 		frame.getContentPane().add(lblError);
 		

@@ -228,7 +228,6 @@ public class VentanaPrincipal implements ActionListener{
 		//System.out.println(entrada.getIdEmpresa());
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent A) {
 		// aqui añadimos las acciones de clik de las opciones.
 		String opcion = A.getActionCommand();

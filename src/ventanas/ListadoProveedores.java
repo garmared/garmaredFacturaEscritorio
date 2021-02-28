@@ -78,7 +78,7 @@ public class ListadoProveedores {
 												
 		ResultSet rs = accService.getTabla(consulta, connection);
 		modelo.setColumnIdentifiers(new Object[]{"identificador","Nombre","CIF","Direccion","Poblacion","CP", "Telefono", "Persona de Contacto","mail","web","activo"});
-		JTable table = new JTable(modelo);
+		final JTable table = new JTable(modelo);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -154,7 +154,7 @@ public class ListadoProveedores {
 				JComboBox poblacion = new JComboBox();
 				ArrayList<String> cadena = accProveedor.consultaPoblacion(sesionGlobal.getIdEmpresa());
 				if (cadena != null) {
-					for (var i = 0; i < cadena.size(); i++) {
+					for (int i = 0; i < cadena.size(); i++) {
 						poblacion.addItem(cadena.get(i));
 					}
 					poblacion.addItem("Todos");

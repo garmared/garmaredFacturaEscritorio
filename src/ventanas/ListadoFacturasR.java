@@ -77,7 +77,7 @@ public class ListadoFacturasR {
 												
 		ResultSet rs = accService.getTabla(consulta, connection);
 		modelo.setColumnIdentifiers(new Object[]{"identificador","Fecha","Vencimiento","Proyecto","Concepto", "Coste", "Proveedor","Estado"});
-		JTable table = new JTable(modelo);
+		final JTable table = new JTable(modelo);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -153,7 +153,7 @@ public class ListadoFacturasR {
 				JComboBox proveedor = new JComboBox();
 				ArrayList<ObjetoJComboBox> cadena = accProveedor.consultaEmpresas("P", sesionGlobal.getIdEmpresa());
 				if (cadena != null) {
-					for (var i = 0; i < cadena.size(); i++) {
+					for (int i = 0; i < cadena.size(); i++) {
 						proveedor.addItem(cadena.get(i));
 					}
 					proveedor.addItem(new ObjetoJComboBox(0, "Todos"));
@@ -161,7 +161,7 @@ public class ListadoFacturasR {
 				JComboBox coste = new JComboBox();
 				cadena = accCostes.consultaCostes(sesionGlobal.getIdEmpresa());
 				if (cadena != null) {
-					for (var i = 0; i < cadena.size(); i++) {
+					for (int i = 0; i < cadena.size(); i++) {
 						coste.addItem(cadena.get(i));
 					}
 					coste.addItem(new ObjetoJComboBox(0, "Todos"));
