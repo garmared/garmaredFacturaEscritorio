@@ -68,7 +68,18 @@ public class ListadoClientes extends JFrame {
 		if (sesionGlobal.getNoPrincipal()=="S") {
 			ClientesDTO paramConsulta = llenaParamConsulta();
 			llenaListado(paramConsulta);
-		}
+		} else {consutlaInicial();}
+	}
+
+	private void consutlaInicial() {
+		ClientesDTO salida = new ClientesDTO();
+		salida.setActivo("Todos");
+		salida.setPoblacion("Todos");
+		salida.setIdEmpresa(sesionGlobal.getIdEmpresa());	
+		
+		guardaConsulta(salida);
+		llenaListado(salida);	
+		
 	}
 
 	private void llenaListado(ClientesDTO paramConsulta) {
@@ -184,7 +195,7 @@ public class ListadoClientes extends JFrame {
 
 		});
 
-		btnBuscar.setBounds(42, 21, 89, 23);
+		btnBuscar.setBounds(109, 21, 89, 23);
 		frame.getContentPane().add(btnBuscar);
 		
 		JButton btnExportarAPdf = new JButton("Exportar a PDF");
@@ -193,7 +204,7 @@ public class ListadoClientes extends JFrame {
 				creaPdf(tablaPdf);
 			}
 		});
-		btnExportarAPdf.setBounds(173, 21, 134, 23);
+		btnExportarAPdf.setBounds(220, 21, 134, 23);
 		frame.getContentPane().add(btnExportarAPdf);
 		
 		JButton btnExportarExcel = new JButton("Exportar a Excel");
@@ -204,6 +215,18 @@ public class ListadoClientes extends JFrame {
 		});
 		btnExportarExcel.setBounds(364, 21, 134, 23);
 		frame.getContentPane().add(btnExportarExcel);
+		
+		JButton btnAlta = new JButton("Alta");
+		btnAlta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sesionGlobal.setIdentificador(0);
+				sesionGlobal.setNoPrincipal("S");
+				frame.dispose(); // esto cierra la ventana
+				VentanaClientes clientes = new VentanaClientes(sesionGlobal);
+			}
+		});
+		btnAlta.setBounds(10, 21, 89, 23);
+		frame.getContentPane().add(btnAlta);
 		
 	
 		frame.setVisible(true);
@@ -308,5 +331,4 @@ public class ListadoClientes extends JFrame {
 				String.valueOf(datos.getTelefono()),datos.getPersonaContacto(),datos.getMail(),datos.getWeb(),datos.getActivo()};
 		datosCsv.add(indice,dato);
 	}
-
 }

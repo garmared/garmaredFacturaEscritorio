@@ -70,7 +70,21 @@ public class ListadoProyectos {
 		if (sesionGlobal.getNoPrincipal()=="S") {
 			ProyectosDTO paramConsulta = llenaParamConsulta();
 			llenaListado(paramConsulta);
-		}
+		} else {consultaInicial();}
+	}
+
+	private void consultaInicial() {
+		// llenamos el listado de proyectos con una consulta de todo
+		ProyectosDTO paramConsulta = new ProyectosDTO();
+		paramConsulta.setCliente(0);	
+		paramConsulta.setDescripcion("");
+		paramConsulta.setFechaIni(0);
+		paramConsulta.setFechaFin(0);
+		paramConsulta.setFechaCierre(0);
+		paramConsulta.setEmpresa(sesionGlobal.getIdEmpresa());
+		
+		guardaConsulta(paramConsulta);
+		llenaListado(paramConsulta);
 	}
 
 	private ProyectosDTO llenaParamConsulta() {
@@ -147,7 +161,7 @@ public class ListadoProyectos {
 
 		});
 
-		btnBuscar.setBounds(42, 21, 89, 23);
+		btnBuscar.setBounds(142, 21, 89, 23);
 		frame.getContentPane().add(btnBuscar);
 		
 		JButton btnExportarAPdf = new JButton("Exportar a PDF");
@@ -156,7 +170,7 @@ public class ListadoProyectos {
 				creaPdf(tablaPdf);
 			}
 		});
-		btnExportarAPdf.setBounds(173, 21, 134, 23);
+		btnExportarAPdf.setBounds(241, 21, 134, 23);
 		frame.getContentPane().add(btnExportarAPdf);
 		
 		JButton btnExportarExcel = new JButton("Exportar a Excel");
@@ -165,8 +179,20 @@ public class ListadoProyectos {
 				crearCsv();
 			}
 		});
-		btnExportarExcel.setBounds(364, 21, 134, 23);
+		btnExportarExcel.setBounds(385, 21, 134, 23);
 		frame.getContentPane().add(btnExportarExcel);
+		
+		JButton btnNuevo = new JButton("Nuevo");
+		btnNuevo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sesionGlobal.setIdentificador(0);
+				sesionGlobal.setNoPrincipal("S");
+				frame.dispose();
+				VentanaProyectos ventana = new VentanaProyectos(sesionGlobal);
+			}
+		});
+		btnNuevo.setBounds(30, 21, 89, 23);
+		frame.getContentPane().add(btnNuevo);
 		
 	
 		frame.setVisible(true);

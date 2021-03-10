@@ -32,9 +32,9 @@ public class VentanaPrincipal implements ActionListener{
 		montaGestion(entrada);
 		montaProyectos();
 		montaFacturas();
-		montaClientes();
-		montaProveedores();
-		
+		montaClientesProveedores();
+		//montaClientes();
+				
 	}
 	
 	private void montaGestion(ServiceDTO entrada) {
@@ -165,26 +165,21 @@ public class VentanaPrincipal implements ActionListener{
 		opcion1 = new JMenu("Clientes");
 		opcion1.setMnemonic(KeyEvent.VK_C);
 		//segundo nivel
-		sub1 = new JMenuItem("Gesti\u00F3n Clientes");
-		sub2 = new JMenuItem("Listado Clientes");
-				
-		
-		opcion1.add(sub1);
-		opcion1.add(sub2);
+		sub1 = new JMenuItem("Clientes");
+		sub1.setMnemonic(KeyEvent.VK_C);
 		
 		sub1.addActionListener(this);
-		sub2.addActionListener(this);
-		
+		opcion1.add(sub1);
 		menubar.add(opcion1);
 	}
 
-	private void montaProveedores() {
+	private void montaClientesProveedores() {
 		//primer nivel
-		opcion1 = new JMenu("Proveedores");
-		opcion1.setMnemonic(KeyEvent.VK_P);
+		opcion1 = new JMenu("Clientes y Proveedores");
+		opcion1.setMnemonic(KeyEvent.VK_C);
 		//segundo nivel
-		sub1 = new JMenuItem("Gesti\u00F3n Proveedores");
-		sub2 = new JMenuItem("Listado Proveedores");
+		sub1 = new JMenuItem("Clientes");
+		sub2 = new JMenuItem("Proveedores");
 				
 		
 		opcion1.add(sub1);
@@ -232,19 +227,19 @@ public class VentanaPrincipal implements ActionListener{
 		// aqui añadimos las acciones de clik de las opciones.
 		String opcion = A.getActionCommand();
 		switch (opcion) {
-			case "Gesti\u00F3n Clientes":
+			/*case "Gesti\u00F3n Clientes":
 				ventana.dispose();
 				VentanaClientes clientes = new VentanaClientes(control);
-				break;
-			case "Listado Clientes":
+				break;*/
+			case "Clientes":
 				ventana.dispose();
 				ListadoClientes listadoClientes = new ListadoClientes(control);
 				break;
-			case "Gesti\u00F3n Proveedores":
+			/*case "Gesti\u00F3n Proveedores":
 				ventana.dispose();
 				VentanaProveedores proveedores = new VentanaProveedores(control);
-				break;
-			case "Listado Proveedores":
+				break;*/
+			case "Proveedores":
 				ventana.dispose();
 				ListadoProveedores listadoProveedores = new ListadoProveedores(control);
 				break;				

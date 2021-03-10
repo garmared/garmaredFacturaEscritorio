@@ -27,6 +27,7 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Table;
 import com.opencsv.CSVWriter;
 
+import acciones.dto.ClientesDTO;
 import acciones.dto.EmpresasDTO;
 import acciones.dto.FacturasDTO;
 import acciones.dto.ServiceDTO;
@@ -67,7 +68,18 @@ public class ListadoProveedores {
 		if (sesionGlobal.getNoPrincipal()=="S") {
 			EmpresasDTO paramConsulta = llenaParamConsulta();
 			llenaListado(paramConsulta);
-		}
+		} else {consutlaInicial();}
+	}
+
+	private void consutlaInicial() {
+		EmpresasDTO salida = new EmpresasDTO();
+		salida.setActivo("Todos");
+		salida.setPoblacion("Todos");
+		salida.setIdEmpresa(sesionGlobal.getIdEmpresa());	
+		
+		guardaConsulta(salida);
+		llenaListado(salida);	
+		
 	}
 
 	private void llenaListado(EmpresasDTO paramConsulta) {
@@ -183,7 +195,7 @@ public class ListadoProveedores {
 
 		});
 
-		btnBuscar.setBounds(42, 21, 89, 23);
+		btnBuscar.setBounds(142, 21, 89, 23);
 		frame.getContentPane().add(btnBuscar);
 		
 		JButton btnExportarAPdf = new JButton("Exportar a PDF");
@@ -192,7 +204,7 @@ public class ListadoProveedores {
 				creaPdf(tablaPdf);
 			}
 		});
-		btnExportarAPdf.setBounds(173, 21, 134, 23);
+		btnExportarAPdf.setBounds(241, 21, 134, 23);
 		frame.getContentPane().add(btnExportarAPdf);
 		
 		JButton btnExportarExcel = new JButton("Exportar a Excel");
@@ -201,8 +213,20 @@ public class ListadoProveedores {
 				crearCsv();
 			}
 		});
-		btnExportarExcel.setBounds(364, 21, 134, 23);
+		btnExportarExcel.setBounds(385, 21, 134, 23);
 		frame.getContentPane().add(btnExportarExcel);
+		
+		JButton btnAlta = new JButton("Alta");
+		btnAlta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sesionGlobal.setIdentificador(0);
+				sesionGlobal.setNoPrincipal("S");
+				frame.dispose(); // esto cierra la ventana
+				VentanaProveedores ventana = new VentanaProveedores(sesionGlobal);
+			}
+		});
+		btnAlta.setBounds(42, 21, 89, 23);
+		frame.getContentPane().add(btnAlta);
 		
 	
 		frame.setVisible(true);
@@ -306,4 +330,5 @@ public class ListadoProveedores {
 		String[] dato = {String.valueOf(datos.getIdentificador()),datos.getNombre(),datos.getCif(),datos.getDireccion(),datos.getPoblacion(),String.valueOf(datos.getcPostal()),
 				String.valueOf(datos.getTelefono()),datos.getPersonaContacto(),datos.getMail(),datos.getWeb(),datos.getActivo()};
 		datosCsv.add(indice,dato);
-	}}
+	}	
+}

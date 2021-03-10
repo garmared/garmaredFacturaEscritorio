@@ -76,7 +76,7 @@ public class VentanaClientes {
 		sesionGlobal = sesion;
 		initialize(sesion.getNombreEmpresa());
 		if (sesionGlobal.getNoPrincipal()=="S") {
-			llenaPantalla();
+			if (sesionGlobal.getIdentificador()!=0) {llenaPantalla();}
 		}
 	}
 

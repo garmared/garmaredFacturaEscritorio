@@ -72,7 +72,7 @@ public class VentanaProveedores {
 		sesionGlobal = control;
 		initialize(control.getNombreEmpresa());
 		if (sesionGlobal.getNoPrincipal()=="S") {
-			llenaPantalla();
+			if (sesionGlobal.getIdentificador()!=0) {llenaPantalla();}
 		}
 	}
 

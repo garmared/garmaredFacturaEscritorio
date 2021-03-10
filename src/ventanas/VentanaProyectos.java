@@ -65,13 +65,14 @@ public class VentanaProyectos {
 	AccionesServiceImpl accService = new AccionesServiceImpl();
 	private String dia,mes,ano,varFecha,fecha; 
 	private SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
+	private JButton btnConcepto;
 	/**
 	 * Create the application.
 	 */
 	public VentanaProyectos(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize(control.getNombreEmpresa());
-		if (sesionGlobal.getNoPrincipal()=="S") {
+		if ((sesionGlobal.getNoPrincipal()=="S")&&(sesionGlobal.getIdentificador()!=0)) {
 			llenaPantalla();
 		}
 	}
@@ -94,62 +95,62 @@ public class VentanaProyectos {
 		frame.getContentPane().setLayout(null);
 		
 		lblFechaInicio = new JLabel("Fecha inicio");
-		lblFechaInicio.setBounds(40, 91, 72, 14);
+		lblFechaInicio.setBounds(40, 32, 72, 14);
 		frame.getContentPane().add(lblFechaInicio);
 		
 		textFIni = new JDateChooser();
-		textFIni.setBounds(133, 88, 96, 20);
+		textFIni.setBounds(133, 29, 96, 20);
 		frame.getContentPane().add(textFIni);
 		
 		lblFechaFin = new JLabel("Fecha fin");
-		lblFechaFin.setBounds(40, 119, 72, 14);
+		lblFechaFin.setBounds(40, 60, 72, 14);
 		frame.getContentPane().add(lblFechaFin);
 		
 		textFFin = new JDateChooser();
-		textFFin.setBounds(133, 116, 96, 20);
+		textFFin.setBounds(133, 57, 96, 20);
 		frame.getContentPane().add(textFFin);
 		
 		lblFechaCierre = new JLabel("Fecha cierre");
-		lblFechaCierre.setBounds(256, 119, 72, 14);
+		lblFechaCierre.setBounds(256, 60, 72, 14);
 		frame.getContentPane().add(lblFechaCierre);
 		
 		textFCierre = new JDateChooser();
-		textFCierre.setBounds(333, 116, 96, 20);
+		textFCierre.setBounds(333, 57, 96, 20);
 		frame.getContentPane().add(textFCierre);
 		
 		lblDescripcin = new JLabel("Descripci\u00F3n");
-		lblDescripcin.setBounds(256, 208, 72, 14);
+		lblDescripcin.setBounds(256, 159, 72, 14);
 		frame.getContentPane().add(lblDescripcin);
 		
 		textDescripcion = new JTextField();
 		textDescripcion.setColumns(10);
-		textDescripcion.setBounds(333, 211, 96, 104);
+		textDescripcion.setBounds(333, 162, 96, 104);
 		frame.getContentPane().add(textDescripcion);
 		
 		lblWeb = new JLabel("Web");
-		lblWeb.setBounds(40, 147, 72, 14);
+		lblWeb.setBounds(40, 88, 72, 14);
 		frame.getContentPane().add(lblWeb);
 		
 		textWeb = new JTextField();
 		textWeb.setColumns(10);
-		textWeb.setBounds(133, 144, 96, 20);
+		textWeb.setBounds(133, 85, 96, 20);
 		frame.getContentPane().add(textWeb);
 		
 		lblIban = new JLabel("IBAN");
-		lblIban.setBounds(40, 208, 72, 14);
+		lblIban.setBounds(40, 159, 72, 14);
 		frame.getContentPane().add(lblIban);
 		
 		textIban = new JTextField();
 		textIban.setColumns(10);
-		textIban.setBounds(133, 205, 96, 20);
+		textIban.setBounds(133, 156, 96, 20);
 		frame.getContentPane().add(textIban);
 		
 		lblTipoCoste = new JLabel("Tipo Coste");
-		lblTipoCoste.setBounds(40, 172, 48, 14);
+		lblTipoCoste.setBounds(40, 123, 72, 14);
 		frame.getContentPane().add(lblTipoCoste);
 		
 		comboCoste = new JComboBox();
-		comboCoste.setBounds(133, 172, 170, 22);
+		comboCoste.setBounds(133, 123, 170, 22);
 		frame.getContentPane().add(comboCoste);
 		comboCoste.addItem("----");
 		
@@ -162,11 +163,11 @@ public class VentanaProyectos {
 		}
 		
 		lblCliente = new JLabel("Cliente");
-		lblCliente.setBounds(40, 323, 48, 14);
+		lblCliente.setBounds(40, 274, 48, 14);
 		frame.getContentPane().add(lblCliente);
 		
 		comboCliente = new JComboBox();
-		comboCliente.setBounds(133, 319, 170, 22);
+		comboCliente.setBounds(133, 270, 170, 22);
 		frame.getContentPane().add(comboCliente);
 		comboCliente.addItem("----");
 		
@@ -180,34 +181,30 @@ public class VentanaProyectos {
 		
 		textObservaciones = new JTextField();
 		textObservaciones.setColumns(10);
-		textObservaciones.setBounds(133, 233, 96, 20);
+		textObservaciones.setBounds(133, 184, 96, 20);
 		frame.getContentPane().add(textObservaciones);
 		
 		lblObservaciones = new JLabel("Observaciones");
-		lblObservaciones.setBounds(40, 236, 72, 14);
+		lblObservaciones.setBounds(40, 187, 72, 14);
 		frame.getContentPane().add(lblObservaciones);
 		
 		textImporte = new JTextField();
 		textImporte.setColumns(10);
-		textImporte.setBounds(133, 264, 96, 20);
+		textImporte.setBounds(133, 215, 96, 20);
 		frame.getContentPane().add(textImporte);
 		
 		lblImporte = new JLabel("Importe");
-		lblImporte.setBounds(40, 267, 72, 14);
+		lblImporte.setBounds(40, 218, 72, 14);
 		frame.getContentPane().add(lblImporte);
 		
 		textMargen = new JTextField();
 		textMargen.setColumns(10);
-		textMargen.setBounds(133, 295, 96, 20);
+		textMargen.setBounds(133, 246, 96, 20);
 		frame.getContentPane().add(textMargen);
 		
 		lblMargen = new JLabel("Margen");
-		lblMargen.setBounds(40, 298, 72, 14);
+		lblMargen.setBounds(40, 249, 72, 14);
 		frame.getContentPane().add(lblMargen);
-		
-		final JLabel lblError = new JLabel("");
-		lblError.setBounds(29, 317, 427, 14);
-		frame.getContentPane().add(lblError);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
@@ -377,13 +374,23 @@ public class VentanaProyectos {
 						} else {
 							limpiaPantalla();
 							llenaCamposPantalla(proyecto);
-							lblError.setText("");
+							
 						}
 					}
 				}				
 		});
 		btnBuscar.setBounds(446, 82, 89, 23);
 		frame.getContentPane().add(btnBuscar);
+		
+		btnConcepto = new JButton("Conceptos");
+		btnConcepto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sesionGlobal.setInt1(idProyecto);
+				VentanaConceptosProyecto ventana = new VentanaConceptosProyecto(sesionGlobal);
+			}
+		});
+		btnConcepto.setBounds(40, 317, 109, 23);
+		frame.getContentPane().add(btnConcepto);
 	
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
