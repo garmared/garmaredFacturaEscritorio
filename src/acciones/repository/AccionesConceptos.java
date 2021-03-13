@@ -145,4 +145,24 @@ public class AccionesConceptos{
 			return null;
 		}	
 	}
+
+	public Boolean grabarConcepProyecto(ConceptosDTO conceptos) {
+		try{
+			Connection connection=accService.getConexion();						
+		    PreparedStatement stmt = connection.prepareStatement("INSERT INTO conceptoproyecto VALUES(?,?,?,?,?)");
+			stmt.setInt(1, conceptos.getIdProyecto());
+			stmt.setString(2, conceptos.getNombre());
+			stmt.setDouble(3, conceptos.getImporte());
+			stmt.setInt(4, conceptos.getIdEmpresa());
+			stmt.setDouble(5, conceptos.getIva());
+					
+			stmt.executeUpdate();
+			stmt.close();
+			connection.close();
+			return true;
+		}catch(Exception ex){
+			System.out.println("Error en grabarConcepto: "+ex.getMessage().toString());
+			return false;
+		}
+	}
 }

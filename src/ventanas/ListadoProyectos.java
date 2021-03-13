@@ -182,7 +182,7 @@ public class ListadoProyectos {
 		btnExportarExcel.setBounds(385, 21, 134, 23);
 		frame.getContentPane().add(btnExportarExcel);
 		
-		JButton btnNuevo = new JButton("Nuevo");
+		JButton btnNuevo = new JButton("Alta");
 		btnNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sesionGlobal.setIdentificador(0);

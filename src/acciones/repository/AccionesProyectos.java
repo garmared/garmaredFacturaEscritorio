@@ -16,19 +16,20 @@ public class AccionesProyectos{
 	public Boolean grabarProyectos(ProyectosDTO entrada) {
 			try{
 				Connection connection=accService.getConexion();
-				PreparedStatement stmt = connection.prepareStatement("INSERT INTO proyectos VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?)");
-				stmt.setInt(1, entrada.getEmpresa());
-				stmt.setInt(2,entrada.getFechaIni());
-				stmt.setInt(3,entrada.getFechaFin());
-				stmt.setInt(4,entrada.getFechaCierre());
-				stmt.setInt(5,entrada.getCliente());
-				stmt.setString(6,entrada.getDescripcion());
-				stmt.setString(7,entrada.getWeb());
-				stmt.setInt(8,entrada.getCoste());
-				stmt.setString(9,entrada.getIban());
-				stmt.setString(10,entrada.getObservaciones());
-				stmt.setDouble(11,entrada.getImporte());
-				stmt.setDouble(12,entrada.getMargen());
+				PreparedStatement stmt = connection.prepareStatement("INSERT INTO proyectos VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				stmt.setString(1, entrada.getNombre());
+				stmt.setInt(2, entrada.getEmpresa());
+				stmt.setInt(3,entrada.getFechaIni());
+				stmt.setInt(4,entrada.getFechaFin());
+				stmt.setInt(5,entrada.getFechaCierre());
+				stmt.setInt(6,entrada.getCliente());
+				stmt.setString(7,entrada.getDescripcion());
+				stmt.setString(8,entrada.getWeb());
+				stmt.setInt(9,entrada.getCoste());
+				stmt.setString(10,entrada.getIban());
+				stmt.setString(11,entrada.getObservaciones());
+				stmt.setDouble(12,entrada.getImporte());
+				stmt.setDouble(13,entrada.getMargen());
 				
 				stmt.executeUpdate();
 				stmt.close();
@@ -73,6 +74,7 @@ public class AccionesProyectos{
 				result = stmt.executeQuery(peticion);
 				//result.next();
 				if (result.next()){
+					salida.setNombre(result.getString("nombre"));
 					salida.setIdProyecto(result.getInt("id_proyecto"));
 					salida.setEmpresa(result.getInt("id_empresa"));
 					salida.setFechaIni(result.getInt("fecha_ini"));
@@ -116,7 +118,7 @@ public class AccionesProyectos{
 			try{
 				Connection connection=accService.getConexion();						
 			    PreparedStatement stmt = connection.prepareStatement("UPDATE proyectos set id_empresa = ?, fecha_ini = ?, fecha_fin = ?, fecha_cierre = ?, id_cliente=?, descripcion=?,"
-			    		+ "web=?,Tipo_coste=?,IBAN=?,observaciones=?,importe=?,margen=? WHERE id_proyecto = ?");
+			    		+ "web=?,Tipo_coste=?,IBAN=?,observaciones=?,importe=?,margen=?, nombre=? WHERE id_proyecto = ?");
 			    stmt.setInt(1, proyecto.getEmpresa());
 			    stmt.setInt(2,proyecto.getFechaIni());
 			    stmt.setInt(3,proyecto.getFechaFin());
@@ -129,7 +131,8 @@ public class AccionesProyectos{
 				stmt.setString(10, proyecto.getObservaciones());
 				stmt.setDouble(11, proyecto.getImporte());
 				stmt.setDouble(12,proyecto.getMargen());
-				stmt.setInt(13,proyecto.getIdProyecto());
+				stmt.setString(13,proyecto.getNombre());
+				stmt.setInt(14,proyecto.getIdProyecto());
 				
 				stmt.executeUpdate();
 				stmt.close();
@@ -201,6 +204,7 @@ public class AccionesProyectos{
 					salida.setImporte(result.getDouble("importe"));
 					salida.setMargen(result.getDouble("margen"));
 					salida.setIban(result.getString("IBAN"));
+					salida.setNombre(result.getString("nombre"));
 					return salida;
 				} else {
 					salida.setIdProyecto(0);

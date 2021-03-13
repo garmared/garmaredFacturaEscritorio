@@ -40,7 +40,7 @@ public class VentanaCostesIndirectos {
 	public VentanaCostesIndirectos(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize(control.getNombreEmpresa());
-		if (sesionGlobal.getNoPrincipal()=="S") {
+		if (sesionGlobal.getNoPrincipal()=="S" && sesionGlobal.getIdentificador()!=0) {
 			llenaPantalla();
 		}
 	}

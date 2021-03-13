@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -33,8 +36,8 @@ public class VentanaConceptosProyecto {
 	AccionesServiceImpl accService = new AccionesServiceImpl();
 	private JTable table;
 	DefaultTableModel modelo = new DefaultTableModel();
-	private JTable table_1;
-	private JTable table_2;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -55,6 +58,7 @@ public class VentanaConceptosProyecto {
 	 * Create the application.
 	 */
 	public VentanaConceptosProyecto(ServiceDTO control) {
+		sesionGlobal = control;
 		initialize();
 	}
 
@@ -69,62 +73,43 @@ public class VentanaConceptosProyecto {
 		frame.getContentPane().setLayout(null);
 		
 		montaTabla();
-		JButton btnAlta = new JButton("Alta concepto");
+		table = new JTable(modelo);
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(23, 45, 497, 200);
+		frame.getContentPane().add(scrollPane);		
+		
+		JButton btnAlta = new JButton("Grabar");
 		btnAlta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				accion = false;
 				//grabamos los datos.
 				conceptos = new ConceptosDTO();
 				conceptos.setIdEmpresa(sesionGlobal.getIdEmpresa());
-				accion= accConceptos.grabarConcepto(conceptos);
-				if (accion) {
+				int i = 0;
+				while (table.getValueAt(i, 0)!=" ") {
+					conceptos.setNombre(String.valueOf(table.getValueAt(i,0)));
+					conceptos.setImporte(Double.valueOf((String) (table.getValueAt(i,1))));
+					conceptos.setIva(Double.valueOf((String) (table.getValueAt(i,2))));
+					conceptos.setIdProyecto(sesionGlobal.getIdentificador());
+					accion= accConceptos.grabarConceptoProyecto(conceptos);
+					if (accion) {
+						i++;
+					}
+					else {
+						i = 0;
+						break;
+					}
+				}
+				if (i>0) {
 					limpiaPantalla();
-					JOptionPane.showMessageDialog(null, "Concepto dado de alta correctamente");
+					JOptionPane.showMessageDialog(null, "Conceptos dados de alta correctamente");
 				}else {
-					JOptionPane.showMessageDialog(null, "Error con el alta del concepto");
+					JOptionPane.showMessageDialog(null, "Error con el alta de conceptos");
 				}
 			}
 		});
-		btnAlta.setBounds(23, 11, 127, 23);
+		btnAlta.setBounds(23, 11, 80, 23);
 		frame.getContentPane().add(btnAlta);
-		
-		JButton btnBaja = new JButton("Baja Concepto");
-		btnBaja.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea borrar el concepto?", "Confirmar borrado", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if (JOptionPane.OK_OPTION == confirmado) {
-					accion = accConceptos.deleteConcepto(idConcepto);
-					if (accion) {
-						limpiaPantalla();
-						JOptionPane.showMessageDialog(null, "Concepto borrado correctamente");
-					}else {
-						JOptionPane.showMessageDialog(null, "Error en el borrado del concepto");
-					}
-				} else System.out.println("vale... no borro nada...");
-			}
-		});
-
-		btnBaja.setBounds(193, 11, 127, 23);
-		frame.getContentPane().add(btnBaja);
-		
-		JButton btnModificar = new JButton("Modificar Concepto");
-		btnModificar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea modificar el concepto?", "Confirmar modificación", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if (JOptionPane.OK_OPTION == confirmado) {
-					conceptos.setIdConcepto(idConcepto);
-					accion = accConceptos.updateConcepto(conceptos);
-					if (accion) {
-						limpiaPantalla();
-						JOptionPane.showMessageDialog(null, "Concepto modificado correctamente");
-					}else {
-						JOptionPane.showMessageDialog(null, "error al modificar el concepto");
-					}
-				} else System.out.println("vale... no hago nada...");
-			}
-		});
-		btnModificar.setBounds(361, 11, 159, 23);
-		frame.getContentPane().add(btnModificar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
@@ -133,7 +118,7 @@ public class VentanaConceptosProyecto {
 				frame.dispose(); //esto cierra la ventana
 			}
 		});
-		btnVolver.setBounds(512, 119, 89, 23);
+		btnVolver.setBounds(212, 11, 89, 23);
 		frame.getContentPane().add(btnVolver);
 		
 		JButton btnLimpiar = new JButton("Limpiar");
@@ -142,58 +127,64 @@ public class VentanaConceptosProyecto {
 				limpiaPantalla();
 			}
 		});
-		btnLimpiar.setBounds(512, 153, 89, 23);
+		btnLimpiar.setBounds(311, 11, 89, 23);
 		frame.getContentPane().add(btnLimpiar);
 		
 		JButton btnMs = new JButton("M\u00E1s");
 		btnMs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				modelo.addRow(new Object[] {" ", " "," "});
+				modelo.addRow(new Object[] {" ", " "});
 			}
 		});
-		btnMs.setBounds(490, 222, 51, 23);
+		btnMs.setBounds(410, 11, 67, 23);
 		frame.getContentPane().add(btnMs);
 		
-		table_2 = new JTable();
-		table_2.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null},
-				{null, null},
-				{null, null},
-			},
-			new String[] {
-				"New column", "New column"
-			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				true, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea borrar el concepto "+table.getValueAt(fila, 0)+"?", "Confirmar borrado", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (JOptionPane.OK_OPTION == confirmado) {
+					modelo.removeRow(fila);
+					modelo.addRow(new Object[] {" ", " ", " "});
+				}
 			}
 		});
-		table_2.setBounds(98, 299, 301, 147);
-		frame.getContentPane().add(table_2);
+		btnEliminar.setBounds(113, 11, 89, 23);
+		frame.getContentPane().add(btnEliminar);
 		
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
 	//https://www.youtube.com/watch?v=jPfKFm2Yfow
 	private void montaTabla() {
-		modelo.setColumnIdentifiers(new Object[]{"Nombre","Importe",""});
-		table = new JTable(modelo);
-		modelo.addRow(new Object[] {" ", " "," "});
-		modelo.addRow(new Object[] {" ", " "," "});
-		modelo.addRow(new Object[] {" ", " "," "});
-		modelo.addRow(new Object[] {" ", " "," "});
+		Connection connection = accService.getConexion();
+		String consulta;
+		ConceptosDTO paramConsulta = new ConceptosDTO();
+		paramConsulta.setIdEmpresa(sesionGlobal.getIdEmpresa());
+		paramConsulta.setIdProyecto(sesionGlobal.getIdentificador());
+		consulta=accConceptos.creaConsulta(paramConsulta);
+												
+		ResultSet rs = accService.getTabla(consulta, connection);
 		
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(23, 45, 452, 200);
-		frame.getContentPane().add(scrollPane);		
-		
+		modelo.setColumnIdentifiers(new Object[]{"Nombre","Importe","IVA"});
+		try {
+			while (rs.next()) {
+				modelo.addRow(new Object[] {rs.getString("idConcepto"),rs.getDouble("importe"),rs.getDouble("iva")});
+			}
+			modelo.addRow(new Object[] {" ", " ", " "});
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 
 	protected void limpiaPantalla() {
-		// TODO Auto-generated method stub
+		int filas = table.getRowCount();
+		filas --;
+		for (int i = filas; i >= 0; i--) {
+			modelo.removeRow(i);
+		}
+		montaTabla();
 	}
 }

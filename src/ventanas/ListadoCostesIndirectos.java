@@ -27,6 +27,7 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Table;
 import com.opencsv.CSVWriter;
 
+import acciones.dto.ClientesDTO;
 import acciones.dto.CostesDTO;
 import acciones.dto.FacturasDTO;
 import acciones.dto.ObjetoJComboBox;
@@ -70,7 +71,19 @@ public class ListadoCostesIndirectos extends JFrame {
 		if (sesionGlobal.getNoPrincipal()=="S") {
 			CostesDTO paramConsulta = llenaParamConsulta();
 			llenaListado(paramConsulta);
-		}
+		} else {consutlaInicial();}
+	}
+	
+	private void consutlaInicial() {
+		CostesDTO salida = new CostesDTO();
+		salida.setTipoCoste(0);
+		salida.setProyecto(0);
+		salida.setConcepto(0);
+		salida.setIdEmpresa(sesionGlobal.getIdEmpresa());	
+		
+		guardaConsulta(salida);
+		llenaListado(salida);	
+		
 	}
 
 	private CostesDTO llenaParamConsulta() {
@@ -99,7 +112,7 @@ public class ListadoCostesIndirectos extends JFrame {
 				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
 			}
 		});
-		btnVolver.setBounds(529, 21, 89, 23);
+		btnVolver.setBounds(628, 21, 89, 23);
 		frame.getContentPane().add(btnVolver);
 
 		JButton btnBuscar = new JButton("Buscar");
@@ -149,7 +162,7 @@ public class ListadoCostesIndirectos extends JFrame {
 
 		});
 
-		btnBuscar.setBounds(42, 21, 89, 23);
+		btnBuscar.setBounds(157, 21, 89, 23);
 		frame.getContentPane().add(btnBuscar);
 
 		JButton btnExportarAPdf = new JButton("Exportar a PDF");
@@ -158,7 +171,7 @@ public class ListadoCostesIndirectos extends JFrame {
 				creaPdf(tablaPdf);
 			}
 		});
-		btnExportarAPdf.setBounds(173, 21, 134, 23);
+		btnExportarAPdf.setBounds(274, 21, 134, 23);
 		frame.getContentPane().add(btnExportarAPdf);
 		
 		JButton btnExportarExcel = new JButton("Exportar a Excel");
@@ -167,8 +180,20 @@ public class ListadoCostesIndirectos extends JFrame {
 				crearCsv();
 			}
 		});
-		btnExportarExcel.setBounds(364, 21, 134, 23);
+		btnExportarExcel.setBounds(445, 21, 134, 23);
 		frame.getContentPane().add(btnExportarExcel);
+		
+		JButton btnAlta = new JButton("Alta");
+		btnAlta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sesionGlobal.setIdentificador(0);
+				sesionGlobal.setNoPrincipal("S");
+				frame.dispose(); // esto cierra la ventana
+				VentanaCostesIndirectos ventana = new VentanaCostesIndirectos(sesionGlobal);
+			}
+		});
+		btnAlta.setBounds(35, 21, 89, 23);
+		frame.getContentPane().add(btnAlta);
 		
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);

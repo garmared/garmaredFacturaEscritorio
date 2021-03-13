@@ -2,7 +2,7 @@ package acciones.dto;
 
 public class ProyectosDTO {
 
-	private String descripcion,observaciones,web,iban;
+	private String descripcion,observaciones,web,iban,nombre;
 	private Integer idProyecto,empresa, fechaIni, fechaFin, fechaCierre, cliente,coste;
 	private double importe, margen;
 	
@@ -84,6 +84,12 @@ public class ProyectosDTO {
 	}
 	public void setCoste(Integer coste) {
 		this.coste = coste;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 	
 }

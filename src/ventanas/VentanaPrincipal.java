@@ -32,9 +32,7 @@ public class VentanaPrincipal implements ActionListener{
 		montaGestion(entrada);
 		montaProyectos();
 		montaFacturas();
-		montaClientesProveedores();
-		//montaClientes();
-				
+		montaClientesProveedores();				
 	}
 	
 	private void montaGestion(ServiceDTO entrada) {
@@ -45,10 +43,7 @@ public class VentanaPrincipal implements ActionListener{
 		//segundo nivel
 		Sopcion1 = new JMenu("Empresas");
 		Sopcion1.setMnemonic(KeyEvent.VK_E);
-		Sopcion2 = new JMenuItem("Conceptos");
-		Sopcion2.setMnemonic(KeyEvent.VK_C);
-		Sopcion3 = new JMenu("Costes");
-		Sopcion3.setMnemonic(KeyEvent.VK_O);
+
 		if (entrada.getAcceso() == 1) {
 			Sopcion4 = new JMenuItem("Usuarios");
 			Sopcion4.setMnemonic(KeyEvent.VK_U);
@@ -62,38 +57,21 @@ public class VentanaPrincipal implements ActionListener{
 		sub1.setMnemonic(KeyEvent.VK_G);
 		sub2 = new JMenuItem("Selecci\u00F3n empresa");
 		sub2.setMnemonic(KeyEvent.VK_S);
-		sub3 = new JMenuItem("Tipos de costes");
-		sub4 = new JMenu("Costes indirectos");
-		//cuarto nivel
-		sub5 = new JMenuItem("Gesti\u00F3n costes indirectos");
-		sub6 = new JMenuItem("Listado costes indirectos");
 		
-
-		sub4.add(sub5);
-		sub4.add(sub6);
 		Sopcion1.add(sub1);
 		Sopcion1.add(sub2);
-		Sopcion3.add(sub3);
-		Sopcion3.add(sub4);
-		
+				
 		opcion1.add(Sopcion1);
-		opcion1.add(Sopcion2);
-		opcion1.add(Sopcion3);
 		
-		if (entrada.getAcceso() == 1) {
-			opcion1.add(Sopcion4);
-		}
+		if (entrada.getAcceso() == 1) {opcion1.add(Sopcion4);}
 		opcion1.add(Sopcion5);
 		opcion1.add(Sopcion6);
 
 		
 		sub1.addActionListener(this);
 		sub2.addActionListener(this);
-		sub3.addActionListener(this);
-		sub5.addActionListener(this);
-		sub6.addActionListener(this);
-		Sopcion2.addActionListener(this);
-		Sopcion3.addActionListener(this);
+		
+				
 		if (entrada.getAcceso() == 1) {
 			Sopcion4.addActionListener(this);
 		}
@@ -105,18 +83,29 @@ public class VentanaPrincipal implements ActionListener{
 	private void montaProyectos() {
 		//primer nivel
 		opcion1 = new JMenu("Proyectos");
-		opcion1.setMnemonic(KeyEvent.VK_Y);
+		opcion1.setMnemonic(KeyEvent.VK_P);
 		//segundo nivel
-		Sopcion1 = new JMenuItem("Gesti\u00F3n Proyectos");
-		Sopcion1.setMnemonic(KeyEvent.VK_G);
-		Sopcion2 = new JMenuItem("Listado Proyectos");
-		Sopcion2.setMnemonic(KeyEvent.VK_L);
-		
-		opcion1.add(Sopcion1);
+		Sopcion2 = new JMenuItem("Proyectos");
+		Sopcion2.setMnemonic(KeyEvent.VK_P);
+		Sopcion3 = new JMenuItem("Conceptos");
+		Sopcion3.setMnemonic(KeyEvent.VK_C);
+		Sopcion4 = new JMenu("Costes");
+		Sopcion4.setMnemonic(KeyEvent.VK_O);
+		// tercer nivel
+		sub3 = new JMenuItem("Tipos de costes");
+		sub6 = new JMenuItem("Costes indirectos");
+
+		Sopcion4.add(sub3);
+		Sopcion4.add(sub6);
 		opcion1.add(Sopcion2);
+		opcion1.add(Sopcion3);
+		opcion1.add(Sopcion4);
 		
-		Sopcion1.addActionListener(this);
 		Sopcion2.addActionListener(this);
+		Sopcion3.addActionListener(this);
+		Sopcion4.addActionListener(this);
+		sub3.addActionListener(this);
+		sub6.addActionListener(this);
 		
 		menubar.add(opcion1);
 	}
@@ -159,19 +148,6 @@ public class VentanaPrincipal implements ActionListener{
 		
 		menubar.add(opcion1);
 	}	
-
-	private void montaClientes() {
-		//primer nivel
-		opcion1 = new JMenu("Clientes");
-		opcion1.setMnemonic(KeyEvent.VK_C);
-		//segundo nivel
-		sub1 = new JMenuItem("Clientes");
-		sub1.setMnemonic(KeyEvent.VK_C);
-		
-		sub1.addActionListener(this);
-		opcion1.add(sub1);
-		menubar.add(opcion1);
-	}
 
 	private void montaClientesProveedores() {
 		//primer nivel
@@ -227,18 +203,10 @@ public class VentanaPrincipal implements ActionListener{
 		// aqui añadimos las acciones de clik de las opciones.
 		String opcion = A.getActionCommand();
 		switch (opcion) {
-			/*case "Gesti\u00F3n Clientes":
-				ventana.dispose();
-				VentanaClientes clientes = new VentanaClientes(control);
-				break;*/
 			case "Clientes":
 				ventana.dispose();
 				ListadoClientes listadoClientes = new ListadoClientes(control);
 				break;
-			/*case "Gesti\u00F3n Proveedores":
-				ventana.dispose();
-				VentanaProveedores proveedores = new VentanaProveedores(control);
-				break;*/
 			case "Proveedores":
 				ventana.dispose();
 				ListadoProveedores listadoProveedores = new ListadoProveedores(control);
@@ -248,19 +216,11 @@ public class VentanaPrincipal implements ActionListener{
 				ventana.dispose();
 				VentanaCostes costes = new VentanaCostes(control);
 				break;
-			case "Gesti\u00F3n costes indirectos":
-				ventana.dispose();
-				VentanaCostesIndirectos costesIndirectos = new VentanaCostesIndirectos(control);
-				break;
-			case "Listado costes indirectos":
+			case "Costes indirectos":
 				ventana.dispose();
 				ListadoCostesIndirectos listadoIndirectos = new ListadoCostesIndirectos(control);
 				break;
-			case "Gesti\u00F3n Proyectos":
-				ventana.dispose();
-				VentanaProyectos proyecto = new VentanaProyectos(control);
-				break;
-			case "Listado Proyectos":
+			case "Proyectos":
 				ventana.dispose();
 				ListadoProyectos listadoProyectos = new ListadoProyectos(control);
 				break;

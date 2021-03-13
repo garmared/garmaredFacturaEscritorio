@@ -24,6 +24,7 @@ import acciones.service.impl.AccionesCostesImpl;
 import acciones.service.impl.AccionesEmpresasImpl;
 import acciones.service.impl.AccionesProyectosImpl;
 import acciones.service.impl.AccionesServiceImpl;
+import javax.swing.SwingConstants;
 
 public class VentanaProyectos {
 
@@ -66,6 +67,7 @@ public class VentanaProyectos {
 	private String dia,mes,ano,varFecha,fecha; 
 	private SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
 	private JButton btnConcepto;
+	private JTextField textNombre;
 	/**
 	 * Create the application.
 	 */
@@ -119,30 +121,30 @@ public class VentanaProyectos {
 		frame.getContentPane().add(textFCierre);
 		
 		lblDescripcin = new JLabel("Descripci\u00F3n");
-		lblDescripcin.setBounds(256, 159, 72, 14);
+		lblDescripcin.setBounds(40, 313, 72, 14);
 		frame.getContentPane().add(lblDescripcin);
 		
 		textDescripcion = new JTextField();
 		textDescripcion.setColumns(10);
-		textDescripcion.setBounds(333, 162, 96, 104);
+		textDescripcion.setBounds(117, 316, 418, 79);
 		frame.getContentPane().add(textDescripcion);
 		
 		lblWeb = new JLabel("Web");
-		lblWeb.setBounds(40, 88, 72, 14);
+		lblWeb.setBounds(40, 156, 72, 14);
 		frame.getContentPane().add(lblWeb);
 		
 		textWeb = new JTextField();
 		textWeb.setColumns(10);
-		textWeb.setBounds(133, 85, 96, 20);
+		textWeb.setBounds(133, 153, 96, 20);
 		frame.getContentPane().add(textWeb);
 		
 		lblIban = new JLabel("IBAN");
-		lblIban.setBounds(40, 159, 72, 14);
+		lblIban.setBounds(40, 211, 72, 14);
 		frame.getContentPane().add(lblIban);
 		
 		textIban = new JTextField();
 		textIban.setColumns(10);
-		textIban.setBounds(133, 156, 96, 20);
+		textIban.setBounds(133, 208, 96, 20);
 		frame.getContentPane().add(textIban);
 		
 		lblTipoCoste = new JLabel("Tipo Coste");
@@ -178,6 +180,14 @@ public class VentanaProyectos {
 				comboCliente.addItem(clientes.get(i));
 			}
 		}
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setBounds(40, 95, 72, 14);
+		frame.getContentPane().add(lblNombre);
+		
+		textNombre = new JTextField();
+		textNombre.setColumns(10);
+		textNombre.setBounds(133, 92, 296, 20);
+		frame.getContentPane().add(textNombre);
 		
 		textObservaciones = new JTextField();
 		textObservaciones.setColumns(10);
@@ -190,20 +200,20 @@ public class VentanaProyectos {
 		
 		textImporte = new JTextField();
 		textImporte.setColumns(10);
-		textImporte.setBounds(133, 215, 96, 20);
+		textImporte.setBounds(133, 239, 96, 20);
 		frame.getContentPane().add(textImporte);
 		
 		lblImporte = new JLabel("Importe");
-		lblImporte.setBounds(40, 218, 72, 14);
+		lblImporte.setBounds(40, 242, 72, 14);
 		frame.getContentPane().add(lblImporte);
 		
 		textMargen = new JTextField();
 		textMargen.setColumns(10);
-		textMargen.setBounds(133, 246, 96, 20);
+		textMargen.setBounds(350, 239, 96, 20);
 		frame.getContentPane().add(textMargen);
 		
 		lblMargen = new JLabel("Margen");
-		lblMargen.setBounds(40, 249, 72, 14);
+		lblMargen.setBounds(257, 242, 72, 14);
 		frame.getContentPane().add(lblMargen);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -226,6 +236,7 @@ public class VentanaProyectos {
 				ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
 				//llenamos el DTO de proyectos
 				ProyectosDTO entrada = new ProyectosDTO();
+				entrada.setNombre(textNombre.getText());
 				entrada.setDescripcion(textDescripcion.getText()); 
 				entrada.setWeb(textWeb.getText());
 				entrada.setIban(textIban.getText());
@@ -281,7 +292,7 @@ public class VentanaProyectos {
 				}
 			}
 		});
-		btnAlta.setBounds(54, 406, 109, 23);
+		btnAlta.setBounds(21, 406, 142, 23);
 		frame.getContentPane().add(btnAlta);
 		
 		JButton btnBaja = new JButton("Baja Proyecto");
@@ -300,7 +311,7 @@ public class VentanaProyectos {
 			}
 
 		});
-		btnBaja.setBounds(189, 406, 114, 23);
+		btnBaja.setBounds(189, 406, 139, 23);
 		frame.getContentPane().add(btnBaja);
 		
 		JButton btnModificar = new JButton("Modificar Proyecto");
@@ -320,7 +331,7 @@ public class VentanaProyectos {
 			}
 		});
 		
-		btnModificar.setBounds(335, 406, 135, 23);
+		btnModificar.setBounds(389, 406, 135, 23);
 		frame.getContentPane().add(btnModificar);
 		
 		JButton btnLimpiar = new JButton("Limpiar");
@@ -383,15 +394,18 @@ public class VentanaProyectos {
 		frame.getContentPane().add(btnBuscar);
 		
 		btnConcepto = new JButton("Conceptos");
+		if (sesionGlobal.getIdentificador() > 0) {
+			btnConcepto.setEnabled(true);
+		}else {btnConcepto.setEnabled(false);}
+		
 		btnConcepto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sesionGlobal.setInt1(idProyecto);
 				VentanaConceptosProyecto ventana = new VentanaConceptosProyecto(sesionGlobal);
 			}
 		});
-		btnConcepto.setBounds(40, 317, 109, 23);
+		btnConcepto.setBounds(389, 164, 109, 23);
 		frame.getContentPane().add(btnConcepto);
-	
+		
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
@@ -402,6 +416,7 @@ public class VentanaProyectos {
 		
 		proyecto.setIdProyecto(idProyecto);
 		proyecto.setDescripcion(textDescripcion.getText());
+		proyecto.setNombre(textNombre.getText());
 		dia = Integer.toString(textFCierre.getCalendar().get(Calendar.DAY_OF_MONTH));
 		if (textFCierre.getCalendar().get(Calendar.DAY_OF_MONTH)<10) {
 			dia = ("0"+dia);
@@ -451,36 +466,11 @@ public class VentanaProyectos {
 		return proyecto;
 	}
 
-	public void activaCampos() {
-		//mostramos todos los campos y etiquetas de pantalla
-		textDescripcion.setVisible(true);
-		textFCierre.setVisible(true);
-		textFFin.setVisible(true);
-		textFIni.setVisible(true);
-		textIban.setVisible(true);
-		textImporte.setVisible(true);
-		textMargen.setVisible(true);
-		textObservaciones.setVisible(true);
-		textWeb.setVisible(true);
-		
-		lblCliente.setVisible(true);
-		lblDescripcin.setVisible(true);
-		lblFechaCierre.setVisible(true);
-		lblFechaFin.setVisible(true);
-		lblFechaInicio.setVisible(true);
-		lblIban.setVisible(true);
-		lblImporte.setVisible(true);
-		lblMargen.setVisible(true);
-		lblWeb.setVisible(true);
-		lblTipoCoste.setVisible(true);
-		lblObservaciones.setVisible(true);
-	}
-
 	private void llenaCamposPantalla(ProyectosDTO entrada) {
 		//llenamos los campos de pantalla con el DTO de proyectos
 		idProyecto = entrada.getIdProyecto();
 		textDescripcion.setText(entrada.getDescripcion());
-		
+		textNombre.setText(entrada.getNombre());
 		fecha = String.valueOf(entrada.getFechaCierre());
 		try {
 			textFCierre.setDate(formato.parse(fecha));
@@ -522,6 +512,7 @@ public class VentanaProyectos {
 	private void limpiaPantalla() {
 		// TODO Auto-generated method stub
 		textDescripcion.setText(" ");
+		textNombre.setText(" ");
 		textFCierre.setDate(null);
 		textFFin.setDate(null);
 		textFIni.setDate(null);
