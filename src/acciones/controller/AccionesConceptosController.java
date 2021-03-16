@@ -10,7 +10,7 @@ public interface AccionesConceptosController {
 	//insert de conceptos
 	public Boolean grabarConcepto(ConceptosDTO conceptos);
 	//insert de conceptos de un proyecto
-    public Boolean grabarConceptoProyecto(ConceptosDTO conceptos);
+    public Boolean grabarConceptoProyecto(ArrayList<ConceptosDTO> conceptos);
 	//listado de identificadores de conceptos
 	public ArrayList<ObjetoJComboBox> consultaConceptos(int empresa);
 	//consulta concepto por descripción

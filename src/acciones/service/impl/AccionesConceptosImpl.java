@@ -45,9 +45,14 @@ public class AccionesConceptosImpl implements AccionesConceptosController{
 	}
 
 	@Override
-	public Boolean grabarConceptoProyecto(ConceptosDTO conceptos) {
+	public Boolean grabarConceptoProyecto(ArrayList<ConceptosDTO> conceptos) {
 		// TODO Auto-generated method stub
-		return accConceptos.grabarConcepProyecto(conceptos);
+		ConceptosDTO entrada= conceptos.get(0);
+		Boolean seguir = accConceptos.deleteConceptoProyecto(entrada.getIdProyecto());
+		if (seguir) {
+			seguir = accConceptos.grabarConcepProyecto(conceptos);
+		}
+		return seguir;
 	}
 	
 	public String creaConsulta(ConceptosDTO paramConsulta) {

@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -81,26 +82,31 @@ public class VentanaConceptosProyecto {
 		JButton btnAlta = new JButton("Grabar");
 		btnAlta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ArrayList<ConceptosDTO> entrada = new ArrayList<ConceptosDTO>();
 				accion = false;
 				//grabamos los datos.
-				conceptos = new ConceptosDTO();
-				conceptos.setIdEmpresa(sesionGlobal.getIdEmpresa());
-				int i = 0;
-				while (table.getValueAt(i, 0)!=" ") {
-					conceptos.setNombre(String.valueOf(table.getValueAt(i,0)));
-					conceptos.setImporte(Double.valueOf((String) (table.getValueAt(i,1))));
-					conceptos.setIva(Double.valueOf((String) (table.getValueAt(i,2))));
-					conceptos.setIdProyecto(sesionGlobal.getIdentificador());
-					accion= accConceptos.grabarConceptoProyecto(conceptos);
-					if (accion) {
-						i++;
-					}
-					else {
-						i = 0;
-						break;
+				int elementos = modelo.getRowCount();
+				for (int i = 0; i < elementos; i++) {
+					if (table.getValueAt(i, 0)!=" ") {
+						conceptos = new ConceptosDTO();
+						conceptos.setIdEmpresa(sesionGlobal.getIdEmpresa());
+						conceptos.setNombre(String.valueOf(table.getValueAt(i,0)));
+						if (table.getValueAt(i,1)== " "){
+							conceptos.setImporte(0);
+						} else {
+							conceptos.setImporte(Double.parseDouble(String.valueOf(modelo.getValueAt(i,1))));
+						}
+						if (table.getValueAt(i,2)== " "){
+							conceptos.setIva(0);
+						} else {
+							conceptos.setIva(Double.parseDouble(String.valueOf(modelo.getValueAt(i,2))));
+						}
+						conceptos.setIdProyecto(sesionGlobal.getIdentificador());
+						entrada.add(conceptos);
 					}
 				}
-				if (i>0) {
+				accion= accConceptos.grabarConceptoProyecto(entrada);
+				if (accion) {
 					limpiaPantalla();
 					JOptionPane.showMessageDialog(null, "Conceptos dados de alta correctamente");
 				}else {

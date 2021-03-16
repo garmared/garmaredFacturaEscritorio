@@ -7,6 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import org.apache.batik.dom.svg.IdContainer;
+
 import acciones.dto.ConceptosDTO;
 import acciones.dto.ObjetoJComboBox;
 import acciones.service.impl.AccionesServiceImpl;
@@ -146,17 +148,23 @@ public class AccionesConceptos{
 		}	
 	}
 
-	public Boolean grabarConcepProyecto(ConceptosDTO conceptos) {
+	public Boolean grabarConcepProyecto(ArrayList<ConceptosDTO> entrada) {
+		ConceptosDTO conceptos = new ConceptosDTO();
 		try{
 			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("INSERT INTO conceptoproyecto VALUES(?,?,?,?,?)");
-			stmt.setInt(1, conceptos.getIdProyecto());
-			stmt.setString(2, conceptos.getNombre());
-			stmt.setDouble(3, conceptos.getImporte());
-			stmt.setInt(4, conceptos.getIdEmpresa());
-			stmt.setDouble(5, conceptos.getIva());
+		    int elementos = entrada.size();
+		    for (int i=0; i<elementos;i++) {
+		    	conceptos = entrada.get(i);
+		    	stmt.setInt(1, conceptos.getIdProyecto());
+		    	stmt.setString(2, conceptos.getNombre());
+		    	stmt.setDouble(3, conceptos.getImporte());
+		    	stmt.setInt(4, conceptos.getIdEmpresa());
+		    	stmt.setDouble(5, conceptos.getIva());
+		    	stmt.addBatch();
+		    }
 					
-			stmt.executeUpdate();
+			stmt.executeBatch();
 			stmt.close();
 			connection.close();
 			return true;
@@ -165,4 +173,18 @@ public class AccionesConceptos{
 			return false;
 		}
 	}
+
+	public Boolean deleteConceptoProyecto(Integer idProyecto) {
+		try{
+			Connection connection=accService.getConexion();
+			PreparedStatement stmt = connection.prepareStatement("DELETE FROM conceptoproyecto WHERE idProyecto = ?");
+		    stmt.setInt(1,idProyecto);
+			stmt.executeUpdate();
+			stmt.close();
+			connection.close();
+			return true;
+		}catch(Exception ex){
+			System.out.println("Error en deleteConceptoProyecto: "+ex.getMessage().toString());
+			return false;
+		}		}
 }
