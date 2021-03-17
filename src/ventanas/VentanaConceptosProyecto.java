@@ -3,8 +3,6 @@ package ventanas;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,14 +10,10 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
-import com.itextpdf.layout.element.Table;
 
 import acciones.dto.ConceptosDTO;
 import acciones.dto.ServiceDTO;
@@ -86,20 +80,24 @@ public class VentanaConceptosProyecto {
 				accion = false;
 				//grabamos los datos.
 				int elementos = modelo.getRowCount();
+				String campo = "";
 				for (int i = 0; i < elementos; i++) {
-					if (table.getValueAt(i, 0)!=" ") {
+					campo = String.valueOf(table.getValueAt(i,0));
+					if (campo !=" " && campo != "") {
 						conceptos = new ConceptosDTO();
 						conceptos.setIdEmpresa(sesionGlobal.getIdEmpresa());
 						conceptos.setNombre(String.valueOf(table.getValueAt(i,0)));
-						if (table.getValueAt(i,1)== " "){
-							conceptos.setImporte(0);
-						} else {
+						campo = String.valueOf(table.getValueAt(i,1));
+						if (campo !=" " && campo != ""){
 							conceptos.setImporte(Double.parseDouble(String.valueOf(modelo.getValueAt(i,1))));
-						}
-						if (table.getValueAt(i,2)== " "){
-							conceptos.setIva(0);
 						} else {
+							conceptos.setImporte(0);
+						}
+						campo = String.valueOf(table.getValueAt(i,2));
+						if (campo !=" " && campo != ""){
 							conceptos.setIva(Double.parseDouble(String.valueOf(modelo.getValueAt(i,2))));
+						} else {
+							conceptos.setIva(0);							
 						}
 						conceptos.setIdProyecto(sesionGlobal.getIdentificador());
 						entrada.add(conceptos);
@@ -152,7 +150,7 @@ public class VentanaConceptosProyecto {
 				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea borrar el concepto "+table.getValueAt(fila, 0)+"?", "Confirmar borrado", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (JOptionPane.OK_OPTION == confirmado) {
 					modelo.removeRow(fila);
-					modelo.addRow(new Object[] {" ", " ", " "});
+					modelo.addRow(new Object[] {"", "", ""});
 				}
 			}
 		});
@@ -162,7 +160,7 @@ public class VentanaConceptosProyecto {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
-	//https://www.youtube.com/watch?v=jPfKFm2Yfow
+	
 	private void montaTabla() {
 		Connection connection = accService.getConexion();
 		String consulta;
@@ -178,7 +176,7 @@ public class VentanaConceptosProyecto {
 			while (rs.next()) {
 				modelo.addRow(new Object[] {rs.getString("idConcepto"),rs.getDouble("importe"),rs.getDouble("iva")});
 			}
-			modelo.addRow(new Object[] {" ", " ", " "});
+			modelo.addRow(new Object[] {"", "", ""});
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
