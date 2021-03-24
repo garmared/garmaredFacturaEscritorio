@@ -28,8 +28,9 @@ import acciones.service.impl.AccionesCostesImpl;
 import acciones.service.impl.AccionesEmpresasImpl;
 import acciones.service.impl.AccionesFacturaImpl;
 import acciones.service.impl.AccionesProyectosImpl;
+import plantillas.FacturaEmitida;
 
-public class VentanaFacturasE {
+public class VentanaFacturasE extends JFrame {
 
 	private JFrame frame;
 	private JDateChooser textVencimiento;
@@ -64,7 +65,7 @@ public class VentanaFacturasE {
 	public VentanaFacturasE(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize(sesionGlobal.getNombreEmpresa());
-		if (sesionGlobal.getNoPrincipal()=="S") {
+		if ((sesionGlobal.getNoPrincipal()=="S" &&(sesionGlobal.getIdentificador()!=0))) {
 			llenaPantalla();
 		}
 	}
@@ -331,6 +332,17 @@ public class VentanaFacturasE {
 		btnLimpiar.setBounds(335, 55, 89, 23);
 		frame.getContentPane().add(btnLimpiar);
 		
+
+		JButton btnPrint = new JButton("Vista preliminar");
+		btnPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sesionGlobal.setInt1(factura.getCliente());
+				FacturaEmitida ventana = new FacturaEmitida(sesionGlobal);
+			}
+		});
+		btnPrint.setBounds(289, 125, 135, 23);
+		frame.getContentPane().add(btnPrint);
+		
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -380,7 +392,7 @@ public class VentanaFacturasE {
 		});
 		btnBuscar.setBounds(335, 89, 89, 23);
 		frame.getContentPane().add(btnBuscar);
-			
+					
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}

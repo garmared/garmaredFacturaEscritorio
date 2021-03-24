@@ -59,7 +59,7 @@ public class VentanaFacturasR {
 	public VentanaFacturasR(ServiceDTO control) {
 		sesionGlobal = control;
 		initialize(sesionGlobal.getNombreEmpresa());
-		if (sesionGlobal.getNoPrincipal()=="S") {
+		if ((sesionGlobal.getNoPrincipal()=="S" &&(sesionGlobal.getIdentificador()!=0))) {
 			llenaPantalla();
 		}
 	}

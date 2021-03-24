@@ -115,34 +115,23 @@ public class VentanaPrincipal implements ActionListener{
 		opcion1 = new JMenu("Facturas");
 		opcion1.setMnemonic(KeyEvent.VK_F);
 		//segundo nivel
-		Sopcion1 = new JMenu("Emitidas");
+		Sopcion1 = new JMenuItem("Emitidas");
 		Sopcion1.setMnemonic(KeyEvent.VK_E);
-		Sopcion2 = new JMenu("Recibidas");
+		Sopcion2 = new JMenuItem("Recibidas");
 		Sopcion2.setMnemonic(KeyEvent.VK_R);
 		Sopcion3 = new JMenuItem("IVA");
 		Sopcion3.setMnemonic(KeyEvent.VK_I);
 		Sopcion4 = new JMenuItem("Modelo 347");
 		Sopcion4.setMnemonic(KeyEvent.VK_M);
-		//tercer nivel
-		sub1 = new JMenuItem("Gesti\u00F3n Emitidas");
-		sub2 = new JMenuItem("Listado Emitidas");
-		sub3 = new JMenuItem("Gesti\u00F3n Recibidas");
-		sub4 = new JMenuItem("Listado Recibidas");
 		
 		
-		Sopcion1.add(sub1);
-		Sopcion1.add(sub2);
-		Sopcion2.add(sub3);
-		Sopcion2.add(sub4);
 		opcion1.add(Sopcion1);
 		opcion1.add(Sopcion2);
 		opcion1.add(Sopcion3);
 		opcion1.add(Sopcion4);
 		
-		sub1.addActionListener(this);
-		sub2.addActionListener(this);
-		sub3.addActionListener(this);
-		sub4.addActionListener(this);
+		Sopcion1.addActionListener(this);
+		Sopcion2.addActionListener(this);
 		Sopcion3.addActionListener(this);
 		Sopcion4.addActionListener(this);
 		
@@ -224,19 +213,11 @@ public class VentanaPrincipal implements ActionListener{
 				ventana.dispose();
 				ListadoProyectos listadoProyectos = new ListadoProyectos(control);
 				break;
-			case "Gesti\u00F3n Emitidas":
-				ventana.dispose();
-				VentanaFacturasE facturas = new VentanaFacturasE(control);
-				break;
-			case "Listado Emitidas":
+			case "Emitidas":
 				ventana.dispose();
 				ListadoFacturasE listadoFacturas = new ListadoFacturasE(control);
 				break;
-			case "Gesti\u00F3n Recibidas":
-				ventana.dispose();
-				VentanaFacturasR facturasR = new VentanaFacturasR(control);
-				break;
-			case "Listado Recibidas":
+			case "Recibidas":
 				ventana.dispose();
 				ListadoFacturasR listadoFacturasR = new ListadoFacturasR(control);
 				break;

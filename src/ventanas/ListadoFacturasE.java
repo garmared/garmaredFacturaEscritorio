@@ -66,7 +66,19 @@ public class ListadoFacturasE {
 		if (sesionGlobal.getNoPrincipal()=="S") {
 			FacturasDTO paramConsulta = llenaParamConsulta();
 			llenaListado(paramConsulta);
-		}
+		}  else {consultaInicial();}
+	}
+
+	private void consultaInicial() {
+		FacturasDTO paramConsulta = new FacturasDTO();
+		paramConsulta.setCliente(0);
+		paramConsulta.setPagado("Todos");
+		paramConsulta.setCoste(0);
+		paramConsulta.setFecha(0);
+		paramConsulta.setEmpresa(sesionGlobal.getIdEmpresa());	
+		
+		guardaConsulta(paramConsulta);
+		llenaListado(paramConsulta);
 	}
 
 	private void llenaListado(FacturasDTO paramConsulta) {
@@ -143,7 +155,7 @@ public class ListadoFacturasE {
 				VentanaPrincipal ventana = new VentanaPrincipal(sesionGlobal);
 			}
 		});
-		btnVolver.setBounds(529, 21, 89, 23);
+		btnVolver.setBounds(528, 21, 89, 23);
 		frame.getContentPane().add(btnVolver);
 				
 		JButton btnBuscar = new JButton("Buscar");
@@ -200,7 +212,7 @@ public class ListadoFacturasE {
 
 		});
 
-		btnBuscar.setBounds(42, 21, 89, 23);
+		btnBuscar.setBounds(141, 21, 89, 23);
 		frame.getContentPane().add(btnBuscar);
 		
 		JButton btnExportarAPdf = new JButton("Exportar a PDF");
@@ -209,7 +221,7 @@ public class ListadoFacturasE {
 				creaPdf(tablaPdf);
 			}
 		});
-		btnExportarAPdf.setBounds(173, 21, 134, 23);
+		btnExportarAPdf.setBounds(240, 21, 134, 23);
 		frame.getContentPane().add(btnExportarAPdf);
 		
 		JButton btnExportarExcel = new JButton("Exportar a Excel");
@@ -218,8 +230,20 @@ public class ListadoFacturasE {
 				crearCsv();
 			}
 		});
-		btnExportarExcel.setBounds(364, 21, 134, 23);
+		btnExportarExcel.setBounds(384, 21, 134, 23);
 		frame.getContentPane().add(btnExportarExcel);
+		
+		JButton btnAlta = new JButton("Alta");
+		btnAlta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sesionGlobal.setIdentificador(0);
+				sesionGlobal.setNoPrincipal("S");
+				frame.dispose();
+				VentanaFacturasE ventana = new VentanaFacturasE(sesionGlobal);
+			}
+		});
+		btnAlta.setBounds(42, 21, 89, 23);
+		frame.getContentPane().add(btnAlta);
 		
 	
 		frame.setVisible(true);

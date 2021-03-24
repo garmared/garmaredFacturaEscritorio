@@ -66,7 +66,20 @@ public class ListadoFacturasR {
 		if (sesionGlobal.getNoPrincipal()=="S") {
 			FacturasDTO paramConsulta = llenaParamConsulta();
 			llenaListado(paramConsulta);
-		}
+		} else {consultaInicial();}
+	}
+
+	private void consultaInicial() {
+		FacturasDTO paramConsulta = new FacturasDTO();
+		paramConsulta.setProveedor(0);
+		paramConsulta.setPagado("Todos");
+		paramConsulta.setCoste(0);
+		paramConsulta.setFecha(0);
+		paramConsulta.setEmpresa(sesionGlobal.getIdEmpresa());	
+		
+		guardaConsulta(paramConsulta);
+		llenaListado(paramConsulta);
+		
 	}
 
 	private void llenaListado(FacturasDTO paramConsulta) {
@@ -87,7 +100,7 @@ public class ListadoFacturasR {
 				if (table.getSelectedRow() !=-1) {
 					int codigo = (int) modeloAux.getValueAt(table.getSelectedRow(), 0);
 					sesionGlobal.setIdentificador(codigo);
-					VentanaFacturasE ventana = new VentanaFacturasE(sesionGlobal);
+					VentanaFacturasR ventana = new VentanaFacturasR(sesionGlobal);
 				} else {JOptionPane.showMessageDialog(null, "Selecciona una única fila");}
 			}
 		});
@@ -198,7 +211,7 @@ public class ListadoFacturasR {
 
 		});
 
-		btnBuscar.setBounds(42, 21, 89, 23);
+		btnBuscar.setBounds(142, 21, 89, 23);
 		frame.getContentPane().add(btnBuscar);
 		
 		JButton btnExportarAPdf = new JButton("Exportar a PDF");
@@ -207,7 +220,7 @@ public class ListadoFacturasR {
 				creaPdf(tablaPdf);
 			}
 		});
-		btnExportarAPdf.setBounds(173, 21, 134, 23);
+		btnExportarAPdf.setBounds(241, 21, 134, 23);
 		frame.getContentPane().add(btnExportarAPdf);
 		
 		JButton btnExportarExcel = new JButton("Exportar a Excel");
@@ -216,8 +229,20 @@ public class ListadoFacturasR {
 				crearCsv();
 			}
 		});
-		btnExportarExcel.setBounds(364, 21, 134, 23);
+		btnExportarExcel.setBounds(385, 21, 134, 23);
 		frame.getContentPane().add(btnExportarExcel);
+		
+		JButton btnAlta = new JButton("Alta");
+		btnAlta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sesionGlobal.setIdentificador(0);
+				sesionGlobal.setNoPrincipal("S");
+				frame.dispose();
+				VentanaFacturasR ventana = new VentanaFacturasR(sesionGlobal);
+			}
+		});
+		btnAlta.setBounds(45, 21, 89, 23);
+		frame.getContentPane().add(btnAlta);
 		
 	
 		frame.setVisible(true);
