@@ -1,27 +1,23 @@
 package plantillas;
 
 import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.print.*;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterJob;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
-import acciones.controller.accionesPrint;
+import acciones.controller.imprimir;
 import acciones.dto.ConceptosDTO;
 import acciones.dto.ServiceDTO;
 import acciones.service.impl.AccionesConceptosImpl;
 import acciones.service.impl.AccionesServiceImpl;
-import java.awt.Button;
-import java.awt.FlowLayout;
-import java.awt.Font;
 
-public class Factura extends javax.swing.JFrame implements Printable {
+public class Factura extends javax.swing.JFrame{
 
 	private JFrame frame;
 	static ServiceDTO sesionGlobal;
@@ -72,6 +68,10 @@ public class Factura extends javax.swing.JFrame implements Printable {
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		frame.getContentPane().add(lblNewLabel);
 		
+		JLabel lblNewLabel_1 = new JLabel("Factura de la empresa X n\u00FAmero 123123");
+		lblNewLabel_1.setBounds(115, 120, 339, 22);
+		frame.getContentPane().add(lblNewLabel_1);
+		
 		btnNewButton = new JButton("Imprimir");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -90,7 +90,7 @@ public class Factura extends javax.swing.JFrame implements Printable {
 	public void mandarImprimir(JFrame frame2) {
 		PrinterJob	tarea = PrinterJob.getPrinterJob();
 		PageFormat format = tarea.pageDialog(tarea.defaultPage());
-		tarea.setPrintable(this,format);
+		tarea.setPrintable(new imprimir(frame2),format);
 		if (tarea.printDialog()) {
 			try {						
 				tarea.print();
@@ -100,17 +100,4 @@ public class Factura extends javax.swing.JFrame implements Printable {
 		}
 		
 	}
-
-	@Override
-	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
-		if (pageIndex == 0) {
-			Graphics2D impresion = (Graphics2D) graphics;
-			impresion.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-			this.paint(impresion);
-			impresion.drawString("hola", 100, 100);
-			return PAGE_EXISTS;
-		} else return NO_SUCH_PAGE;
-	}
-
-	
 }
