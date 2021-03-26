@@ -55,8 +55,8 @@ public class AccionesProyectos{
 						salida.add(temporal);
 					}
 					while(result.next()); 
-					}
-					
+				}
+				connection.close();	
 				return salida;
 			}catch(Exception ex){
 				System.out.println("Error en consultaProyectos: "+ex.getMessage().toString());
@@ -88,9 +88,11 @@ public class AccionesProyectos{
 					salida.setImporte(result.getDouble("importe"));
 					salida.setMargen(result.getDouble("margen"));
 					salida.setIban(result.getString("IBAN"));
+					connection.close();
 					return salida;
 				} else {
 					salida.setIdProyecto(0);
+					connection.close();
 					return salida;
 				}
 			}catch(Exception ex){
@@ -152,8 +154,10 @@ public class AccionesProyectos{
 				Statement stmt = connection.createStatement();
 				result = stmt.executeQuery(peticion);
 				if (result.next()){
+					connection.close();
 					return result.getString("descripcion");
 				} else {
+					connection.close();
 					return "";
 				}
 			}catch(Exception ex){
@@ -170,8 +174,10 @@ public class AccionesProyectos{
 				Statement stmt = connection.createStatement();
 				result = stmt.executeQuery(peticion);
 				if (result.next()){
+					connection.close();
 					return result.getInt("id_proyecto");
 				} else {
+					connection.close();
 					return 0;
 				}
 			}catch(Exception ex){
@@ -205,9 +211,11 @@ public class AccionesProyectos{
 					salida.setMargen(result.getDouble("margen"));
 					salida.setIban(result.getString("IBAN"));
 					salida.setNombre(result.getString("nombre"));
+					connection.close();
 					return salida;
 				} else {
 					salida.setIdProyecto(0);
+					connection.close();
 					return salida;
 				}
 			}catch(Exception ex){

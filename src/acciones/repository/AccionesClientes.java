@@ -60,8 +60,8 @@ public class AccionesClientes {
 					salida.add(temporal);
 				}
 				while(result.next()); 
-				}
-				
+			}
+			connection.close();	
 			return salida;
 		}catch(Exception ex){
 			System.out.println("Error en consultaClientes: "+ex.getMessage().toString());
@@ -99,9 +99,11 @@ public class AccionesClientes {
 				salida.setObservaciones(result.getString("observaciones"));
 				salida.setActivo(result.getString("activo"));
 				salida.setIdEmpresa(result.getInt("id_empresa"));
+				connection.close();
 				return salida;
 			} else {
 				salida.setIdCliente(0);
+				connection.close();
 				return salida;
 			}
 		}catch(Exception ex){
@@ -172,6 +174,7 @@ public class AccionesClientes {
 			} else {
 				salida = 0;
 			}
+			connection.close();
 			return salida;
 		}catch(Exception ex){
 			System.out.println("Error en buscaCliente: "+ex.getMessage().toString());
@@ -187,8 +190,10 @@ public class AccionesClientes {
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				connection.close();
 				return result.getString("Nombre");
 			} else {
+				connection.close();
 				return "";
 			}
 		}catch(Exception ex){
@@ -210,8 +215,8 @@ public class AccionesClientes {
 					salida.add(result.getString("Poblacion"));
 				}
 				while(result.next()); 
-				}
-				
+			}
+			connection.close();	
 			return salida;
 		}catch(Exception ex){
 			System.out.println("Error en buscaDireccion: "+ex.getMessage().toString());
@@ -248,9 +253,11 @@ public class AccionesClientes {
 				salida.setObservaciones(result.getString("observaciones"));
 				salida.setActivo(result.getString("activo"));
 				salida.setIdEmpresa(result.getInt("id_empresa"));
+				connection.close();
 				return salida;
 			} else {
 				salida.setIdCliente(0);
+				connection.close();
 				return salida;
 			}
 		}catch(Exception ex){

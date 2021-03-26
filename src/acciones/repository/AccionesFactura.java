@@ -68,9 +68,11 @@ public class AccionesFactura{
 				salida.setTasa(result.getDouble("tasa"));
 				salida.setVencimiento(result.getInt("vencimiento"));
 				salida.setPagado(result.getString("pagado"));
+				connection.close();
 				return salida;
 			} else {
 				salida.setIdFactura(0);
+				connection.close();
 				return salida;
 			}
 		}catch(Exception ex){
@@ -104,9 +106,11 @@ public class AccionesFactura{
 				salida.setTasa(result.getDouble("tasa"));
 				salida.setVencimiento(result.getInt("vencimiento"));
 				salida.setPagado(result.getString("pagado"));
+				connection.close();
 				return salida;
 			} else {
 				salida.setIdFactura(0);
+				connection.close();
 				return salida;
 			}
 		}catch(Exception ex){
@@ -186,6 +190,7 @@ public class AccionesFactura{
 				factura.setTasa(result.getDouble("tasa"));
 				factura.setVencimiento(result.getInt("vencimiento"));
 				factura.setPagado(result.getString("pagado"));
+				connection.close();
 				listaFacturas.add(factura);
 			}
 			stmt.close();

@@ -50,9 +50,11 @@ public class AccionesUsuarios {
 				salida.setApellidos(result.getString("apellidos"));
 				salida.setEmail(result.getString("email"));
 				salida.setNivelSeguridad(result.getInt("nivelSeguridad"));
+				connection.close();
 				return salida;
 			} else {
 				salida.setIdUsuario(0);
+				connection.close();
 				return salida;
 			}
 		}catch(Exception ex){
@@ -115,8 +117,8 @@ public class AccionesUsuarios {
 					salida.add(temporal);
 				}
 				while(result.next());
-		
 			} 
+			connection.close();
 			return salida;
 		}catch(Exception ex){
 			System.out.println("Error en listaUsuarios: "+ex.getMessage().toString());

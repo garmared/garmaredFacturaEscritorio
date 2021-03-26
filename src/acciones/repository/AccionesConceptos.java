@@ -48,8 +48,8 @@ public class AccionesConceptos{
 					salida.add(temporal);
 				}
 				while(result.next()); 
-				}
-				
+			}
+			connection.close();	
 			return salida;
 		}catch(Exception ex){
 			System.out.println("Error en consultaConceptos: "+ex.getMessage().toString());
@@ -69,9 +69,11 @@ public class AccionesConceptos{
 			if (result.next()){
 				salida.setIdConcepto(result.getInt("id_concepto"));
 				salida.setDescripcion(result.getString("descripcion"));
+				connection.close();
 				return salida;
 			} else {
 				salida.setIdConcepto(0);
+				connection.close();
 				return salida;
 			}
 		}catch(Exception ex){
@@ -120,8 +122,10 @@ public class AccionesConceptos{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				connection.close();
 				return result.getString("descripcion");
 			} else {
+				connection.close();
 				return "";
 			}
 		}catch(Exception ex){
@@ -138,8 +142,10 @@ public class AccionesConceptos{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				connection.close();
 				return result.getInt("id_concepto");
 			} else {
+				connection.close();
 				return 0;
 			}
 		}catch(Exception ex){
@@ -186,5 +192,6 @@ public class AccionesConceptos{
 		}catch(Exception ex){
 			System.out.println("Error en deleteConceptoProyecto: "+ex.getMessage().toString());
 			return false;
-		}		}
+		}		
+	}
 }

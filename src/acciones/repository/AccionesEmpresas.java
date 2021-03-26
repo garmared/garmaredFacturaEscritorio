@@ -22,8 +22,13 @@ public class AccionesEmpresas{
 			//las empresas no necesitan relacionarse con sigo mismas los proveedores se han de relacionar con una empresa.
 			int ind=0;
 			if (entrada.getTipo()=="E") {
-				stmt = connection.prepareStatement("INSERT INTO empresas VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				stmt = connection.prepareStatement("INSERT INTO empresas VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				stmt.setInt(1, 0);
+				stmt.setString(18, entrada.getRegMercantil());
+				stmt.setInt(19, entrada.getTomo());
+				stmt.setInt(20, entrada.getFolio());
+				stmt.setInt(21, entrada.getHoja());
+				stmt.setInt(22, entrada.getInscripcion());
 			}else {
 				stmt = connection.prepareStatement("INSERT INTO empresas VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				stmt.setInt(1, entrada.getIdEmpresa());
@@ -71,8 +76,8 @@ public class AccionesEmpresas{
 					salida.add(temporal);
 				}
 				while(result.next()); 
-				}
-				
+			}
+			connection.close();	
 			return salida;
 		}catch(Exception ex){
 			System.out.println("Error en listadoEmpresas: "+ex.getMessage().toString());
@@ -95,8 +100,8 @@ public class AccionesEmpresas{
 					salida.add(temporal);
 				}
 				while(result.next()); 
-				}
-				
+			}
+			connection.close();	
 			return salida;
 		}catch(Exception ex){
 			System.out.println("Error en consultaEmpresas: "+ex.getMessage().toString());
@@ -111,7 +116,13 @@ public class AccionesEmpresas{
 		try {
 			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			String peticion = "SELECT * FROM empresas WHERE Nombre = '"+empresas.getNombre()+"' AND tipo = '"+empresas.getTipo()+"' AND id_empresa = '"+empresas.getIdEmpresa()+"'";
+			String peticion ="";
+			if(empresas.getTipo()=="E") {
+				peticion = "SELECT * FROM empresas WHERE Nombre = '"+empresas.getNombre()+"' AND tipo = '"+empresas.getTipo()+"' AND empresa = '"+empresas.getIdEmpresa()+"'";
+			} else {
+				peticion = "SELECT * FROM empresas WHERE Nombre = '"+empresas.getNombre()+"' AND tipo = '"+empresas.getTipo()+"' AND id_empresa = '"+empresas.getIdEmpresa()+"'";
+			}
+			
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			//result.next();
@@ -134,9 +145,16 @@ public class AccionesEmpresas{
 				salida.setIban(result.getString("IBAN"));
 				salida.setObservaciones(result.getString("observaciones"));
 				salida.setActivo(result.getString("activo"));
+				salida.setRegMercantil(result.getString("reg_mercantil"));
+				salida.setTomo(result.getInt("tomo"));
+				salida.setFolio(result.getInt("folio"));
+				salida.setHoja(result.getInt("hoja"));
+				salida.setInscripcion(result.getInt("inscripcion"));
+				connection.close();
 				return salida;
 			} else {
 				salida.setIdEmpresa(0);
+				connection.close();
 				return salida;
 			}
 		}catch(Exception ex){
@@ -165,7 +183,7 @@ public class AccionesEmpresas{
 		try{
 			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("UPDATE empresas set CIF = ?, tipo = ?, Nombre = ?, Direccion = ?, Poblacion = ?, Provincia = ?, CP = ?, Telefono1=?, "
-		    		+ "Telefono2=?, Telefono3=?, Persona_contacto=?,mail=?,web=?,IBAN=?,observaciones=?,activo=? WHERE id_empresa = ?");
+		    		+ "Telefono2=?, Telefono3=?, Persona_contacto=?,mail=?,web=?,IBAN=?,observaciones=?,activo=?,reg_mercantil=?,tomo=?,folio=?,hoja=?,inscripcion=?  WHERE id_empresa = ?");
 		    stmt.setString(1, empresas.getCif());
 		    stmt.setString(2,empresas.getTipo());
 		    stmt.setString(3,empresas.getNombre());
@@ -182,7 +200,12 @@ public class AccionesEmpresas{
 			stmt.setString(14, empresas.getIban());
 			stmt.setString(15,empresas.getObservaciones());
 			stmt.setString(16,empresas.getActivo());
-			stmt.setInt(17, empresas.getIdEmpresa());
+			stmt.setInt(22, empresas.getIdEmpresa());
+			stmt.setString(17, empresas.getRegMercantil());
+			stmt.setInt(18, empresas.getTomo());
+			stmt.setInt(19, empresas.getFolio());
+			stmt.setInt(20, empresas.getHoja());
+			stmt.setInt(21, empresas.getInscripcion());
 			
 			stmt.executeUpdate();
 			stmt.close();
@@ -236,8 +259,10 @@ public class AccionesEmpresas{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				connection.close();
 				return result.getString("Nombre");
 			} else {
+				connection.close();
 				return "";
 			}
 		}catch(Exception ex){
@@ -254,8 +279,10 @@ public class AccionesEmpresas{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				connection.close();
 				return result.getInt("id_empresa");
 			} else {
+				connection.close();
 				return 0;
 			}
 		}catch(Exception ex){
@@ -277,8 +304,8 @@ public class AccionesEmpresas{
 					salida.add(result.getString("Poblacion"));
 				}
 				while(result.next()); 
-				}
-				
+			}
+			connection.close();	
 			return salida;
 		}catch(Exception ex){
 			System.out.println("Error en buscaDireccion: "+ex.getMessage().toString());
@@ -315,9 +342,11 @@ public class AccionesEmpresas{
 				salida.setIban(result.getString("IBAN"));
 				salida.setObservaciones(result.getString("observaciones"));
 				salida.setActivo(result.getString("activo"));
+				connection.close();
 				return salida;
 			} else {
 				salida.setIdEmpresa(0);
+				connection.close();
 				return salida;
 			}
 		}catch(Exception ex){
@@ -337,11 +366,61 @@ public class AccionesEmpresas{
 			result = stmt.executeQuery(peticion);
 			result.next();
 			salida = result.getInt("valor");
+			connection.close();
 		} catch (SQLException e) {
 			System.out.println("Error en numeraProveedor: "+e.getMessage().toString());
 			e.printStackTrace();
 		}
 		return salida;
 		
+	}
+
+	public EmpresasDTO buscaEmpresaId(EmpresasDTO empresas) {
+		EmpresasDTO salida = new EmpresasDTO();
+		try {
+			Connection connection=accService.getConexion();
+			ResultSet result =null;	
+			String peticion ="";
+			peticion = "SELECT * FROM empresas WHERE empresa = 0 AND tipo = '"+empresas.getTipo()+"' AND id_empresa = '"+empresas.getIdEmpresa()+"'";
+			
+			
+			Statement stmt = connection.createStatement();
+			result = stmt.executeQuery(peticion);
+			//result.next();
+			if (result.next()){
+				salida.setIdEmpresa(result.getInt("id_empresa"));
+				salida.setEmpresa(result.getInt("empresa"));
+				salida.setCif(result.getString("CIF"));
+				salida.setTipo(result.getString("tipo"));
+				salida.setNombre(result.getString("Nombre"));
+				salida.setDireccion(result.getString("Direccion"));
+				salida.setPoblacion(result.getString("Poblacion"));
+				salida.setProvincia(result.getString("Provincia"));
+				salida.setCp(result.getInt("CP"));
+				salida.setTelefono1(result.getInt("Telefono1"));
+				salida.setTelefono2(result.getInt("Telefono2"));
+				salida.setTelefono3(result.getInt("Telefono3"));
+				salida.setPersonaContacto(result.getString("Persona_contacto"));
+				salida.setMail(result.getString("mail"));
+				salida.setWeb(result.getString("web"));
+				salida.setIban(result.getString("IBAN"));
+				salida.setObservaciones(result.getString("observaciones"));
+				salida.setActivo(result.getString("activo"));
+				salida.setRegMercantil(result.getString("reg_mercantil"));
+				salida.setTomo(result.getInt("tomo"));
+				salida.setFolio(result.getInt("folio"));
+				salida.setHoja(result.getInt("hoja"));
+				salida.setInscripcion(result.getInt("inscripcion"));
+				connection.close();
+				return salida;
+			} else {
+				salida.setIdEmpresa(0);
+				connection.close();
+				return salida;
+			}
+		}catch(Exception ex){
+			System.out.println("Error en buscaEmpresa: "+ex.getMessage().toString());
+			return null;
+		}	
 	}
 }
