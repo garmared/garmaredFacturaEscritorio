@@ -65,4 +65,8 @@ public class AccionesConceptosImpl implements AccionesConceptosController{
 		return consulta = consulta + order;
 	}
 
+	public ArrayList<ConceptosDTO> buscaConceptos(Integer proyecto, Integer empresa) {
+		return accConceptos.consultaConceptosProyecto(proyecto,empresa);
+	}
+
 }

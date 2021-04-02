@@ -77,6 +77,7 @@ public class AccionesEmpresas{
 				}
 				while(result.next()); 
 			}
+			stmt.close();
 			connection.close();	
 			return salida;
 		}catch(Exception ex){
@@ -279,9 +280,12 @@ public class AccionesEmpresas{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				int salida = result.getInt("id_empresa");
+				stmt.close();
 				connection.close();
-				return result.getInt("id_empresa");
+				return salida;
 			} else {
+				stmt.close();
 				connection.close();
 				return 0;
 			}
@@ -305,6 +309,7 @@ public class AccionesEmpresas{
 				}
 				while(result.next()); 
 			}
+			stmt.close();
 			connection.close();	
 			return salida;
 		}catch(Exception ex){
@@ -342,10 +347,12 @@ public class AccionesEmpresas{
 				salida.setIban(result.getString("IBAN"));
 				salida.setObservaciones(result.getString("observaciones"));
 				salida.setActivo(result.getString("activo"));
+				stmt.close();
 				connection.close();
 				return salida;
 			} else {
 				salida.setIdEmpresa(0);
+				stmt.close();
 				connection.close();
 				return salida;
 			}
@@ -366,6 +373,7 @@ public class AccionesEmpresas{
 			result = stmt.executeQuery(peticion);
 			result.next();
 			salida = result.getInt("valor");
+			stmt.close();
 			connection.close();
 		} catch (SQLException e) {
 			System.out.println("Error en numeraProveedor: "+e.getMessage().toString());
@@ -411,10 +419,12 @@ public class AccionesEmpresas{
 				salida.setFolio(result.getInt("folio"));
 				salida.setHoja(result.getInt("hoja"));
 				salida.setInscripcion(result.getInt("inscripcion"));
+				stmt.close();
 				connection.close();
 				return salida;
 			} else {
 				salida.setIdEmpresa(0);
+				stmt.close();
 				connection.close();
 				return salida;
 			}

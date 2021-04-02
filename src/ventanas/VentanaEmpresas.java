@@ -62,6 +62,11 @@ public class VentanaEmpresas {
 	private EmpresasDTO empresas;
 	private int idEmpresa;
 	private ObjetoJComboBox temporal = new ObjetoJComboBox(0,"");
+	private JTextField textRegCivil;
+	private JTextField textTomo;
+	private JTextField textFolio;
+	private JTextField textHoja;
+	private JTextField textInscripcion;
 
 	/**
 	 * Launch the application.
@@ -92,12 +97,11 @@ public class VentanaEmpresas {
 	 */
 	private void initialize() {
 		frame = new JFrame("Empresa");
-		frame.setBounds(100, 100, 540, 485);
+		frame.setBounds(100, 100, 540, 800);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		
+				
 		textCif = new JTextField();
 		textCif.setBounds(116, 8, 96, 20);
 		frame.getContentPane().add(textCif);
@@ -198,16 +202,16 @@ public class VentanaEmpresas {
 		frame.getContentPane().add(textWeb);
 		
 		JLabel lblIban = new JLabel("IBAN");
-		lblIban.setBounds(10, 322, 75, 14);
+		lblIban.setBounds(10, 298, 75, 14);
 		frame.getContentPane().add(lblIban);
 		
 		textIban = new JTextField();
 		textIban.setColumns(10);
-		textIban.setBounds(116, 322, 96, 20);
+		textIban.setBounds(116, 298, 96, 20);
 		frame.getContentPane().add(textIban);
 		
 		JLabel lblActivo = new JLabel("Activo");
-		lblActivo.setBounds(255, 323, 48, 14);
+		lblActivo.setBounds(255, 299, 48, 14);
 		frame.getContentPane().add(lblActivo);
 		JLabel lblCP = new JLabel("C\u00F3digo Postal");
 		lblCP.setBounds(255, 129, 89, 14);
@@ -219,20 +223,20 @@ public class VentanaEmpresas {
 		frame.getContentPane().add(textCP);
 		
 		JLabel lblObservaciones = new JLabel("Observaciones");
-		lblObservaciones.setBounds(10, 350, 96, 14);
+		lblObservaciones.setBounds(10, 326, 96, 14);
 		frame.getContentPane().add(lblObservaciones);
 		
 		textObserv = new JTextField();
 		textObserv.setColumns(10);
-		textObserv.setBounds(116, 350, 96, 20);
+		textObserv.setBounds(116, 326, 96, 20);
 		frame.getContentPane().add(textObserv);
 
 		rdbtnSi = new JRadioButton("Si");
-		rdbtnSi.setBounds(309, 318, 44, 23);
+		rdbtnSi.setBounds(309, 294, 44, 23);
 		frame.getContentPane().add(rdbtnSi);
 		
 		rdbtnNo = new JRadioButton("No");
-		rdbtnNo.setBounds(354, 318, 44, 23);
+		rdbtnNo.setBounds(354, 294, 44, 23);
 		rdbtnSi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rdbtnNo.setSelected(false);
@@ -247,43 +251,60 @@ public class VentanaEmpresas {
 		});
 		frame.getContentPane().add(rdbtnNo);
 		
-	
-		final JLabel lblError = new JLabel("");
-		lblError.setBounds(10, 375, 414, 14);
-		frame.getContentPane().add(lblError);
+		JLabel lblRegistroCivil = new JLabel("Regsitro Civil");
+		lblRegistroCivil.setBounds(10, 373, 96, 14);
+		frame.getContentPane().add(lblRegistroCivil);
+		
+		textRegCivil = new JTextField();
+		textRegCivil.setColumns(10);
+		textRegCivil.setBounds(116, 373, 96, 20);
+		frame.getContentPane().add(textRegCivil);
+		
+		JLabel lblTomo = new JLabel("Tomo");
+		lblTomo.setBounds(239, 373, 53, 14);
+		frame.getContentPane().add(lblTomo);
+		
+		textTomo = new JTextField();
+		textTomo.setColumns(10);
+		textTomo.setBounds(302, 370, 96, 20);
+		frame.getContentPane().add(textTomo);
+		
+		JLabel lblFolio = new JLabel("Folio");
+		lblFolio.setBounds(10, 404, 96, 14);
+		frame.getContentPane().add(lblFolio);
+		
+		textFolio = new JTextField();
+		textFolio.setColumns(10);
+		textFolio.setBounds(116, 404, 96, 20);
+		frame.getContentPane().add(textFolio);
+		
+		JLabel lblHoja = new JLabel("Hoja");
+		lblHoja.setBounds(239, 404, 44, 14);
+		frame.getContentPane().add(lblHoja);
+		
+		textHoja = new JTextField();
+		textHoja.setColumns(10);
+		textHoja.setBounds(305, 401, 96, 20);
+		frame.getContentPane().add(textHoja);
+		
+		JLabel lblInscripcion = new JLabel("Inscripci\u00F3n");
+		lblInscripcion.setBounds(10, 435, 96, 14);
+		frame.getContentPane().add(lblInscripcion);
+		
+		textInscripcion = new JTextField();
+		textInscripcion.setColumns(10);
+		textInscripcion.setBounds(116, 435, 96, 20);
+		frame.getContentPane().add(textInscripcion);
 		
 		JButton btnAltaEmpresa = new JButton("Alta Empresa");
-		btnAltaEmpresa.setBounds(37, 400, 124, 23);
+		btnAltaEmpresa.setBounds(38, 506, 124, 23);
 		frame.getContentPane().add(btnAltaEmpresa);
 		btnAltaEmpresa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String nombre, cif, direccion, poblacion, provincia, personaContacto, mail, web, observaciones,activo,iban;
-				Integer cp, telefono1, telefono2, telefono3;
-				//Boolean accion = false;
 				//llenamos el DTO de empresas
-				EmpresasDTO entrada = new EmpresasDTO();
-				if (rdbtnSi.isSelected() == true) {
-					entrada.setActivo("S");
-				} else {entrada.setActivo("N");}
-				
-				entrada.setCif(textCif.getText());
-				entrada.setCp(Integer.valueOf(textCP.getText()));
-				entrada.setDireccion(textDireccion.getText());
-				entrada.setMail(textMail.getText());
-				entrada.setIban(textIban.getText());
-				entrada.setNombre(textNombre.getText());
-				entrada.setObservaciones(textObserv.getText());
-				entrada.setPersonaContacto(textPersonaContact.getText());
-				entrada.setPoblacion(textPoblacion.getText());
-				entrada.setProvincia(textProvincia.getText());
-				entrada.setTelefono1(Integer.valueOf(textTelefono1.getText()));
-				entrada.setTelefono2(Integer.valueOf(textTelefono2.getText()));
-				entrada.setTelefono3(Integer.valueOf(textTelefono3.getText()));
-				entrada.setWeb(textWeb.getText());
-				entrada.setTipo("E");
-				
+				empresas = llenaCamposDto();
 				//grabamos los datos. Es igual que en proveedor pero el TIPO es "E" de empresas.
-				accion= accEmpresas.grabarEmpresas(entrada);
+				accion= accEmpresas.grabarEmpresas(empresas);
 				if (accion) {
 					limpiaPantalla();
 					JOptionPane.showMessageDialog(null, "Empresa dada de alta correctamente");
@@ -310,7 +331,7 @@ public class VentanaEmpresas {
 			}
 		});
 
-		btnBaja.setBounds(171, 400, 123, 23);
+		btnBaja.setBounds(172, 506, 123, 23);
 		frame.getContentPane().add(btnBaja);
 		
 		JButton btnModificar = new JButton("Modificar Empresa");
@@ -330,7 +351,7 @@ public class VentanaEmpresas {
 			}
 		});
 
-		btnModificar.setBounds(304, 400, 160, 23);
+		btnModificar.setBounds(305, 506, 160, 23);
 		frame.getContentPane().add(btnModificar);
 		
 
@@ -349,7 +370,7 @@ public class VentanaEmpresas {
 		
 		separator.setForeground(Color.BLACK);
 		separator.setBackground(Color.BLACK);
-		separator.setBounds(433, 375, -422, -7);
+		separator.setBounds(433, 351, -422, -7);
 		separator.setVisible(true);
 		frame.getContentPane().add(separator);
 		
@@ -368,7 +389,7 @@ public class VentanaEmpresas {
 				String nomBuscado = JOptionPane.showInputDialog("Escribe la empresa a buscar");
 				if (nomBuscado != null){
 					if (nomBuscado == "" || nomBuscado.isEmpty()) {
-						activaCampos();
+						
 					}else {
 						empresas = new EmpresasDTO();
 						empresas.setIdEmpresa(0);
@@ -380,7 +401,6 @@ public class VentanaEmpresas {
 						} else {
 							initialize();
 							llenaCamposPantalla(empresas);
-							lblError.setText("");
 						}
 					}
 				}				
@@ -389,77 +409,12 @@ public class VentanaEmpresas {
 
 		btnBuscar.setBounds(425, 79, 89, 23);
 		frame.getContentPane().add(btnBuscar);
-	
+		
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
 	
-	public void ocultarCampos() {
-		//ocultamos todos los campos y etiquetas de pantalla excepto el NOMBRE
-		textCif.setVisible(false);
-		textDireccion.setVisible(false);
-		textPoblacion.setVisible(false);
-		textProvincia.setVisible(false);
-		textTelefono1.setVisible(false);
-		textTelefono2.setVisible(false);
-		textTelefono3.setVisible(false);
-		textPersonaContact.setVisible(false);
-		textWeb.setVisible(false);
-		textMail.setVisible(false);
-		textIban.setVisible(false);
-		textObserv.setVisible(false);
-		textCP.setVisible(false);
-		lblCif.setVisible(false);
-		lblDireccin.setVisible(false);
-		lblPoblacin.setVisible(false);
-		lblProvincia.setVisible(false);
-		lblTelfono.setVisible(false);
-		lblMvil.setVisible(false);
-		lblMvil1.setVisible(false);
-		lblPersonaContacto.setVisible(false);
-		lblCorreo.setVisible(false);
-		lblWeb.setVisible(false);
-		lblIban.setVisible(false);
-		lblObservaciones.setVisible(false);
-		lblCP.setVisible(false);
-		lblActivo.setVisible(false);
-		rdbtnSi.setVisible(false);
-		rdbtnNo.setVisible(false);
-	}
 	
-	public void activaCampos() {
-		//mostramos todos los campos y etiquetas de pantalla
-		textCif.setVisible(true);
-		textDireccion.setVisible(true);
-		textPoblacion.setVisible(true);
-		textProvincia.setVisible(true);
-		textTelefono1.setVisible(true);
-		textTelefono2.setVisible(true);
-		textTelefono3.setVisible(true);
-		textPersonaContact.setVisible(true);
-		textWeb.setVisible(true);
-		textMail.setVisible(true);
-		textIban.setVisible(true);
-		textObserv.setVisible(true);
-		textCP.setVisible(true);
-		lblCif.setVisible(true);
-		lblDireccin.setVisible(true);
-		lblPoblacin.setVisible(true);
-		lblProvincia.setVisible(true);
-		lblTelfono.setVisible(true);
-		lblMvil.setVisible(true);
-		lblMvil1.setVisible(true);
-		lblPersonaContacto.setVisible(true);
-		lblCorreo.setVisible(true);
-		lblWeb.setVisible(true);
-		lblObservaciones.setVisible(true);
-		lblIban.setVisible(true);
-		lblActivo.setVisible(true);
-		rdbtnSi.setVisible(true);
-		rdbtnNo.setVisible(true);
-	}
-
-
 	private void llenaCamposPantalla(EmpresasDTO entrada) {
 		//llenamos los campos de pantalla con el DTO de clientes
 		idEmpresa = entrada.getIdEmpresa();
@@ -485,6 +440,11 @@ public class VentanaEmpresas {
 			rdbtnNo.setSelected(true);
 			rdbtnSi.setSelected(false);
 		}
+		textRegCivil.setText(entrada.getRegMercantil());
+		textTomo.setText(String.valueOf(entrada.getTomo()));
+		textFolio.setText(String.valueOf(entrada.getFolio()));
+		textHoja.setText(String.valueOf(entrada.getHoja()));
+		textInscripcion.setText(String.valueOf(entrada.getInscripcion()));
 	}
 	
 	private  EmpresasDTO llenaCamposDto(){
@@ -510,6 +470,12 @@ public class VentanaEmpresas {
 		if (rdbtnSi.isSelected() == true) {
 			empresas.setActivo("S");
 		} else {empresas.setActivo("N");}
+		
+		empresas.setRegMercantil(textRegCivil.getText());
+		empresas.setTomo(Integer.valueOf(textTomo.getText()));
+		empresas.setFolio(Integer.valueOf(textFolio.getText()));
+		empresas.setHoja(Integer.valueOf(textHoja.getText()));
+		empresas.setInscripcion(Integer.valueOf(textInscripcion.getText()));
 				
 		return empresas;
 	}
@@ -531,5 +497,10 @@ public class VentanaEmpresas {
 		textCP.setText(" ");
 		rdbtnSi.setSelected(false);
 		rdbtnNo.setSelected(false);
+		textRegCivil.setText(" ");
+		textTomo.setText(" ");
+		textFolio.setText(" ");
+		textHoja.setText(" ");
+		textInscripcion.setText(" ");
 	}
 }

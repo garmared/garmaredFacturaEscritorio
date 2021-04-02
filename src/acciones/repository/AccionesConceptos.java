@@ -49,6 +49,7 @@ public class AccionesConceptos{
 				}
 				while(result.next()); 
 			}
+			stmt.close();
 			connection.close();	
 			return salida;
 		}catch(Exception ex){
@@ -69,10 +70,12 @@ public class AccionesConceptos{
 			if (result.next()){
 				salida.setIdConcepto(result.getInt("id_concepto"));
 				salida.setDescripcion(result.getString("descripcion"));
+				stmt.close();
 				connection.close();
 				return salida;
 			} else {
 				salida.setIdConcepto(0);
+				stmt.close();
 				connection.close();
 				return salida;
 			}
@@ -122,9 +125,12 @@ public class AccionesConceptos{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				String salida = result.getString("descripcion");
+				stmt.close();
 				connection.close();
-				return result.getString("descripcion");
+				return salida;
 			} else {
+				stmt.close();
 				connection.close();
 				return "";
 			}
@@ -142,9 +148,12 @@ public class AccionesConceptos{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				int salida = result.getInt("id_concepto");
+				stmt.close();
 				connection.close();
-				return result.getInt("id_concepto");
+				return salida;
 			} else {
+				stmt.close();
 				connection.close();
 				return 0;
 			}
@@ -193,5 +202,32 @@ public class AccionesConceptos{
 			System.out.println("Error en deleteConceptoProyecto: "+ex.getMessage().toString());
 			return false;
 		}		
+	}
+
+	public ArrayList<ConceptosDTO> consultaConceptosProyecto(Integer proyecto, Integer empresa) {
+		try {
+			Connection connection=accService.getConexion();
+			ResultSet result =null;
+			ArrayList<ConceptosDTO> salida= new ArrayList<ConceptosDTO>();
+			String peticion = "SELECT idConcepto, importe, iva FROM conceptoproyecto WHERE idProyecto = "+proyecto+" AND empresa = "+empresa+"";
+			Statement stmt = connection.createStatement();
+			result = stmt.executeQuery(peticion);
+			if (result.next());{
+				do {
+					ConceptosDTO temporal = new ConceptosDTO();
+					temporal.setDescripcion(result.getString("idConcepto"));
+					temporal.setImporte(result.getDouble("importe"));
+					temporal.setIva(result.getDouble("iva"));
+					salida.add(temporal);
+				}
+				while(result.next()); 
+			}
+			stmt.close();
+			connection.close();	
+			return salida;
+		}catch(Exception ex){
+			System.out.println("Error en consultaConceptos: "+ex.getMessage().toString());
+			return null;
+		}	
 	}
 }

@@ -47,6 +47,7 @@ public class AccionesCostes{
 				}
 				while(result.next()); 
 			}
+			stmt.close();
 			connection.close();	
 			return salida;
 		}catch(Exception ex){
@@ -68,10 +69,12 @@ public class AccionesCostes{
 				salida.setIdCoste(result.getInt("id_coste"));
 				salida.setDescripcion(result.getString("descripcion"));
 				salida.setIdEmpresa(result.getInt("id_empresa"));
+				stmt.close();
 				connection.close();
 				return salida;
 			} else {
 				salida.setIdCoste(0);
+				stmt.close();
 				connection.close();
 				return salida;
 			}
@@ -121,9 +124,11 @@ public class AccionesCostes{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				stmt.close();
 				connection.close();
 				return result.getString("descripcion");
 			} else {
+				stmt.close();
 				connection.close();
 				return "";
 			}
@@ -141,9 +146,12 @@ public class AccionesCostes{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				int salida = result.getInt("id_coste");
+				stmt.close();
 				connection.close();
-				return result.getInt("id_coste");
+				return salida;
 			} else {
+				stmt.close();
 				connection.close();
 				return 0;
 			}
@@ -161,9 +169,12 @@ public class AccionesCostes{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				String salida = result.getString("descripcion");
+				stmt.close();
 				connection.close();
-				return result.getString("descripcion");
+				return salida;
 			} else {
+				stmt.close();
 				connection.close();
 				return "";
 			}
@@ -181,9 +192,12 @@ public class AccionesCostes{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				int salida = result.getInt("id_coste");
+				stmt.close();
 				connection.close();
-				return result.getInt("id_coste");
+				return salida;
 			} else {
+				stmt.close();
 				connection.close();
 				return 0;
 			}
@@ -231,10 +245,12 @@ public class AccionesCostes{
 				salida.setConcepto(result.getInt("id_concepto"));
 				salida.setTipoCoste(result.getInt("id_coste"));
 				salida.setImporte(result.getDouble("importe"));
+				stmt.close();
 				connection.close();
 				return salida;
 			} else {
 				salida.setIdCoste(0);
+				stmt.close();
 				connection.close();
 				return salida;
 			}
@@ -262,10 +278,12 @@ public class AccionesCostes{
 				salida.setTipoCoste(result.getInt("id_coste"));
 				salida.setImporte(result.getDouble("importe"));
 				salida.setProyecto(result.getInt("id_proyecto"));
+				stmt.close();
 				connection.close();
 				return salida;
 			} else {
 				salida.setIdCoste(0);
+				stmt.close();
 				connection.close();
 				return salida;
 			}

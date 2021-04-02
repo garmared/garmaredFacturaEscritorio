@@ -4,7 +4,7 @@ public class ServiceDTO{
 
 	private Integer altoVentana, anchoVentana, acceso, idEmpresa, identificador;
 	private String nombreEmpresa, noPrincipal;
-	private Integer int1, int2, int3, int4;
+	private Integer int1, int2, int3, int4, int5;
 	private String char1, char2, char3, char4;
 
 	public Integer getAltoVentana() {
@@ -135,6 +135,14 @@ public class ServiceDTO{
 
 	public void setChar4(String char4) {
 		this.char4 = char4;
+	}
+
+	public Integer getInt5() {
+		return int5;
+	}
+
+	public void setInt5(Integer int5) {
+		this.int5 = int5;
 	}
 
 	

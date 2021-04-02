@@ -82,4 +82,9 @@ public class AccionesEmpresasImpl implements AccionesEmpresasController{
 		return accEmpresa.buscaProveedor(identificador,empresa);
 	}
 
+	public EmpresasDTO buscaEmpresaId(EmpresasDTO empresa) {
+		// TODO Auto-generated method stub
+		return accEmpresa.buscaEmpresaId(empresa);
+	}
+
 }

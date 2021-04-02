@@ -336,7 +336,7 @@ public class VentanaFacturasE extends JFrame {
 		JButton btnPrint = new JButton("Vista preliminar");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sesionGlobal.setInt1(factura.getCliente());
+				sesionGlobal.setInt5(factura.getCliente());
 				FacturaEmitida ventana = new FacturaEmitida(sesionGlobal);
 			}
 		});

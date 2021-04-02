@@ -61,6 +61,7 @@ public class AccionesClientes {
 				}
 				while(result.next()); 
 			}
+			stmt.close();
 			connection.close();	
 			return salida;
 		}catch(Exception ex){
@@ -99,10 +100,12 @@ public class AccionesClientes {
 				salida.setObservaciones(result.getString("observaciones"));
 				salida.setActivo(result.getString("activo"));
 				salida.setIdEmpresa(result.getInt("id_empresa"));
+				stmt.close();
 				connection.close();
 				return salida;
 			} else {
 				salida.setIdCliente(0);
+				stmt.close();
 				connection.close();
 				return salida;
 			}
@@ -174,6 +177,7 @@ public class AccionesClientes {
 			} else {
 				salida = 0;
 			}
+			stmt.close();
 			connection.close();
 			return salida;
 		}catch(Exception ex){
@@ -190,9 +194,12 @@ public class AccionesClientes {
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				String salida = result.getString("Nombre"); 
+				stmt.close();
 				connection.close();
-				return result.getString("Nombre");
+				return salida;
 			} else {
+				stmt.close();
 				connection.close();
 				return "";
 			}
@@ -216,6 +223,7 @@ public class AccionesClientes {
 				}
 				while(result.next()); 
 			}
+			stmt.close();
 			connection.close();	
 			return salida;
 		}catch(Exception ex){
@@ -253,10 +261,12 @@ public class AccionesClientes {
 				salida.setObservaciones(result.getString("observaciones"));
 				salida.setActivo(result.getString("activo"));
 				salida.setIdEmpresa(result.getInt("id_empresa"));
+				stmt.close();
 				connection.close();
 				return salida;
 			} else {
 				salida.setIdCliente(0);
+				stmt.close();
 				connection.close();
 				return salida;
 			}

@@ -50,10 +50,12 @@ public class AccionesUsuarios {
 				salida.setApellidos(result.getString("apellidos"));
 				salida.setEmail(result.getString("email"));
 				salida.setNivelSeguridad(result.getInt("nivelSeguridad"));
+				stmt.close();
 				connection.close();
 				return salida;
 			} else {
 				salida.setIdUsuario(0);
+				stmt.close();
 				connection.close();
 				return salida;
 			}
@@ -118,6 +120,7 @@ public class AccionesUsuarios {
 				}
 				while(result.next());
 			} 
+			stmt.close();
 			connection.close();
 			return salida;
 		}catch(Exception ex){
