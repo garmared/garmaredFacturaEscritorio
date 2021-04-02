@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-01-2021 a las 18:38:05
+-- Tiempo de generación: 02-04-2021 a las 19:42:14
 -- Versión del servidor: 10.4.6-MariaDB
 -- Versión de PHP: 7.3.9
 
@@ -35,7 +35,7 @@ CREATE TABLE `clientes` (
   `Direccion` char(100) COLLATE utf8_spanish2_ci NOT NULL,
   `Poblacion` char(50) COLLATE utf8_spanish2_ci NOT NULL,
   `Provincia` char(50) COLLATE utf8_spanish2_ci NOT NULL,
-  `CP` int(5) NOT NULL,
+  `CP` int(5) UNSIGNED ZEROFILL NOT NULL,
   `Telefono1` int(9) NOT NULL,
   `Telefono2` int(9) NOT NULL,
   `Telefono3` int(9) NOT NULL,
@@ -55,16 +55,49 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`id_cliente`, `CIF`, `Nombre`, `Direccion`, `Poblacion`, `Provincia`, `CP`, `Telefono1`, `Telefono2`, `Telefono3`, `Persona_contacto`, `mail`, `web`, `fp`, `dia_pago`, `modo_pago`, `observaciones`, `activo`, `id_empresa`) VALUES
-(2, '46350800', 'Edu', 'Aqui', '1', '1', 5258, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'N', 0),
-(3, '46350000D', 'Juan Palomo', 'Palomares 12', 'Barcelona', 'Barcelona', 8036, 936585452, 656525252, 658696585, 'Jacinta', 'notiene@correo.es', 'notien.es', '1', 1, '1', 'prueba', 'S', 0),
-(8, '1', 'Luis', 'Urgell', 'Barcelona', 'Barcelona', 1231, 324342, 43423, 324234, 'Pedro', 'ddddd', 'j.com', '1', 1, '1', 'sa', 'S', 0),
-(10, '1', 'Ejemplo1', '1', '1', '1', 1, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 7),
-(12, '1', 'cliente1', 'alli', 'alli', '1', 1, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8),
-(13, '1', 'cliente2', 'alli', 'alli', '1', 1, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8),
-(14, '1', 'cliente3', 'alli', 'alli', '323', 1, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8),
-(15, '1', 'cliente5', 'alli', 'alli', '1', 1, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8),
-(16, '1', 'cliente4', 'alli', 'alli', '1', 1, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8),
-(17, '43242', 'eeee', 'ee', 'ee', 'ee', 22, 22, 22, 22, '32dsf', 'dfsfsd', 'fsdfs', '1', 1, '1', 'dsfsdf', 'S', 8);
+(2, '46350800', 'Edu', 'Aqui', '1', '1', 05258, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'N', 0),
+(3, '46350000D', 'Juan Palomo', 'Palomares 12', 'Barcelona', 'Barcelona', 08036, 936585452, 656525252, 658696585, 'Jacinta', 'notiene@correo.es', 'notien.es', '1', 1, '1', 'prueba', 'S', 0),
+(8, '1', 'Luis', 'Urgell', 'Barcelona', 'Barcelona', 01231, 324342, 43423, 324234, 'Pedro', 'ddddd', 'j.com', '1', 1, '1', 'sa', 'S', 0),
+(10, '1', 'Ejemplo1', '1', '1', '1', 00001, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 7),
+(12, '1', 'cliente1', 'alli', 'alli', '1', 00001, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8),
+(14, '1', 'cliente3', 'alli', 'alli', '323', 12312, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8),
+(15, '1', 'cliente5', 'alli', 'alli', '1', 00001, 6666, 1, 1, '1', 'notiene@correo.es', '1', '1', 1, '1', '1', 'S', 8),
+(16, '1', 'cliente4', 'alli', 'alli', '1', 00001, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8),
+(17, '43242', 'eeee', 'ee', 'ee', 'ee', 00022, 22, 22, 22, '32dsf', 'dfsfsd', 'fsdfs', '1', 1, '1', 'dsfsdf', 'S', 8),
+(18, '1', 'cliente2', 'alli', 'alli', '1', 00001, 6666, 1, 1, '1', 'notiene@correo.es', '1', '1', 1, '1', '1', 'S', 8),
+(19, '34583834', 'Juan', 'esa calle', 'Barcelona', 'Barcelona', 03423, 453453, 34423, 34234, 'Alex', 'no tiene', '1', '1', 1, '1', '1', 'S', 12),
+(20, '7897', 'E', '879', '879', '9879', 00979, 797, 797, 979, '97', '79', '97', '7', 8, '8', '8', 'S', 8),
+(21, '324234', 'Pedro', '3', '3', '3', 00003, 3, 3, 3, '3', '3', '3', '3', 3, '3', '3', 'S', 8);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `conceptoproyecto`
+--
+
+CREATE TABLE `conceptoproyecto` (
+  `idProyecto` int(4) NOT NULL,
+  `idConcepto` text COLLATE utf8_spanish2_ci NOT NULL,
+  `importe` decimal(20,4) NOT NULL,
+  `empresa` int(4) NOT NULL,
+  `iva` decimal(5,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `conceptoproyecto`
+--
+
+INSERT INTO `conceptoproyecto` (`idProyecto`, `idConcepto`, `importe`, `empresa`, `iva`) VALUES
+(11, 'Edu', '123.0000', 8, '231.00'),
+(14, ' edu', '12.0000', 8, '1.00'),
+(14, ' juan', '21.0000', 8, '2.00'),
+(14, ' pedro', '3.0000', 8, '5.00'),
+(5, ' juan', '3.0000', 8, '3.00'),
+(6, ' Taxi', '12.0000', 8, '12.00'),
+(6, 'Material', '1.0000', 8, '1.00'),
+(13, 'Taxi', '2.3000', 8, '12.00'),
+(13, 'Material', '0.0000', 8, '0.00'),
+(13, 'Piedras', '12.0000', 8, '12.00');
 
 -- --------------------------------------------------------
 
@@ -89,7 +122,9 @@ INSERT INTO `conceptos` (`id_concepto`, `descripcion`, `id_empresa`) VALUES
 (4, 'a1', 7),
 (5, 'Conceepto1', 8),
 (6, 'Taxi', 8),
-(7, ' Gasolina', 8);
+(7, ' Gasolina', 8),
+(8, 'Material Oficina', 8),
+(9, 'Taxi', 12);
 
 -- --------------------------------------------------------
 
@@ -114,7 +149,10 @@ INSERT INTO `costes` (`id_coste`, `descripcion`, `id_empresa`) VALUES
 (5, 'a1', 7),
 (6, 'coste1', 8),
 (7, 'coste2', 8),
-(8, 'coste3', 8);
+(8, 'coste3', 8),
+(9, 'Ladrillos', 12),
+(10, 'Coste 120', 8),
+(11, 'Papelería', 8);
 
 -- --------------------------------------------------------
 
@@ -142,8 +180,10 @@ INSERT INTO `costesindirectos` (`id_costeInd`, `empresa`, `id_coste`, `id_proyec
 (3, 6, 8, 5, 7, '125.00', 'coste 1'),
 (4, 6, 8, 5, 5, '12.00', 'hola'),
 (5, 8, 7, 5, 5, '12.00', 'coste2'),
-(6, 8, 7, 5, 5, '12.00', 'dfsdfs'),
-(7, 8, 7, 5, 5, '12.00', 'coste3');
+(6, 8, 7, 5, 5, '12.00', 'juan'),
+(8, 8, 6, 5, 5, '12.00', 'pedro'),
+(9, 8, 6, 10, 8, '1231.25', 'fdsfsd'),
+(10, 8, 11, 6, 5, '23123.00', '2312');
 
 -- --------------------------------------------------------
 
@@ -160,7 +200,7 @@ CREATE TABLE `empresas` (
   `Direccion` char(100) COLLATE utf8_spanish2_ci NOT NULL,
   `Poblacion` char(50) COLLATE utf8_spanish2_ci NOT NULL,
   `Provincia` char(50) COLLATE utf8_spanish2_ci NOT NULL,
-  `CP` int(5) NOT NULL,
+  `CP` int(5) UNSIGNED ZEROFILL NOT NULL,
   `telefono1` int(9) NOT NULL,
   `telefono2` int(9) NOT NULL,
   `telefono3` int(9) NOT NULL,
@@ -169,23 +209,37 @@ CREATE TABLE `empresas` (
   `web` char(100) COLLATE utf8_spanish2_ci NOT NULL,
   `IBAN` char(24) COLLATE utf8_spanish2_ci NOT NULL,
   `observaciones` varchar(255) COLLATE utf8_spanish2_ci NOT NULL,
-  `activo` char(1) COLLATE utf8_spanish2_ci NOT NULL
+  `activo` char(1) COLLATE utf8_spanish2_ci NOT NULL,
+  `reg_mercantil` text COLLATE utf8_spanish2_ci NOT NULL,
+  `tomo` int(10) NOT NULL,
+  `folio` int(10) NOT NULL,
+  `hoja` int(10) NOT NULL,
+  `inscripcion` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `empresas`
 --
 
-INSERT INTO `empresas` (`id_empresa`, `empresa`, `CIF`, `tipo`, `Nombre`, `Direccion`, `Poblacion`, `Provincia`, `CP`, `telefono1`, `telefono2`, `telefono3`, `Persona_contacto`, `mail`, `web`, `IBAN`, `observaciones`, `activo`) VALUES
-(2, 0, '46350000D', 'P', 'Proveedor1', 'Poligono 1', 'Zaragoza', 'Zaragoza', 50011, 97658542, 689545456, 965854545, 'Juan', 'notiene', 'notiene', '1', 'prueba', 'S'),
-(3, 0, '46350800r', 'E', 'dani', '162 Villarroel', 'Barcelona', 'Barcelona', 1, 65733394, 32145678, 1111, 'daniel san', 'danielsan@cobra kai', 'MIYAGI DO KARATE', '1', 'prueba dani', 'S'),
-(4, 0, '34324', 'P', 'hjdfhsdkj', 'jhkh', 'hkhk', 'hkhk', 1, 3333, 333, 333, 'khk', 'hkhk', 'khk', '1', '3', 'S'),
-(5, 0, '324234', 'E', 'Juan', '43244234', '4324', '42342', 42342, 42342, 423423, 42323, '43242', '423423', '42432', '42432', '4234', 'N'),
-(6, 0, '4234234', 'E', 'Empresa1', 'a', 'a', 's', 2, 2, 2, 2, 's', 's', 'd', '1', '1212', 'S'),
-(7, 0, '11', 'E', 'Dani Garcia', '255 bolin', 'dubai', 'Emiratos Arabes', 90201, 603418629, 775409432, 546754, 'Edu suldiandr', 'no me lo se', 'no te importa', '5', '5', 'N'),
-(8, 0, '2', 'E', '2', '2', '2222', '2', 2, 2, 23412312, 2, '2', '2', '2', '2', '2', 'N'),
-(9, 8, '46350000D', 'P', 'Proveedor2', 'Poligono 1', 'Zaragoza', 'Zaragoza', 50011, 97658542, 689545456, 965854545, 'Juan', 'notiene', 'notiene', '1', 'prueba', 'S'),
-(10, 8, '46350000D', 'P', 'Proveedor3', 'Poligono 1', 'Zaragoza', 'Zaragoza', 50011, 97658542, 689545456, 965854545, 'Juan', 'notiene', 'notiene', '1', 'prueba', 'S');
+INSERT INTO `empresas` (`id_empresa`, `empresa`, `CIF`, `tipo`, `Nombre`, `Direccion`, `Poblacion`, `Provincia`, `CP`, `telefono1`, `telefono2`, `telefono3`, `Persona_contacto`, `mail`, `web`, `IBAN`, `observaciones`, `activo`, `reg_mercantil`, `tomo`, `folio`, `hoja`, `inscripcion`) VALUES
+(2, 0, '46350000D', 'P', 'Proveedor1', 'Poligono 1', 'Zaragoza', 'Zaragoza', 50011, 97658542, 689545456, 965854545, 'Juan', 'notiene', 'notiene', '1', 'prueba', 'S', '', 0, 0, 0, 0),
+(3, 0, '46350800r', 'E', 'dani', '162 Villarroel', 'Barcelona', 'Barcelona', 00001, 65733394, 32145678, 1111, 'daniel san', 'danielsan@cobra kai', 'MIYAGI DO KARATE', '1', 'prueba dani', 'S', '', 0, 0, 0, 0),
+(4, 0, '34324', 'P', 'hjdfhsdkj', 'jhkh', 'hkhk', 'hkhk', 00001, 3333, 333, 333, 'khk', 'hkhk', 'khk', '1', '3', 'S', '', 0, 0, 0, 0),
+(5, 0, '324234', 'E', 'Juan', '43244234', '4324', '42342', 42342, 42342, 423423, 42323, '43242', '423423', '42432', '42432', '4234', 'N', '', 0, 0, 0, 0),
+(6, 0, '4234234', 'E', 'Empresa1', 'a', 'a', 's', 00002, 2, 2, 2, 's', 's', 'd', '1', '1212', 'S', '', 0, 0, 0, 0),
+(7, 0, '11', 'E', 'Dani Garcia', '255 bolin', 'dubai', 'Emiratos Arabes', 90201, 603418629, 775409432, 546754, 'Edu suldiandr', 'no me lo se', 'no te importa', '5', '5', 'N', '', 0, 0, 0, 0),
+(8, 0, '2', 'E', '2', '2', '2222', '2', 00002, 2, 23412312, 2, '2', '2', '2', '2', '2', 'N', 'Barcelona', 23123, 3131, 31231, 1),
+(8, 1, '2', 'E', '2', '2', '2222', '2', 00002, 2, 23412312, 2, '2', '2', '2', '2', '2', 'N', 'Barcelona', 23123, 3131, 31231, 1),
+(8, 2, '2', 'E', '2', '2', '2222', '2', 00002, 2, 23412312, 2, '2', '2', '2', '2', '2', 'N', 'Barcelona', 23123, 3131, 31231, 1),
+(8, 3, '2', 'E', '2', '2', '2222', '2', 00002, 2, 23412312, 2, '2', '2', '2', '2', '2', 'N', 'Barcelona', 23123, 3131, 31231, 1),
+(8, 4, '2', 'E', '2', '2', '2222', '2', 00002, 2, 23412312, 2, '2', '2', '2', '2', '2', 'N', 'Barcelona', 23123, 3131, 31231, 1),
+(8, 5, '2', 'E', '2', '2', '2222', '2', 00002, 2, 23412312, 2, '2', '2', '2', '2', '2', 'N', 'Barcelona', 23123, 3131, 31231, 1),
+(9, 8, '46350000D', 'P', 'Proveedor2', 'Poligono 1', 'Zaragoza', 'Zaragoza', 50011, 97658542, 689545456, 965854545, 'Juan', 'notiene', 'notiene', '1', 'prueba', 'S', '', 0, 0, 0, 0),
+(10, 8, '46350000D', 'P', 'Proveedor3', 'Poligono 1', 'Zaragoza', 'Zaragoza', 50011, 97658542, 689545456, 965854545, 'Juan', 'notiene', 'notiene', '1', 'prueba', 'S', '', 0, 0, 0, 0),
+(11, 0, '46350800', 'E', 'Edu', 'Villarroel 162', 'Barcelona', 'Barcelona', 08036, 932198558, 666404249, 666666666, 'Montse', 'notien@correo.es', 'notiene', 'ES95210001101111111111', 'ninguna', 'S', '', 0, 0, 0, 0),
+(12, 0, '3512', 'E', 'Arqpoma', 'alla', 'Barcelona', 'Barcelona', 08025, 453453, 4356645, 46645, 'Alex', 'info@arqpoma.es', 'no', 'no', 'no', 'S', '', 0, 0, 0, 0),
+(13, 0, '212', 'E', 'Edu', 'Alli', 'Alella', 'Barcelona', 50125, 935555555, 652252525, 5265852, 'Edu', 'no', 'no', '1213', 'no', 'S', 'Barcelona', 12354, 132, 132, 1),
+(14, 0, 'B67102343', 'E', 'Irona', 'Corcega 453', 'Barcelona', 'Barcelona', 08034, 935432343, 656434234, 676546545, 'Alex', 'info@irona,es', 'irona.es', 'ES9521001001001111111111', 'no hay', 'S', 'Barcelona', 324234, 321, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -217,20 +271,20 @@ CREATE TABLE `factura` (
 --
 
 INSERT INTO `factura` (`id_factura`, `id_empresa`, `fecha`, `vencimiento`, `id_proyecto`, `id_cliente`, `id_concepto`, `id_coste`, `id_proveedor`, `IRPF`, `descuento`, `IBAN`, `base_impo`, `IVA`, `tasa`, `pagado`) VALUES
-(2, 2, 10102020, 10102020, 2, 2, 3, 2, 2, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', ''),
-(3, 8, 12122020, 20122020, 5, 12, 7, 6, 0, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', ''),
-(4, 8, 12122020, 20122020, 6, 13, 5, 8, 10, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Abono'),
-(5, 8, 12122020, 20122020, 6, 14, 5, 8, 10, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', ''),
-(6, 8, 12122020, 20122020, 6, 0, 5, 8, 10, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Pendiente'),
-(7, 8, 25122020, 2022021, 6, 16, 5, 7, 9, '2.00', '2.00', '2', '2.0000', '2.00', '2.00', ''),
-(8, 8, 20210113, 20220101, 5, 12, 7, 6, 0, '9.00', '9.00', '9', '9.0000', '9.00', '9.00', 'Pagado'),
-(9, 8, 20210111, 20220105, 5, 12, 5, 7, 0, '25.00', '1.00', '1', '1.0000', '1.00', '1.00', 'N'),
-(10, 8, 20210105, 20210129, 5, 0, 5, 6, 9, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'S'),
+(3, 8, 20200818, 20210820, 5, 12, 7, 6, 0, '1.00', '1.00', '1', '1.0000', '4.00', '1.00', 'Abono'),
+(8, 8, 20210113, 20220101, 5, 12, 6, 6, 0, '9.00', '9.00', '9', '9.0000', '9.00', '9.00', 'Pagado'),
+(9, 8, 20210111, 20220105, 5, 12, 7, 7, 0, '25.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Pendiente'),
+(10, 8, 20210105, 20210129, 5, 0, 5, 6, 9, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Pendiente'),
 (11, 8, 20210112, 20210130, 5, 15, 6, 6, 9, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Abono'),
-(12, 8, 20210125, 20210125, 5, 14, 7, 7, 0, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Pendiente'),
-(13, 8, 20210119, 20210120, 7, 0, 5, 7, 9, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Abono'),
 (14, 8, 20210121, 20210129, 5, 16, 5, 7, 0, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Pendiente'),
-(15, 8, 20210101, 20210121, 7, 0, 5, 6, 10, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Abono');
+(15, 8, 20210101, 20210121, 10, 0, 5, 6, 10, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Abono'),
+(16, 8, 20210127, 20210129, 6, 16, 5, 7, 0, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Pendiente'),
+(17, 8, 20210210, 20210228, 10, 18, 5, 6, 0, '12.00', '12.00', '12', '212.0000', '12.00', '12.00', 'Abono'),
+(18, 8, 20210202, 20210226, 10, 0, 5, 7, 9, '12.00', '121.00', ' 12', '1222.0000', '12.00', '12.00', 'Abono'),
+(19, 12, 20210310, 20210328, 12, 19, 6, 9, 0, '12.00', '12.00', '212', '12.0000', '12.00', '12.00', 'Abono'),
+(20, 8, 20210319, 20210328, 10, 12, 7, 7, 0, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Pendiente'),
+(21, 8, 20210302, 20210331, 10, 18, 5, 8, 0, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Abono'),
+(22, 8, 20210309, 20210330, 10, 0, 6, 10, 10, '12.00', '12.00', '12', '12.0000', '12.00', '12.00', 'Pendiente');
 
 -- --------------------------------------------------------
 
@@ -245,7 +299,7 @@ CREATE TABLE `proveedores` (
   `Direccion` char(100) COLLATE utf8_spanish2_ci NOT NULL,
   `Poblacion` char(50) COLLATE utf8_spanish2_ci NOT NULL,
   `Provincia` char(50) COLLATE utf8_spanish2_ci NOT NULL,
-  `CP` int(5) NOT NULL,
+  `CP` int(5) UNSIGNED ZEROFILL NOT NULL,
   `telefono1` int(9) NOT NULL,
   `telefono2` int(9) NOT NULL,
   `telefono3` int(9) NOT NULL,
@@ -264,8 +318,8 @@ CREATE TABLE `proveedores` (
 --
 
 INSERT INTO `proveedores` (`id_proveedor`, `CIF`, `Nombre`, `Direccion`, `Poblacion`, `Provincia`, `CP`, `telefono1`, `telefono2`, `telefono3`, `Persona_contacto`, `mail`, `web`, `Tipo_coste`, `IBAN`, `observaciones`, `activo`, `id_empresa`) VALUES
-(1, '1', '1', '1', '1', '1', 1, 1, 1, 1, '1', '1', '1', 0, '0', '1', '1', 0),
-(2, '1', '1', '1', '1', '1', 1, 1, 1, 1, '1', '1', '1', 0, '0', '1', '1', 0);
+(1, '1', '1', '1', '1', '1', 00001, 1, 1, 1, '1', '1', '1', 0, '0', '1', '1', 0),
+(2, '1', '1', '1', '1', '1', 00001, 1, 1, 1, '1', '1', '1', 0, '0', '1', '1', 0);
 
 -- --------------------------------------------------------
 
@@ -275,6 +329,7 @@ INSERT INTO `proveedores` (`id_proveedor`, `CIF`, `Nombre`, `Direccion`, `Poblac
 
 CREATE TABLE `proyectos` (
   `id_proyecto` int(4) NOT NULL,
+  `nombre` text COLLATE utf8_spanish2_ci NOT NULL,
   `id_empresa` int(4) NOT NULL,
   `fecha_ini` int(8) NOT NULL,
   `fecha_fin` int(8) NOT NULL,
@@ -293,15 +348,18 @@ CREATE TABLE `proyectos` (
 -- Volcado de datos para la tabla `proyectos`
 --
 
-INSERT INTO `proyectos` (`id_proyecto`, `id_empresa`, `fecha_ini`, `fecha_fin`, `fecha_cierre`, `id_cliente`, `descripcion`, `web`, `Tipo_coste`, `IBAN`, `observaciones`, `importe`, `margen`) VALUES
-(1, 3, 1, 1, 1, 0, '1', '1', 4, '1', '1', '0.0000', '0.00'),
-(2, 3, 1012020, 1012021, 1012021, 0, 'fdsfsd', 'sdasd', 3, '21312', 'fdsfsdf', '0.0000', '0.00'),
-(3, 7, 1012020, 1012021, 1012021, 0, '342423', '434', 2, '34234', '43234', '0.0000', '0.00'),
-(4, 3, 1012020, 1, 2, 2, '1', '1', 3, '1', '1', '0.0000', '0.00'),
-(5, 8, 11122020, 11122021, 11122021, 12, 'proyecto1', 'dsfsd', 6, '122115', 'cvxcv', '12.0000', '1.00'),
-(6, 8, 11122020, 11122021, 11122021, 13, 'proyecto2', 'dsfsd', 6, '122115', 'cvxcv', '12.0000', '1.00'),
-(7, 8, 11130820, 11130821, 11130821, 14, 'proyecto3', 'dsfsd', 6, '122115', 'pro', '12.0000', '1.00'),
-(10, 8, 20210105, 20220112, 20220412, 12, '1', '2', 6, '1', '1', '1.0000', '1.00');
+INSERT INTO `proyectos` (`id_proyecto`, `nombre`, `id_empresa`, `fecha_ini`, `fecha_fin`, `fecha_cierre`, `id_cliente`, `descripcion`, `web`, `Tipo_coste`, `IBAN`, `observaciones`, `importe`, `margen`) VALUES
+(1, '', 3, 1, 1, 1, 0, '1', '1', 4, '1', '1', '0.0000', '0.00'),
+(2, '', 3, 1012020, 1012021, 1012021, 0, 'fdsfsd', 'sdasd', 3, '21312', 'fdsfsdf', '0.0000', '0.00'),
+(3, '', 7, 1012020, 1012021, 1012021, 0, '342423', '434', 2, '34234', '43234', '0.0000', '0.00'),
+(4, '', 3, 1012020, 1, 2, 2, '1', '1', 3, '1', '1', '0.0000', '0.00'),
+(5, 'Torre Elvira', 8, 20210818, 20210818, 20210818, 12, 'proyecto1', 'dsfsd', 6, '122115', 'cvxcv', '12.1200', '1.00'),
+(6, 'Villarroel 162', 8, 11130820, 11130821, 11130821, 12, 'reforma baño de la calle villarroel 162', 'dsfsd', 6, '122115', 'otro', '12.0000', '1.00'),
+(10, 'Prueba', 8, 20210105, 20220112, 20220412, 16, 'proyecto 1', '2', 10, '1', '1', '23.0000', '1.00'),
+(11, 'juan', 8, 20210105, 20220112, 20220412, 12, 'proyecto 1', '2', 7, '1', '1', '23.0000', '1.00'),
+(12, '', 12, 20210305, 20210307, 20210312, 19, 'erwerw', '1', 9, '2131', '2132', '1212.0000', '12.00'),
+(13, '', 8, 20210319, 20210327, 20210319, 16, '14342', '1', 7, '1', '1', '1.0000', '1.00'),
+(14, 'Torre Elvira', 8, 20210316, 20210316, 20210327, 12, 'fdssdf', 'f', 6, '1', 'f', '1.0000', '1.00');
 
 -- --------------------------------------------------------
 
@@ -386,7 +444,7 @@ ALTER TABLE `costesindirectos`
 -- Indices de la tabla `empresas`
 --
 ALTER TABLE `empresas`
-  ADD UNIQUE KEY `id_empresa` (`id_empresa`) USING BTREE;
+  ADD UNIQUE KEY `id_empresa` (`id_empresa`,`empresa`,`tipo`) USING BTREE;
 
 --
 -- Indices de la tabla `factura`
@@ -420,37 +478,37 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id_cliente` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_cliente` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `conceptos`
 --
 ALTER TABLE `conceptos`
-  MODIFY `id_concepto` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_concepto` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `costes`
 --
 ALTER TABLE `costes`
-  MODIFY `id_coste` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_coste` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `costesindirectos`
 --
 ALTER TABLE `costesindirectos`
-  MODIFY `id_costeInd` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_costeInd` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `empresas`
 --
 ALTER TABLE `empresas`
-  MODIFY `id_empresa` int(4) NOT NULL AUTO_INCREMENT COMMENT 'este valor sirve para empresa o proveedor, es el identificador', AUTO_INCREMENT=11;
+  MODIFY `id_empresa` int(4) NOT NULL AUTO_INCREMENT COMMENT 'este valor sirve para empresa o proveedor, es el identificador', AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `id_factura` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_factura` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
@@ -462,7 +520,7 @@ ALTER TABLE `proveedores`
 -- AUTO_INCREMENT de la tabla `proyectos`
 --
 ALTER TABLE `proyectos`
-  MODIFY `id_proyecto` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_proyecto` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
