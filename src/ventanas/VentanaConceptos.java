@@ -27,22 +27,6 @@ public class VentanaConceptos {
 	AccionesServiceImpl accService = new AccionesServiceImpl();
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaConceptos window = new VentanaConceptos(sesionGlobal);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public VentanaConceptos(ServiceDTO control) {
@@ -61,7 +45,7 @@ public class VentanaConceptos {
 		frame.getContentPane().setLayout(null);
 		
 		textConcepto = new JTextField();
-		textConcepto.setBounds(109, 92, 96, 20);
+		textConcepto.setBounds(131, 92, 96, 20);
 		frame.getContentPane().add(textConcepto);
 		textConcepto.setColumns(10);
 		
@@ -71,7 +55,7 @@ public class VentanaConceptos {
 		frame.getContentPane().add(lblError);
 		
 		JLabel lblNewLabel = new JLabel("Concepto");
-		lblNewLabel.setBounds(51, 95, 48, 14);
+		lblNewLabel.setBounds(51, 95, 70, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JButton btnAlta = new JButton("Alta concepto");
@@ -91,7 +75,7 @@ public class VentanaConceptos {
 				}
 			}
 		});
-		btnAlta.setBounds(51, 173, 89, 23);
+		btnAlta.setBounds(10, 173, 122, 23);
 		frame.getContentPane().add(btnAlta);
 		
 		JButton btnBaja = new JButton("Baja Concepto");
@@ -110,7 +94,7 @@ public class VentanaConceptos {
 			}
 		});
 
-		btnBaja.setBounds(164, 173, 103, 23);
+		btnBaja.setBounds(142, 173, 125, 23);
 		frame.getContentPane().add(btnBaja);
 		
 		JButton btnModificar = new JButton("Modificar Concepto");
@@ -130,7 +114,7 @@ public class VentanaConceptos {
 				} else System.out.println("vale... no hago nada...");
 			}
 		});
-		btnModificar.setBounds(287, 173, 137, 23);
+		btnModificar.setBounds(277, 173, 147, 23);
 		frame.getContentPane().add(btnModificar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -141,7 +125,7 @@ public class VentanaConceptos {
 				accService.abrirVentanaPrincipal(sesionGlobal);
 			}
 		});
-		btnVolver.setBounds(317, 34, 89, 23);
+		btnVolver.setBounds(334, 33, 89, 23);
 		frame.getContentPane().add(btnVolver);
 		
 		JButton btnLimpiar = new JButton("Limpiar");
@@ -150,7 +134,7 @@ public class VentanaConceptos {
 				limpiaPantalla();
 			}
 		});
-		btnLimpiar.setBounds(317, 68, 89, 23);
+		btnLimpiar.setBounds(334, 67, 89, 23);
 		frame.getContentPane().add(btnLimpiar);
 		
 		JButton btnBuscar = new JButton("Buscar");
@@ -174,7 +158,7 @@ public class VentanaConceptos {
 				}				
 			}
 		});
-		btnBuscar.setBounds(318, 102, 89, 23);
+		btnBuscar.setBounds(335, 101, 89, 23);
 		frame.getContentPane().add(btnBuscar);
 
 		

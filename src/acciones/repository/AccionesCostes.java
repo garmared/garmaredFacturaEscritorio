@@ -124,9 +124,10 @@ public class AccionesCostes{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				String salida = result.getString("descripcion");
 				stmt.close();
 				connection.close();
-				return result.getString("descripcion");
+				return salida;
 			} else {
 				stmt.close();
 				connection.close();

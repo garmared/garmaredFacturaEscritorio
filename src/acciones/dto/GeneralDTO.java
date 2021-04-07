@@ -2,7 +2,7 @@ package acciones.dto;
 
 public class GeneralDTO {
 
-	private String nombre, cif, direccion, poblacion, provincia, personaContacto, mail, web, observaciones,activo;
+	private String nombre, nif, direccion, poblacion, provincia, personaContacto, mail, web, observaciones,activo;
 	private Integer cp, telefono1, telefono2, telefono3, idEmpresa,anyo, mes;
 	
 
@@ -38,12 +38,12 @@ public class GeneralDTO {
 		this.nombre = nombre;
 	}
 
-	public String getCif() {
-		return cif;
+	public String getNif() {
+		return nif;
 	}
 
-	public void setCif(String cif) {
-		this.cif = cif;
+	public void setNif(String nif) {
+		this.nif = nif;
 	}
 
 	public String getDireccion() {

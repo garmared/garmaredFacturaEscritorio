@@ -23,7 +23,7 @@ import acciones.service.impl.AccionesServiceImpl;
 public class VentanaProveedores {
 
 	private JFrame frame;
-	private JTextField textCif;
+	private JTextField textNif;
 	private JTextField textNombre;
 	private JTextField textDireccion;
 	private JTextField textPoblacion;
@@ -94,10 +94,10 @@ public class VentanaProveedores {
 		frame.getContentPane().setLayout(null);
 		
 		
-		textCif = new JTextField();
-		textCif.setBounds(116, 8, 96, 20);
-		frame.getContentPane().add(textCif);
-		textCif.setColumns(10);
+		textNif = new JTextField();
+		textNif.setBounds(116, 8, 96, 20);
+		frame.getContentPane().add(textNif);
+		textNif.setColumns(10);
 				
 		JLabel lblCif = new JLabel("CIF");
 		lblCif.setBounds(10, 14, 48, 14);
@@ -262,7 +262,7 @@ public class VentanaProveedores {
 					entrada.setActivo("S");
 				} else {entrada.setActivo("N");}
 				entrada.setIdEmpresa(sesionGlobal.getIdEmpresa());
-				entrada.setCif(textCif.getText());
+				entrada.setNif(textNif.getText());
 				entrada.setCp(Integer.valueOf(textCP.getText()));
 				entrada.setDireccion(textDireccion.getText());
 				entrada.setMail(textMail.getText());
@@ -395,7 +395,7 @@ public class VentanaProveedores {
 	
 	public void ocultarCampos() {
 		//ocultamos todos los campos y etiquetas de pantalla excepto el NOMBRE
-		textCif.setVisible(false);
+		textNif.setVisible(false);
 		textDireccion.setVisible(false);
 		textPoblacion.setVisible(false);
 		textProvincia.setVisible(false);
@@ -428,7 +428,7 @@ public class VentanaProveedores {
 	
 	public void activaCampos() {
 		//mostramos todos los campos y etiquetas de pantalla
-		textCif.setVisible(true);
+		textNif.setVisible(true);
 		textDireccion.setVisible(true);
 		textPoblacion.setVisible(true);
 		textProvincia.setVisible(true);
@@ -464,7 +464,7 @@ public class VentanaProveedores {
 		idEmpresa = entrada.getIdEmpresa();
 		empresa = entrada.getEmpresa();
 		textNombre.setText(entrada.getNombre());
-		textCif.setText(entrada.getCif());
+		textNif.setText(entrada.getNif());
 		textDireccion.setText(entrada.getDireccion());
 		textPoblacion.setText(entrada.getPoblacion());
 		textProvincia.setText(entrada.getProvincia());
@@ -489,7 +489,7 @@ public class VentanaProveedores {
 	
 	private void limpiaPantalla() {
 		textNombre.setText(" ");
-		textCif.setText(" ");
+		textNif.setText(" ");
 		textDireccion.setText(" ");
 		textPoblacion.setText(" ");
 		textProvincia.setText(" ");
@@ -512,7 +512,7 @@ public class VentanaProveedores {
 		empresas.setEmpresa(empresa);
 		empresas.setDireccion(textDireccion.getText());
 		empresas.setTipo("P");
-		empresas.setCif(textCif.getText());
+		empresas.setNif(textNif.getText());
 		empresas.setNombre(textNombre.getText());
 		empresas.setPoblacion(textPoblacion.getText());
 		empresas.setProvincia(textProvincia.getText());

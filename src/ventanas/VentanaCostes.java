@@ -24,26 +24,6 @@ public class VentanaCostes {
 	private CostesDTO costes;
 	private int idCoste;
 	AccionesCostesImpl accCostes = new AccionesCostesImpl();
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					if (sesionGlobal != null) {
-						VentanaCostes window = new VentanaCostes(sesionGlobal);
-						window.frame.setVisible(true);
-					} 
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the application.
 	 */
@@ -67,7 +47,7 @@ public class VentanaCostes {
 		frame.getContentPane().setLayout(null);
 		
 		textCoste = new JTextField();
-		textCoste.setBounds(191, 92, 96, 20);
+		textCoste.setBounds(131, 92, 96, 20);
 		frame.getContentPane().add(textCoste);
 		textCoste.setColumns(10);
 		
@@ -77,7 +57,7 @@ public class VentanaCostes {
 		frame.getContentPane().add(lblError);
 		
 		JLabel lblNewLabel = new JLabel("Coste");
-		lblNewLabel.setBounds(88, 95, 48, 14);
+		lblNewLabel.setBounds(51, 95, 70, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JButton btnAltaCoste = new JButton("Alta coste");
@@ -99,7 +79,7 @@ public class VentanaCostes {
 				}
 			}
 		});
-		btnAltaCoste.setBounds(51, 173, 89, 23);
+		btnAltaCoste.setBounds(10, 173, 122, 23);
 		frame.getContentPane().add(btnAltaCoste);
 		
 		JButton btnBaja = new JButton("Baja Coste");
@@ -119,7 +99,7 @@ public class VentanaCostes {
 		});
 
 
-		btnBaja.setBounds(178, 173, 89, 23);
+		btnBaja.setBounds(142, 173, 125, 23);
 		frame.getContentPane().add(btnBaja);
 		
 		JButton btnModificar = new JButton("Modificar Coste");
@@ -141,7 +121,7 @@ public class VentanaCostes {
 			}
 		});
 		
-		btnModificar.setBounds(299, 173, 125, 23);
+		btnModificar.setBounds(277, 173, 147, 23);
 		frame.getContentPane().add(btnModificar);
 		
 		JButton btnVolver = new JButton("Volver");

@@ -22,7 +22,7 @@ import acciones.service.impl.AccionesServiceImpl;
 public class VentanaClientes {
 
 	private JFrame frame;
-	private JTextField textCif;
+	private JTextField textNif;
 	private JTextField textNombre;
 	private JTextField textDireccion;
 	private JTextField textPoblacion;
@@ -42,7 +42,7 @@ public class VentanaClientes {
 	private JRadioButton rdbtnSi;
 	private JRadioButton rdbtnNo;
 	
-	private JLabel lblCif;
+	private JLabel lblNif;
 	private JLabel lblNombre;
 	private JLabel lblDireccin;
 	private JLabel lblPoblacin;
@@ -97,14 +97,14 @@ public class VentanaClientes {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		lblCif = new JLabel("CIF");
-		textCif = new JTextField();
-		textCif.setBounds(95, 11, 96, 20);
-		frame.getContentPane().add(textCif);
-		textCif.setColumns(10);
+		lblNif = new JLabel("NIF");
+		textNif = new JTextField();
+		textNif.setBounds(95, 11, 96, 20);
+		frame.getContentPane().add(textNif);
+		textNif.setColumns(10);
 				
-		lblCif.setBounds(10, 14, 48, 14);
-		frame.getContentPane().add(lblCif);
+		lblNif.setBounds(10, 14, 48, 14);
+		frame.getContentPane().add(lblNif);
 		
 		lblNombre = new JLabel("Nombre");
 		lblNombre.setBounds(10, 42, 48, 14);
@@ -392,7 +392,7 @@ public class VentanaClientes {
 	public void ocultarCampos() {
 		//ocultamos todos los campos y etiquetas de pantalla excepto el NOMBRE
 		lblError.setText("");
-		textCif.setVisible(false);
+		textNif.setVisible(false);
 		textDireccion.setVisible(false);
 		textPoblacion.setVisible(false);
 		textProvincia.setVisible(false);
@@ -407,7 +407,7 @@ public class VentanaClientes {
 		textMP.setVisible(false);
 		textObserv.setVisible(false);
 		textCP.setVisible(false);
-		lblCif.setVisible(false);
+		lblNif.setVisible(false);
 		lblDireccin.setVisible(false);
 		lblPoblacin.setVisible(false);
 		lblProvincia.setVisible(false);
@@ -429,7 +429,7 @@ public class VentanaClientes {
 	
 	public void activaCampos() {
 		//mostramos todos los campos y etiquetas de pantalla
-		textCif.setVisible(true);
+		textNif.setVisible(true);
 		textDireccion.setVisible(true);
 		textPoblacion.setVisible(true);
 		textProvincia.setVisible(true);
@@ -444,7 +444,7 @@ public class VentanaClientes {
 		textMP.setVisible(true);
 		textObserv.setVisible(true);
 		textCP.setVisible(true);
-		lblCif.setVisible(true);
+		lblNif.setVisible(true);
 		lblDireccin.setVisible(true);
 		lblPoblacin.setVisible(true);
 		lblProvincia.setVisible(true);
@@ -468,7 +468,7 @@ public class VentanaClientes {
 		//llenamos los campos de pantalla con el DTO de clientes
 		idCliente = entrada.getIdCliente();
 		textNombre.setText(entrada.getNombre());
-		textCif.setText(entrada.getCif());
+		textNif.setText(entrada.getNif());
 		textDireccion.setText(entrada.getDireccion());
 		textPoblacion.setText(entrada.getPoblacion());
 		textProvincia.setText(entrada.getProvincia());
@@ -498,7 +498,7 @@ public class VentanaClientes {
 		cliente.setIdEmpresa(sesionGlobal.getIdEmpresa());
 		cliente.setIdCliente(idCliente);
 		cliente.setDireccion(textDireccion.getText());
-		cliente.setCif(textCif.getText());
+		cliente.setNif(textNif.getText());
 		cliente.setNombre(textNombre.getText());
 		cliente.setPoblacion(textPoblacion.getText());
 		cliente.setProvincia(textProvincia.getText());
@@ -521,7 +521,7 @@ public class VentanaClientes {
 	}
 	
 	private void limpiaPantalla() {
-		textCif.setText(" ");
+		textNif.setText(" ");
 		textNombre.setText(" ");
 		textDireccion.setText(" ");
 		textPoblacion.setText(" ");

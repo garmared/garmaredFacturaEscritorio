@@ -1,12 +1,10 @@
 package ventanas;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,7 +21,7 @@ import acciones.service.impl.AccionesEmpresasImpl;
 public class VentanaEmpresas {
 
 	private JFrame frame;
-	private JTextField textCif;
+	private JTextField textNif;
 	private JTextField textNombre;
 	private JTextField textDireccion;
 	private JTextField textPoblacion;
@@ -41,7 +39,7 @@ public class VentanaEmpresas {
 	private JRadioButton rdbtnSi;
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	
-	private JLabel lblCif;
+	private JLabel lblNif;
 	private JLabel lblNombre;
 	private JLabel lblDireccin;
 	private JLabel lblPoblacin;
@@ -67,23 +65,6 @@ public class VentanaEmpresas {
 	private JTextField textFolio;
 	private JTextField textHoja;
 	private JTextField textInscripcion;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaEmpresas window = new VentanaEmpresas(sesionGlobal);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the application.
 	 */
@@ -102,14 +83,14 @@ public class VentanaEmpresas {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 				
-		textCif = new JTextField();
-		textCif.setBounds(116, 8, 96, 20);
-		frame.getContentPane().add(textCif);
-		textCif.setColumns(10);
+		textNif = new JTextField();
+		textNif.setBounds(116, 8, 96, 20);
+		frame.getContentPane().add(textNif);
+		textNif.setColumns(10);
 				
-		JLabel lblCif = new JLabel("CIF");
-		lblCif.setBounds(10, 14, 48, 14);
-		frame.getContentPane().add(lblCif);
+		JLabel lblNif = new JLabel("Nif");
+		lblNif.setBounds(10, 14, 48, 14);
+		frame.getContentPane().add(lblNif);
 		
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setBounds(10, 42, 48, 14);
@@ -117,7 +98,7 @@ public class VentanaEmpresas {
 		
 		textNombre = new JTextField();
 		textNombre.setColumns(10);
-		textNombre.setBounds(116, 36, 96, 20);
+		textNombre.setBounds(116, 36, 266, 20);
 		frame.getContentPane().add(textNombre);
 		
 		JLabel lblDireccin = new JLabel("Direcci\u00F3n");
@@ -126,7 +107,7 @@ public class VentanaEmpresas {
 		
 		textDireccion = new JTextField();
 		textDireccion.setColumns(10);
-		textDireccion.setBounds(116, 64, 96, 20);
+		textDireccion.setBounds(116, 64, 266, 20);
 		frame.getContentPane().add(textDireccion);
 		
 		JLabel lblPoblacin = new JLabel("Poblaci\u00F3n");
@@ -189,7 +170,7 @@ public class VentanaEmpresas {
 		
 		textMail = new JTextField();
 		textMail.setColumns(10);
-		textMail.setBounds(116, 233, 96, 20);
+		textMail.setBounds(116, 233, 228, 20);
 		frame.getContentPane().add(textMail);
 		
 		JLabel lblWeb = new JLabel("Web");
@@ -198,7 +179,7 @@ public class VentanaEmpresas {
 		
 		textWeb = new JTextField();
 		textWeb.setColumns(10);
-		textWeb.setBounds(116, 263, 96, 20);
+		textWeb.setBounds(116, 263, 228, 20);
 		frame.getContentPane().add(textWeb);
 		
 		JLabel lblIban = new JLabel("IBAN");
@@ -207,11 +188,11 @@ public class VentanaEmpresas {
 		
 		textIban = new JTextField();
 		textIban.setColumns(10);
-		textIban.setBounds(116, 298, 96, 20);
+		textIban.setBounds(116, 298, 187, 20);
 		frame.getContentPane().add(textIban);
 		
 		JLabel lblActivo = new JLabel("Activo");
-		lblActivo.setBounds(255, 299, 48, 14);
+		lblActivo.setBounds(239, 437, 48, 14);
 		frame.getContentPane().add(lblActivo);
 		JLabel lblCP = new JLabel("C\u00F3digo Postal");
 		lblCP.setBounds(255, 129, 89, 14);
@@ -228,15 +209,15 @@ public class VentanaEmpresas {
 		
 		textObserv = new JTextField();
 		textObserv.setColumns(10);
-		textObserv.setBounds(116, 326, 96, 20);
+		textObserv.setBounds(116, 326, 349, 33);
 		frame.getContentPane().add(textObserv);
 
 		rdbtnSi = new JRadioButton("Si");
-		rdbtnSi.setBounds(309, 294, 44, 23);
+		rdbtnSi.setBounds(293, 432, 44, 23);
 		frame.getContentPane().add(rdbtnSi);
 		
 		rdbtnNo = new JRadioButton("No");
-		rdbtnNo.setBounds(354, 294, 44, 23);
+		rdbtnNo.setBounds(338, 432, 44, 23);
 		rdbtnSi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rdbtnNo.setSelected(false);
@@ -419,7 +400,7 @@ public class VentanaEmpresas {
 		//llenamos los campos de pantalla con el DTO de clientes
 		idEmpresa = entrada.getIdEmpresa();
 		textNombre.setText(entrada.getNombre());
-		textCif.setText(entrada.getCif());
+		textNif.setText(entrada.getNif());
 		textDireccion.setText(entrada.getDireccion());
 		textPoblacion.setText(entrada.getPoblacion());
 		textProvincia.setText(entrada.getProvincia());
@@ -453,7 +434,7 @@ public class VentanaEmpresas {
 		empresas.setIdEmpresa(idEmpresa);
 		empresas.setDireccion(textDireccion.getText());
 		empresas.setTipo("E");
-		empresas.setCif(textCif.getText());
+		empresas.setNif(textNif.getText());
 		empresas.setNombre(textNombre.getText());
 		empresas.setPoblacion(textPoblacion.getText());
 		empresas.setProvincia(textProvincia.getText());
@@ -482,7 +463,7 @@ public class VentanaEmpresas {
 	
 	private void limpiaPantalla() {
 		textNombre.setText(" ");
-		textCif.setText(" ");
+		textNif.setText(" ");
 		textDireccion.setText(" ");
 		textPoblacion.setText(" ");
 		textProvincia.setText(" ");

@@ -16,7 +16,7 @@ public class AccionesClientes {
 		try{
 			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("INSERT INTO clientes VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-			stmt.setString(1, entrada.getCif());
+			stmt.setString(1, entrada.getNif());
 			stmt.setString(2,entrada.getNombre());
 			stmt.setString(3,entrada.getDireccion());
 			stmt.setString(4,entrada.getPoblacion());
@@ -82,7 +82,7 @@ public class AccionesClientes {
 			//result.next();
 			if (result.next()){
 				salida.setIdCliente(result.getInt("id_cliente"));
-				salida.setCif(result.getString("CIF"));
+				salida.setNif(result.getString("CIF"));
 				salida.setNombre(result.getString("Nombre"));
 				salida.setDireccion(result.getString("Direccion"));
 				salida.setPoblacion(result.getString("Poblacion"));
@@ -135,7 +135,7 @@ public class AccionesClientes {
 			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("UPDATE clientes set CIF = ?, Direccion = ?, Poblacion = ?, Provincia = ?,CP=?,"
 		    		+ "Telefono1=?, Telefono2=?, Telefono3=?, Persona_contacto=?,mail=?,web=?,fp=?,dia_pago=?,modo_pago=?,observaciones=?,activo=? WHERE id_cliente = ?");
-			stmt.setString(1, cliente.getCif());
+			stmt.setString(1, cliente.getNif());
 			stmt.setString(2,cliente.getDireccion());
 			stmt.setString(3,cliente.getPoblacion());
 			stmt.setString(4,cliente.getProvincia());
@@ -243,7 +243,7 @@ public class AccionesClientes {
 			//result.next();
 			if (result.next()){
 				salida.setIdCliente(result.getInt("id_cliente"));
-				salida.setCif(result.getString("CIF"));
+				salida.setNif(result.getString("CIF"));
 				salida.setNombre(result.getString("Nombre"));
 				salida.setDireccion(result.getString("Direccion"));
 				salida.setPoblacion(result.getString("Poblacion"));

@@ -35,7 +35,7 @@ public class AccionesEmpresas{
 				stmt.setInt(2, entrada.getEmpresa());
 				ind = 1;
 			}
-			stmt.setString(ind+2, entrada.getCif());
+			stmt.setString(ind+2, entrada.getNif());
 			stmt.setString(ind+3, entrada.getTipo());
 			stmt.setString(ind+4,entrada.getNombre());
 			stmt.setString(ind+5,entrada.getDireccion());
@@ -130,7 +130,7 @@ public class AccionesEmpresas{
 			if (result.next()){
 				salida.setIdEmpresa(result.getInt("id_empresa"));
 				salida.setEmpresa(result.getInt("empresa"));
-				salida.setCif(result.getString("CIF"));
+				salida.setNif(result.getString("CIF"));
 				salida.setTipo(result.getString("tipo"));
 				salida.setNombre(result.getString("Nombre"));
 				salida.setDireccion(result.getString("Direccion"));
@@ -185,7 +185,7 @@ public class AccionesEmpresas{
 			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("UPDATE empresas set CIF = ?, tipo = ?, Nombre = ?, Direccion = ?, Poblacion = ?, Provincia = ?, CP = ?, Telefono1=?, "
 		    		+ "Telefono2=?, Telefono3=?, Persona_contacto=?,mail=?,web=?,IBAN=?,observaciones=?,activo=?,reg_mercantil=?,tomo=?,folio=?,hoja=?,inscripcion=?  WHERE id_empresa = ?");
-		    stmt.setString(1, empresas.getCif());
+		    stmt.setString(1, empresas.getNif());
 		    stmt.setString(2,empresas.getTipo());
 		    stmt.setString(3,empresas.getNombre());
 		    stmt.setString(4,empresas.getDireccion());
@@ -223,7 +223,7 @@ public class AccionesEmpresas{
 			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("UPDATE empresas set CIF = ?, tipo = ?, Nombre = ?, Direccion = ?, Poblacion = ?, Provincia = ?, CP = ?, Telefono1=?, "
 		    		+ "Telefono2=?, Telefono3=?, Persona_contacto=?,mail=?,web=?,IBAN=?,observaciones=?,activo=? WHERE id_empresa = ? AND empresa = ?");
-		    stmt.setString(1, empresas.getCif());
+		    stmt.setString(1, empresas.getNif());
 		    stmt.setString(2,empresas.getTipo());
 		    stmt.setString(3,empresas.getNombre());
 		    stmt.setString(4,empresas.getDireccion());
@@ -260,8 +260,9 @@ public class AccionesEmpresas{
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next()){
+				String salida = result.getString("Nombre");
 				connection.close();
-				return result.getString("Nombre");
+				return salida;
 			} else {
 				connection.close();
 				return "";
@@ -331,7 +332,7 @@ public class AccionesEmpresas{
 			if (result.next()){
 				salida.setIdEmpresa(result.getInt("id_empresa"));
 				salida.setEmpresa(result.getInt("empresa"));
-				salida.setCif(result.getString("CIF"));
+				salida.setNif(result.getString("CIF"));
 				salida.setTipo(result.getString("tipo"));
 				salida.setNombre(result.getString("Nombre"));
 				salida.setDireccion(result.getString("Direccion"));
@@ -398,7 +399,7 @@ public class AccionesEmpresas{
 			if (result.next()){
 				salida.setIdEmpresa(result.getInt("id_empresa"));
 				salida.setEmpresa(result.getInt("empresa"));
-				salida.setCif(result.getString("CIF"));
+				salida.setNif(result.getString("CIF"));
 				salida.setTipo(result.getString("tipo"));
 				salida.setNombre(result.getString("Nombre"));
 				salida.setDireccion(result.getString("Direccion"));

@@ -101,7 +101,7 @@ public class VentanaProyectos {
 		frame.getContentPane().add(lblFechaInicio);
 		
 		textFIni = new JDateChooser();
-		textFIni.setBounds(133, 29, 96, 20);
+		textFIni.setBounds(133, 29, 109, 20);
 		frame.getContentPane().add(textFIni);
 		
 		lblFechaFin = new JLabel("Fecha fin");
@@ -109,7 +109,7 @@ public class VentanaProyectos {
 		frame.getContentPane().add(lblFechaFin);
 		
 		textFFin = new JDateChooser();
-		textFFin.setBounds(133, 57, 96, 20);
+		textFFin.setBounds(133, 57, 109, 20);
 		frame.getContentPane().add(textFFin);
 		
 		lblFechaCierre = new JLabel("Fecha cierre");
@@ -117,7 +117,7 @@ public class VentanaProyectos {
 		frame.getContentPane().add(lblFechaCierre);
 		
 		textFCierre = new JDateChooser();
-		textFCierre.setBounds(333, 57, 96, 20);
+		textFCierre.setBounds(333, 57, 113, 20);
 		frame.getContentPane().add(textFCierre);
 		
 		lblDescripcin = new JLabel("Descripci\u00F3n");
@@ -227,7 +227,7 @@ public class VentanaProyectos {
 				}
 			}
 		});
-		btnVolver.setBounds(446, 23, 89, 23);
+		btnVolver.setBounds(460, 29, 89, 23);
 		frame.getContentPane().add(btnVolver);
 		
 		JButton btnAlta = new JButton("Alta Proyecto");
@@ -342,7 +342,7 @@ public class VentanaProyectos {
 
 
 		});
-		btnLimpiar.setBounds(446, 51, 89, 23);
+		btnLimpiar.setBounds(460, 57, 89, 23);
 		frame.getContentPane().add(btnLimpiar);
 		
 		JButton btnBuscar = new JButton("Buscar");
@@ -390,7 +390,7 @@ public class VentanaProyectos {
 					}
 				}				
 		});
-		btnBuscar.setBounds(446, 82, 89, 23);
+		btnBuscar.setBounds(460, 88, 89, 23);
 		frame.getContentPane().add(btnBuscar);
 		
 		btnConcepto = new JButton("Conceptos");
