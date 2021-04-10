@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -188,7 +189,7 @@ public class FacturaEmitida extends JFrame {
 		textNifCli = new JTextField();
 		textNifCli.setColumns(10);
 		textNifCli.setBounds(10, 84, 274, 20);
-		textNifCli.setText("NIF "+cliente.getCif()+"");
+		textNifCli.setText("NIF "+cliente.getNif()+"");
 		panel_1.add(textNifCli);
 		
 		textFactura = new JTextField();
@@ -219,7 +220,7 @@ public class FacturaEmitida extends JFrame {
 		textNif = new JTextField();
 		textNif.setBounds(10, 673, 439, 20);
 		panel.add(textNif);
-		textNif.setText("NIF : "+empresa.getCif()+"");
+		textNif.setText("NIF : "+empresa.getNif()+"");
 		textNif.setColumns(10);
 		
 		JTextArea textMerca = new JTextArea();
@@ -261,12 +262,47 @@ public class FacturaEmitida extends JFrame {
 		panel.add(table);
 		
 		DefaultTableModel modelo2 = new DefaultTableModel();
-		Object [] identificador2 = new Object[]{"Base Imponible", "IVA", "Total Factura", "Total a pagar"};
-		modelo2.setColumnIdentifiers(identificador2);
+
+		String [] indetificador2 = new String[6];
+		indetificador2[0] = "Base Imponible";
+		indetificador2[1] = "IVA";
+		indetificador2[2] = "Total Factura";
+		int ind = 3;
+		Double importeIRPF = (double) 0;
+		Double importeTasa = (double) 0;
+		if (factura.getIrpf()>0) {
+			indetificador2[ind] = "IRPF";
+			ind++;
+			importeIRPF = factura.getIrpf();
+		}
+		if (factura.getTasa()>0) {
+			indetificador2[ind] = "Tasa";
+			ind++;
+			importeTasa = factura.getTasa();
+		}
+		indetificador2[5] = "Total a Pagar";
+		
+		modelo2.setColumnIdentifiers(indetificador2);
 		Double importeIva = factura.getBaseImpo() * (factura.getIva()/100);
-		Double importeTotal = factura.getBaseImpo() + importeIva;
-		modelo2.addRow(identificador2);
-		modelo2.addRow(new Object[] {factura.getBaseImpo(), importeIva, importeTotal, importeTotal });
+		Double importeTotal = factura.getBaseImpo() + importeIva + importeIRPF + importeTasa;
+		Double importePagar = importeTotal + importeIva + importeIRPF + importeTasa;
+		modelo2.addRow(indetificador2);
+		
+		Double valores[] = new Double[6];
+		valores[0] = factura.getBaseImpo();
+		valores[1] = importeIva;
+		valores[2] = importeTotal;
+		ind=3;
+		if (factura.getIrpf()>0) {
+			valores[ind] = importeIRPF;
+			ind++;
+		}
+		if (factura.getTasa()>0) {
+			valores[ind] = importeTasa;
+			ind++;
+		}
+		valores[5] = importePagar;
+		modelo2.addRow(valores);
 		table_1 = new JTable(modelo2);
 		table_1.setBounds(10, 506, 439, 36);
 		panel.add(table_1);

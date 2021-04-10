@@ -47,6 +47,8 @@ public class VentanaPrincipal implements ActionListener{
 		if (entrada.getAcceso() == 1) {
 			Sopcion4 = new JMenuItem("Usuarios");
 			Sopcion4.setMnemonic(KeyEvent.VK_U);
+			Sopcion7 = new JMenuItem("Gesti\u00F3n Constantes");
+			Sopcion7.setMnemonic(KeyEvent.VK_C);
 		}
 		Sopcion5 = new JMenuItem("Cambio sesi\u00F3n");
 		Sopcion5.setMnemonic(KeyEvent.VK_M);
@@ -63,7 +65,10 @@ public class VentanaPrincipal implements ActionListener{
 				
 		opcion1.add(Sopcion1);
 		
-		if (entrada.getAcceso() == 1) {opcion1.add(Sopcion4);}
+		if (entrada.getAcceso() == 1) {
+			opcion1.add(Sopcion4);
+			opcion1.add(Sopcion7);
+		}
 		opcion1.add(Sopcion5);
 		opcion1.add(Sopcion6);
 
@@ -74,6 +79,7 @@ public class VentanaPrincipal implements ActionListener{
 				
 		if (entrada.getAcceso() == 1) {
 			Sopcion4.addActionListener(this);
+			Sopcion7.addActionListener(this);
 		}
 		Sopcion5.addActionListener(this);
 		Sopcion6.addActionListener(this);
@@ -238,6 +244,10 @@ public class VentanaPrincipal implements ActionListener{
 			case "Gesti\u00F3n Empresas":
 				ventana.dispose();
 				VentanaEmpresas empresas = new VentanaEmpresas(control);
+				break;
+			case "Gesti\u00F3n Constantes":
+				ventana.dispose();
+				VentanaConstantes constantes = new VentanaConstantes(control);
 				break;
 			case "IVA":
 				ventana.dispose();

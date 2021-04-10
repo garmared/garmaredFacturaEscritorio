@@ -3,6 +3,8 @@ package ventanas;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,6 +71,20 @@ public class VentanaConceptosProyecto {
 		
 		montaTabla();
 		table = new JTable(modelo);
+		table.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (table.getSelectedColumn()==2) {
+					if (e.getKeyCode()== KeyEvent.VK_TAB) {
+						modelo.addRow(new Object[] {"",""});
+					}
+				}
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {}
+		});
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(23, 45, 497, 200);
 		frame.getContentPane().add(scrollPane);		
@@ -134,15 +150,7 @@ public class VentanaConceptosProyecto {
 		btnLimpiar.setBounds(311, 11, 89, 23);
 		frame.getContentPane().add(btnLimpiar);
 		
-		JButton btnMs = new JButton("M\u00E1s");
-		btnMs.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				modelo.addRow(new Object[] {" ", " "});
-			}
-		});
-		btnMs.setBounds(410, 11, 67, 23);
-		frame.getContentPane().add(btnMs);
-		
+	
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
