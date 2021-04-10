@@ -105,4 +105,28 @@ public class AccionesConstantes {
 			return null;
 		}	
 	}
+
+	public String nombreConstante(String tipo, int codigo) {
+		try {
+			Connection connection=accService.getConexion();
+			ResultSet result =null;
+			String salida= "";
+			String peticion = "SELECT nombre FROM constantes where tiporeg = '"+tipo+"' AND codigo= '"+codigo+"'";
+			Statement stmt = connection.createStatement();
+			result = stmt.executeQuery(peticion);
+			if (result.next()){
+				salida = result.getString("nombre");
+				stmt.close();
+				connection.close();
+				return salida;
+			} else {
+				stmt.close();
+				connection.close();
+				return "";
+			}	
+		}catch(Exception ex){
+			System.out.println("Error en nombreConstante: "+ex.getMessage().toString());
+			return "";
+		}	
+	}
 }

@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -14,8 +16,10 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import acciones.dto.ClientesDTO;
+import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ServiceDTO;
 import acciones.service.impl.AccionesClientesImpl;
+import acciones.service.impl.AccionesConstantesImpl;
 import acciones.service.impl.AccionesServiceImpl;
 
 
@@ -33,9 +37,9 @@ public class VentanaClientes {
 	private JTextField textPersonaContact;
 	private JTextField textMail;
 	private JTextField textWeb;
-	private JTextField textFP;
+	private JComboBox textFP;
 	private JTextField textDiaPago;
-	private JTextField textMP;
+	private JComboBox textMP;
 	private JTextField textObserv;
 	private JTextField textCP;
 
@@ -69,6 +73,7 @@ public class VentanaClientes {
 	private Boolean accion = false;
 	AccionesClientesImpl accClientes = new AccionesClientesImpl();
 	AccionesServiceImpl accService = new AccionesServiceImpl();
+	AccionesConstantesImpl accConstantes = new AccionesConstantesImpl();
 	/**
 	 * Create the application.
 	 */
@@ -200,9 +205,9 @@ public class VentanaClientes {
 		lblFPago.setBounds(10, 291, 75, 14);
 		frame.getContentPane().add(lblFPago);
 		
-		textFP = new JTextField();
-		textFP.setColumns(10);
+		textFP = new JComboBox();
 		textFP.setBounds(95, 288, 96, 20);
+		llenaFP();
 		frame.getContentPane().add(textFP);
 		
 		lblDiaPago = new JLabel("D\u00EDa de pago");
@@ -218,9 +223,9 @@ public class VentanaClientes {
 		lblModalidadDePago.setBounds(10, 322, 75, 14);
 		frame.getContentPane().add(lblModalidadDePago);
 		
-		textMP = new JTextField();
-		textMP.setColumns(10);
+		textMP = new JComboBox();
 		textMP.setBounds(95, 319, 96, 20);
+		llenaModaPago();
 		frame.getContentPane().add(textMP);
 		
 		lblActivo = new JLabel("Activo");
@@ -478,9 +483,11 @@ public class VentanaClientes {
 		textPersonaContact.setText(entrada.getPersonaContacto());
 		textWeb.setText(entrada.getWeb());
 		textMail.setText(entrada.getMail());
-		textFP.setText(entrada.getFp());
+		String nombre = accConstantes.nombreConstante("FPAG",Integer.valueOf(entrada.getFp()));
+ 		textFP.getModel().setSelectedItem(nombre);
 		textDiaPago.setText(String.valueOf(entrada.getDiaPago()));
-		textMP.setText(entrada.getModaPago());
+		nombre = accConstantes.nombreConstante("MODP",Integer.valueOf(entrada.getModaPago()));
+		textMP.getModel().setSelectedItem(nombre);
 		textObserv.setText(entrada.getObservaciones());
 		textCP.setText(String.valueOf(entrada.getCp()));
 		if (entrada.getActivo().equals("S")) {
@@ -509,9 +516,11 @@ public class VentanaClientes {
 		cliente.setPersonaContacto(textPersonaContact.getText());
 		cliente.setMail(textMail.getText());
 		cliente.setWeb(textWeb.getText());
-		cliente.setFp(textFP.getText());
+		ObjetoJComboBox temporal = (ObjetoJComboBox) textFP.getSelectedItem();
+  		cliente.setFp(String.valueOf(temporal.getNumero()));
 		cliente.setDiaPago(Integer.valueOf(textDiaPago.getText()));
-		cliente.setModaPago(textMP.getText());
+		temporal = (ObjetoJComboBox) textMP.getSelectedItem();
+		cliente.setModaPago(String.valueOf(temporal.getNumero()));
 		cliente.setObservaciones(textObserv.getText());
 		if (rdbtnSi.isSelected() == true) {
 			cliente.setActivo("S");
@@ -532,13 +541,28 @@ public class VentanaClientes {
 		textPersonaContact.setText(" ");
 		textMail.setText(" ");
 		textWeb.setText(" ");
-		textFP.setText(" ");
 		textDiaPago.setText(" ");
-		textMP.setText(" ");
 		textObserv.setText(" ");
 		textCP.setText(" ");
 		rdbtnNo.setSelected(false);
 		rdbtnSi.setSelected(false);
 	}
 
+	private void llenaFP() {
+		ArrayList<ObjetoJComboBox> formPago = accConstantes.consultaConstante("FPAG");
+		if (formPago !=null) {
+			for (int i = 0; i < formPago.size(); i++) {
+				textFP.addItem(formPago.get(i));
+			}
+		}		
+	}
+	
+	private void llenaModaPago() {
+		ArrayList<ObjetoJComboBox> modaPago = accConstantes.consultaConstante("MODP");
+		if (modaPago !=null) {
+			for (int i = 0; i < modaPago.size(); i++) {
+				textMP.addItem(modaPago.get(i));
+			}
+		}
+	}
 }
