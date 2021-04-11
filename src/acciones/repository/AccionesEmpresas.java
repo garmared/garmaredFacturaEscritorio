@@ -30,9 +30,14 @@ public class AccionesEmpresas{
 				stmt.setInt(21, entrada.getHoja());
 				stmt.setInt(22, entrada.getInscripcion());
 			}else {
-				stmt = connection.prepareStatement("INSERT INTO empresas VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				stmt = connection.prepareStatement("INSERT INTO empresas VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				stmt.setInt(1, entrada.getIdEmpresa());
 				stmt.setInt(2, entrada.getEmpresa());
+				stmt.setString(19, "");
+				stmt.setInt(20, 0);
+				stmt.setInt(21, 0);
+				stmt.setInt(22, 0);
+				stmt.setInt(23, 0);
 				ind = 1;
 			}
 			stmt.setString(ind+2, entrada.getNif());
@@ -433,5 +438,21 @@ public class AccionesEmpresas{
 			System.out.println("Error en buscaEmpresa: "+ex.getMessage().toString());
 			return null;
 		}	
+	}
+
+	public Boolean deleteProveedor(int empresa, int idEmpresa) {
+		try{
+			Connection connection=accService.getConexion();
+			PreparedStatement stmt = connection.prepareStatement("DELETE FROM empresas WHERE id_empresa = ? AND empresa = ?");
+		    stmt.setInt(1,idEmpresa);
+		    stmt.setInt(2,empresa);
+			stmt.executeUpdate();
+			stmt.close();
+			connection.close();
+			return true;
+		}catch(Exception ex){
+			System.out.println("Error en deleteEmpresa: "+ex.getMessage().toString());
+			return false;
+		}
 	}
 }

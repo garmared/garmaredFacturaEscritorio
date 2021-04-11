@@ -295,7 +295,7 @@ public class VentanaProveedores {
 			public void actionPerformed(ActionEvent e) {
 				int confirmado = JOptionPane.showConfirmDialog(null, "Realmente desea borrar la proveedor?", "Confirmar borrado", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (JOptionPane.OK_OPTION == confirmado) {
-					accion = accEmpresas.deleteEmpresa(idEmpresa);
+					accion = accEmpresas.deleteProveedor(empresa,idEmpresa);
 					if (accion) {
 						limpiaPantalla();
 						JOptionPane.showMessageDialog(null, "Proveedor borrado correctamente");

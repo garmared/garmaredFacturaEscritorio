@@ -129,4 +129,28 @@ public class AccionesConstantes {
 			return "";
 		}	
 	}
+
+	public String buscaCodigo(String tipo, String nombre) {
+		try {
+			Connection connection=accService.getConexion();
+			ResultSet result =null;
+			String salida= "";
+			String peticion = "SELECT codigo FROM constantes where tiporeg = '"+tipo+"' AND nombre= '"+nombre+"'";
+			Statement stmt = connection.createStatement();
+			result = stmt.executeQuery(peticion);
+			if (result.next()){
+				salida = result.getString("codigo");
+				stmt.close();
+				connection.close();
+				return salida;
+			} else {
+				stmt.close();
+				connection.close();
+				return "";
+			}	
+		}catch(Exception ex){
+			System.out.println("Error en buscaCodigo: "+ex.getMessage().toString());
+			return "";
+		}	
+	}
 }

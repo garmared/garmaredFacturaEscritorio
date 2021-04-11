@@ -56,4 +56,8 @@ public class AccionesConstantesImpl implements AccionesConstantesController {
 		return accConstantes.nombreConstante(string, fp);
 	}
 
+	public String buscaCodigo(String string, String temporal) {
+		return accConstantes.buscaCodigo(string,temporal);
+	}
+
 }

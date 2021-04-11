@@ -22,7 +22,9 @@ public interface AccionesEmpresasController {
 	public String buscaNombre(Integer empresa, String tipo);
 	//consulta identificador de empresa o proveedor segun nombre y tipo
 	public Integer buscaId(String variable, String string);
-	
+	//borrado de un proveedor por identificador
+	public Boolean deleteProveedor(int empresa, int idEmpresa);
+		
 	public String creaConsulta(EmpresasDTO paramConsulta);
 	
 	public EmpresasDTO buscaProveedor (int identificador, int empresa);

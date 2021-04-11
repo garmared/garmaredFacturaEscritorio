@@ -97,14 +97,14 @@ public class VentanaClientes {
 	 */
 	private void initialize(String nombre) {
 		frame = new JFrame("Clientes de la empresa " + nombre);
-		frame.setBounds(100, 100, 450, 485);
+		frame.setBounds(100, 100, 600, 600);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		lblNif = new JLabel("NIF");
 		textNif = new JTextField();
-		textNif.setBounds(95, 11, 96, 20);
+		textNif.setBounds(174, 8, 96, 20);
 		frame.getContentPane().add(textNif);
 		textNif.setColumns(10);
 				
@@ -112,75 +112,75 @@ public class VentanaClientes {
 		frame.getContentPane().add(lblNif);
 		
 		lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(10, 42, 48, 14);
+		lblNombre.setBounds(10, 42, 132, 14);
 		frame.getContentPane().add(lblNombre);
 		
 		textNombre = new JTextField();
 		textNombre.setColumns(10);
-		textNombre.setBounds(95, 39, 96, 20);
+		textNombre.setBounds(174, 36, 96, 20);
 		frame.getContentPane().add(textNombre);
 		
 		lblDireccin = new JLabel("Direcci\u00F3n");
-		lblDireccin.setBounds(10, 70, 48, 14);
+		lblDireccin.setBounds(10, 70, 132, 14);
 		frame.getContentPane().add(lblDireccin);
 		
 		textDireccion = new JTextField();
 		textDireccion.setColumns(10);
-		textDireccion.setBounds(95, 67, 96, 20);
+		textDireccion.setBounds(174, 64, 96, 20);
 		frame.getContentPane().add(textDireccion);
 		
 		lblPoblacin = new JLabel("Poblaci\u00F3n");
-		lblPoblacin.setBounds(10, 101, 48, 14);
+		lblPoblacin.setBounds(10, 101, 132, 14);
 		frame.getContentPane().add(lblPoblacin);
 		
 		textPoblacion = new JTextField();
 		textPoblacion.setColumns(10);
-		textPoblacion.setBounds(95, 98, 96, 20);
+		textPoblacion.setBounds(174, 95, 96, 20);
 		frame.getContentPane().add(textPoblacion);
 		
 		lblProvincia = new JLabel("Provincia");
-		lblProvincia.setBounds(10, 129, 48, 14);
+		lblProvincia.setBounds(10, 129, 132, 14);
 		frame.getContentPane().add(lblProvincia);
 		
 		textProvincia = new JTextField();
 		textProvincia.setColumns(10);
-		textProvincia.setBounds(95, 126, 96, 20);
+		textProvincia.setBounds(174, 123, 96, 20);
 		frame.getContentPane().add(textProvincia);
 		
 		lblTelfono = new JLabel("Tel\u00E9fono");
-		lblTelfono.setBounds(10, 157, 48, 14);
+		lblTelfono.setBounds(10, 157, 132, 14);
 		frame.getContentPane().add(lblTelfono);
 		
 		textTelefono1 = new JTextField();
 		textTelefono1.setColumns(10);
-		textTelefono1.setBounds(95, 154, 96, 20);
+		textTelefono1.setBounds(174, 151, 96, 20);
 		frame.getContentPane().add(textTelefono1);
 		
 		lblMvil = new JLabel("M\u00F3vil 1");
-		lblMvil.setBounds(10, 179, 48, 14);
+		lblMvil.setBounds(10, 179, 102, 14);
 		frame.getContentPane().add(lblMvil);
 		
 		textTelefono2 = new JTextField();
 		textTelefono2.setColumns(10);
-		textTelefono2.setBounds(95, 176, 96, 20);
+		textTelefono2.setBounds(174, 173, 96, 20);
 		frame.getContentPane().add(textTelefono2);
 		
 		lblMvil1 = new JLabel("M\u00F3vil 2");
-		lblMvil1.setBounds(241, 179, 48, 14);
+		lblMvil1.setBounds(292, 179, 48, 14);
 		frame.getContentPane().add(lblMvil1);
 		
 		textTelefono3 = new JTextField();
 		textTelefono3.setColumns(10);
-		textTelefono3.setBounds(316, 176, 96, 20);
+		textTelefono3.setBounds(404, 176, 96, 20);
 		frame.getContentPane().add(textTelefono3);
 		
 		lblPersonaContacto = new JLabel("Persona Contacto");
-		lblPersonaContacto.setBounds(10, 205, 75, 14);
+		lblPersonaContacto.setBounds(10, 205, 132, 14);
 		frame.getContentPane().add(lblPersonaContacto);
 		
 		textPersonaContact = new JTextField();
 		textPersonaContact.setColumns(10);
-		textPersonaContact.setBounds(95, 202, 96, 20);
+		textPersonaContact.setBounds(174, 199, 96, 20);
 		frame.getContentPane().add(textPersonaContact);
 		
 		lblCorreo = new JLabel("Correo");
@@ -189,7 +189,7 @@ public class VentanaClientes {
 		
 		textMail = new JTextField();
 		textMail.setColumns(10);
-		textMail.setBounds(95, 230, 96, 20);
+		textMail.setBounds(174, 227, 96, 20);
 		frame.getContentPane().add(textMail);
 		
 		lblWeb = new JLabel("Web");
@@ -198,55 +198,55 @@ public class VentanaClientes {
 		
 		textWeb = new JTextField();
 		textWeb.setColumns(10);
-		textWeb.setBounds(95, 260, 96, 20);
+		textWeb.setBounds(174, 257, 96, 20);
 		frame.getContentPane().add(textWeb);
 		
 		lblFPago = new JLabel("Forma de Pago");
-		lblFPago.setBounds(10, 291, 75, 14);
+		lblFPago.setBounds(10, 291, 132, 14);
 		frame.getContentPane().add(lblFPago);
 		
 		textFP = new JComboBox();
-		textFP.setBounds(95, 288, 96, 20);
+		textFP.setBounds(174, 285, 96, 20);
 		llenaFP();
 		frame.getContentPane().add(textFP);
 		
 		lblDiaPago = new JLabel("D\u00EDa de pago");
-		lblDiaPago.setBounds(241, 291, 77, 14);
+		lblDiaPago.setBounds(317, 294, 77, 14);
 		frame.getContentPane().add(lblDiaPago);
 		
 		textDiaPago = new JTextField();
 		textDiaPago.setColumns(10);
-		textDiaPago.setBounds(328, 288, 96, 20);
+		textDiaPago.setBounds(404, 291, 96, 20);
 		frame.getContentPane().add(textDiaPago);
 		
 		lblModalidadDePago = new JLabel("Modalidad de pago");
-		lblModalidadDePago.setBounds(10, 322, 75, 14);
+		lblModalidadDePago.setBounds(10, 322, 132, 14);
 		frame.getContentPane().add(lblModalidadDePago);
 		
 		textMP = new JComboBox();
-		textMP.setBounds(95, 319, 96, 20);
+		textMP.setBounds(174, 316, 96, 20);
 		llenaModaPago();
 		frame.getContentPane().add(textMP);
 		
 		lblActivo = new JLabel("Activo");
-		lblActivo.setBounds(243, 319, 48, 14);
+		lblActivo.setBounds(319, 322, 48, 14);
 		frame.getContentPane().add(lblActivo);
 		lblCP = new JLabel("C\u00F3digo Postal");
-		lblCP.setBounds(231, 154, 48, 14);
+		lblCP.setBounds(292, 157, 102, 14);
 		frame.getContentPane().add(lblCP);
 		
 		textCP = new JTextField();
 		textCP.setColumns(10);
-		textCP.setBounds(316, 151, 96, 20);
+		textCP.setBounds(404, 151, 96, 20);
 		frame.getContentPane().add(textCP);
 		
 		lblObservaciones = new JLabel("Observaciones");
-		lblObservaciones.setBounds(10, 350, 75, 14);
+		lblObservaciones.setBounds(10, 350, 132, 14);
 		frame.getContentPane().add(lblObservaciones);
 		
 		textObserv = new JTextField();
 		textObserv.setColumns(10);
-		textObserv.setBounds(95, 347, 96, 20);
+		textObserv.setBounds(174, 344, 96, 20);
 		frame.getContentPane().add(textObserv);
 		
 		rdbtnSi = new JRadioButton("Si");
@@ -265,10 +265,10 @@ public class VentanaClientes {
 			}
 		});
 		
-		rdbtnSi.setBounds(285, 318, 48, 23);
+		rdbtnSi.setBounds(361, 321, 48, 23);
 		frame.getContentPane().add(rdbtnSi);
 		
-		rdbtnNo.setBounds(338, 318, 48, 23);
+		rdbtnNo.setBounds(414, 321, 48, 23);
 		frame.getContentPane().add(rdbtnNo);
 		
 		lblError = new JLabel("");
@@ -343,7 +343,7 @@ public class VentanaClientes {
 				}else {ListadoClientes listado = new ListadoClientes(sesionGlobal);}
 			}
 		});
-		btnNewButton.setBounds(335, 21, 89, 23);
+		btnNewButton.setBounds(468, 24, 89, 23);
 		frame.getContentPane().add(btnNewButton,BorderLayout.EAST);
 		
 		JSeparator separator = new JSeparator();
@@ -360,7 +360,7 @@ public class VentanaClientes {
 				limpiaPantalla();
 			}
 		});
-		btnLimpiar.setBounds(335, 55, 89, 23);
+		btnLimpiar.setBounds(468, 58, 89, 23);
 		frame.getContentPane().add(btnLimpiar,BorderLayout.EAST);
 		
 		JButton btnBuscar = new JButton("Buscar");
@@ -387,7 +387,7 @@ public class VentanaClientes {
 				}				
 			}
 		});
-		btnBuscar.setBounds(335, 89, 89, 23);
+		btnBuscar.setBounds(468, 92, 89, 23);
 		frame.getContentPane().add(btnBuscar,BorderLayout.EAST);
 		
 		frame.setVisible(true);
@@ -516,11 +516,11 @@ public class VentanaClientes {
 		cliente.setPersonaContacto(textPersonaContact.getText());
 		cliente.setMail(textMail.getText());
 		cliente.setWeb(textWeb.getText());
-		ObjetoJComboBox temporal = (ObjetoJComboBox) textFP.getSelectedItem();
-  		cliente.setFp(String.valueOf(temporal.getNumero()));
+		String temporal = (String) textFP.getSelectedItem().toString();
+  		cliente.setFp(accConstantes.buscaCodigo("FPAG",temporal));
 		cliente.setDiaPago(Integer.valueOf(textDiaPago.getText()));
-		temporal = (ObjetoJComboBox) textMP.getSelectedItem();
-		cliente.setModaPago(String.valueOf(temporal.getNumero()));
+		temporal = (String) textMP.getSelectedItem().toString();
+		cliente.setModaPago(accConstantes.buscaCodigo("MODP",temporal));
 		cliente.setObservaciones(textObserv.getText());
 		if (rdbtnSi.isSelected() == true) {
 			cliente.setActivo("S");

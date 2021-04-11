@@ -87,4 +87,8 @@ public class AccionesEmpresasImpl implements AccionesEmpresasController{
 		return accEmpresa.buscaEmpresaId(empresa);
 	}
 
+	public Boolean deleteProveedor(int empresa, int idEmpresa) {
+		return accEmpresa.deleteProveedor(empresa, idEmpresa);
+	}
+
 }
