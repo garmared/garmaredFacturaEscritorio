@@ -36,7 +36,9 @@ public class AccionesProyectosImpl implements AccionesProyectosController{
 		public  String buscaDescripcion(int proyecto, int empresa) {
 			return accProyectos.buscaDescripcion(proyecto,empresa);
 		}
-
+		public  String buscaNombre(int proyecto, int empresa) {
+			return accProyectos.buscaNombre(proyecto,empresa);
+		}
 		public Integer buscaProyecto(String variable, int empresa) {
 			return accProyectos.buscaProyecto(variable,empresa);
 		}
@@ -75,5 +77,15 @@ public class AccionesProyectosImpl implements AccionesProyectosController{
 		public ProyectosDTO buscaProyecto(int variable, int empresa) {
 			// TODO Auto-generated method stub
 			return accProyectos.buscaProyecto(variable,empresa);
+		}
+
+		public ProyectosDTO infoProyecto(String variable, Integer idEmpresa) {
+			//obtenemos informacion del proyecto a partir del nombre
+			return accProyectos.infoProyecto(variable,idEmpresa);
+		}
+
+		public ArrayList<ObjetoJComboBox> consultaProyectos(Integer idCliente, Integer idEmpresa) {
+			// TODO Auto-generated method stub
+			return accProyectos.consultaProyectos(idCliente,idEmpresa);	
 		}
 }

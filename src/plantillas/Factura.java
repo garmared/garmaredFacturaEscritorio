@@ -10,6 +10,9 @@ import java.awt.print.PrinterJob;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import acciones.controller.imprimir;
 import acciones.dto.ConceptosDTO;
@@ -71,6 +74,18 @@ public class Factura extends javax.swing.JFrame{
 		JLabel lblNewLabel_1 = new JLabel("Factura de la empresa X n\u00FAmero 123123");
 		lblNewLabel_1.setBounds(115, 120, 339, 22);
 		frame.getContentPane().add(lblNewLabel_1);
+		
+		DefaultTableModel modelo = new DefaultTableModel();
+		
+		modelo.addColumn("columna 1");
+		modelo.addColumn("columna 2");
+		modelo.addRow(new Object[] {"11","22"});
+		modelo.addRow(new Object[] {"11","22"});
+		modelo.addRow(new Object[] {"11","22"});
+		JTable tabla = new JTable(modelo);
+		tabla.setModel(modelo);
+		JScrollPane algo = new JScrollPane(tabla);
+		frame.getContentPane().add(algo);
 		
 		btnNewButton = new JButton("Imprimir");
 		btnNewButton.addActionListener(new ActionListener() {

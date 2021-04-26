@@ -4,8 +4,16 @@ public class ClientesDTO extends GeneralDTO{
 
 	private Integer idCliente;
 	Integer diaPago;
-	String modaPago, fp;
+	String modaPago, fp, iban;
 	
+	public String getIban() {
+		return iban;
+	}
+
+	public void setIban(String iban) {
+		this.iban = iban;
+	}
+
 	public String getFp() {
 		return fp;
 	}

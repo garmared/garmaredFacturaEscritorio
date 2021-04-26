@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,17 +18,18 @@ import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import acciones.controller.imprimir;
 import acciones.dto.ClientesDTO;
 import acciones.dto.ConceptosDTO;
 import acciones.dto.EmpresasDTO;
 import acciones.dto.FacturasDTO;
-import acciones.dto.ObjetoJComboBox;
 import acciones.dto.ProyectosDTO;
 import acciones.dto.ServiceDTO;
 import acciones.service.impl.AccionesClientesImpl;
 import acciones.service.impl.AccionesConceptosImpl;
+import acciones.service.impl.AccionesConstantesImpl;
 import acciones.service.impl.AccionesEmpresasImpl;
 import acciones.service.impl.AccionesFacturaImpl;
 import acciones.service.impl.AccionesProyectosImpl;
@@ -46,6 +46,7 @@ public class FacturaEmitida extends JFrame {
 	AccionesFacturaImpl accFacturas = new AccionesFacturaImpl();
 	AccionesProyectosImpl accProyestos = new AccionesProyectosImpl();
 	AccionesConceptosImpl accConceptos = new AccionesConceptosImpl();
+	AccionesConstantesImpl accConstantes = new AccionesConstantesImpl();
 	
 	private JTextField textEmpresa;
 	private JTextField textDireccion;
@@ -74,7 +75,7 @@ public class FacturaEmitida extends JFrame {
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		frame.setBounds(10,10,1000,900);
+		frame.setBounds(0,10,1000,900);
 		EmpresasDTO empresa = new EmpresasDTO();
 		ClientesDTO cliente = new ClientesDTO();
 		FacturasDTO factura = new FacturasDTO();
@@ -88,7 +89,7 @@ public class FacturaEmitida extends JFrame {
 		concepto=obtenerConceptosProyecto(factura.getProyecto(),sesionGlobal.getIdEmpresa());
 		
 		panel = new JPanel();
-		panel.setBounds(10, 11, 459, 750);
+		panel.setBounds(0, 11, 459, 750);
 		panel.setLayout(null);
 		
 		JButton btnImprimir = new JButton("Imprimir");
@@ -105,7 +106,7 @@ public class FacturaEmitida extends JFrame {
 		textDireccion.setText((String) null);
 		textDireccion.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		textDireccion.setColumns(10);
-		textDireccion.setBounds(10, 40, 231, 20);
+		textDireccion.setBounds(0, 40, 231, 20);
 		textDireccion.setText("C/"+empresa.getDireccion()+"");
 		panel.add(textDireccion);
 		
@@ -113,7 +114,7 @@ public class FacturaEmitida extends JFrame {
 		textCiudad.setText((String) null);
 		textCiudad.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		textCiudad.setColumns(10);
-		textCiudad.setBounds(10, 63, 231, 20);
+		textCiudad.setBounds(0, 63, 231, 20);
 		textCiudad.setText(String.valueOf(empresa.getCp())+"-"+empresa.getPoblacion());
 		panel.add(textCiudad);
 		
@@ -121,18 +122,18 @@ public class FacturaEmitida extends JFrame {
 		textProvincia.setText((String) null);
 		textProvincia.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		textProvincia.setColumns(10);
-		textProvincia.setBounds(10, 86, 231, 20);
+		textProvincia.setBounds(0, 86, 231, 20);
 		textProvincia.setText(empresa.getProvincia());
 		panel.add(textProvincia);
 		
 		JPanel panel_empresa = new JPanel();
 		panel_empresa.setBackground(Color.LIGHT_GRAY);
-		panel_empresa.setBounds(10, 0, 439, 110);
+		panel_empresa.setBounds(0, 0, 449, 110);
 		panel.add(panel_empresa);
 		panel_empresa.setLayout(null);
 		
 		textTelefono = new JTextField();
-		textTelefono.setBounds(240, 40, 195, 20);
+		textTelefono.setBounds(240, 40, 209, 20);
 		panel_empresa.add(textTelefono);
 		textTelefono.setText((String) null);
 		textTelefono.setFont(new Font("Tahoma", Font.PLAIN, 9));
@@ -140,14 +141,14 @@ public class FacturaEmitida extends JFrame {
 		textTelefono.setText("Teléfono : "+String.valueOf(empresa.getTelefono1())+"");
 		
 		textEmpresa = new JTextField();
-		textEmpresa.setBounds(1, 3, 435, 33);
+		textEmpresa.setBounds(0, 3, 449, 33);
 		panel_empresa.add(textEmpresa);
 		textEmpresa.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		textEmpresa.setColumns(10);
 		textEmpresa.setText(empresa.getNombre());
 		
 		textMovil = new JTextField();
-		textMovil.setBounds(240, 63, 195, 20);
+		textMovil.setBounds(240, 63, 209, 20);
 		panel_empresa.add(textMovil);
 		textMovil.setText((String) null);
 		textMovil.setFont(new Font("Tahoma", Font.PLAIN, 9));
@@ -155,7 +156,7 @@ public class FacturaEmitida extends JFrame {
 		textMovil.setText("Teléfono auxiliar : "+String.valueOf(empresa.getTelefono2())+"");
 		
 		textMail = new JTextField();
-		textMail.setBounds(240, 86, 195, 20);
+		textMail.setBounds(240, 86, 209, 20);
 		panel_empresa.add(textMail);
 		textMail.setText((String) null);
 		textMail.setFont(new Font("Tahoma", Font.PLAIN, 9));
@@ -194,13 +195,13 @@ public class FacturaEmitida extends JFrame {
 		
 		textFactura = new JTextField();
 		textFactura.setColumns(10);
-		textFactura.setBounds(10, 117, 141, 20);
+		textFactura.setBounds(0, 117, 141, 20);
 		textFactura.setText("Número : "+factura.getIdFactura()+"");
 		panel.add(textFactura);
 		
 		textFechaFactura = new JTextField();
 		textFechaFactura.setColumns(10);
-		textFechaFactura.setBounds(10, 143, 141, 20);
+		textFechaFactura.setBounds(0, 143, 141, 20);
 		String fecha = String.valueOf(factura.getFecha());
 		char[] digitos = fecha.toCharArray();
 		textFechaFactura.setText("Fecha : "+digitos[6]+digitos[7]+"/"+digitos[4]+digitos[5]+"/"+digitos[0]+digitos[1]+digitos[2]+digitos[3]+"");
@@ -208,17 +209,17 @@ public class FacturaEmitida extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("FACTURA");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 21));
-		lblNewLabel.setBounds(10, 174, 99, 29);
+		lblNewLabel.setBounds(0, 174, 99, 29);
 		panel.add(lblNewLabel);
 		
 		textObra = new JTextField();
 		textObra.setColumns(10);
-		textObra.setBounds(10, 238, 439, 20);
+		textObra.setBounds(0, 238, 449, 20);
 		textObra.setText("Obra : "+proyecto.getNombre()+"");
 		panel.add(textObra);
 		
 		textNif = new JTextField();
-		textNif.setBounds(10, 673, 439, 20);
+		textNif.setBounds(0, 673, 449, 20);
 		panel.add(textNif);
 		textNif.setText("NIF : "+empresa.getNif()+"");
 		textNif.setColumns(10);
@@ -253,11 +254,12 @@ public class FacturaEmitida extends JFrame {
 		digitos = fecha.toCharArray();
 		String vencimiento = ""+digitos[6]+digitos[7]+"/"+digitos[4]+digitos[5]+"/"+digitos[0]+digitos[1]+digitos[2]+digitos[3];
 		modelo.addRow(identificador1);
-		modelo.addRow(new Object [] {empresa.getIban(),cliente.getFp(),vencimiento});
+		String modoPago = accConstantes.nombreConstante("MODP", Integer.valueOf(cliente.getFp()));
+		modelo.addRow(new Object [] {empresa.getIban(),modoPago,vencimiento});
 		table = new JTable(modelo);
 		table.setModel(modelo);
 		table.setBorder(new LineBorder(new Color(0, 0, 0)));
-		table.setBounds(10, 542, 439, 36);
+		table.setBounds(0, 542, 449, 36);
 		
 		panel.add(table);
 		
@@ -283,6 +285,13 @@ public class FacturaEmitida extends JFrame {
 		indetificador2[5] = "Total a Pagar";
 		
 		modelo2.setColumnIdentifiers(indetificador2);
+		modelo2.addColumn("Base Imponible");
+		modelo2.addColumn("IVA");
+		modelo2.addColumn("Total Factura");
+		modelo2.addColumn("IRPF");
+		modelo2.addColumn("Tasa");
+		modelo2.addColumn("Total a Pagar");
+		
 		Double importeIva = factura.getBaseImpo() * (factura.getIva()/100);
 		Double importeTotal = factura.getBaseImpo() + importeIva + importeIRPF + importeTasa;
 		Double importePagar = importeTotal + importeIva + importeIRPF + importeTasa;
@@ -304,12 +313,15 @@ public class FacturaEmitida extends JFrame {
 		valores[5] = importePagar;
 		modelo2.addRow(valores);
 		table_1 = new JTable(modelo2);
-		table_1.setBounds(10, 506, 439, 36);
+		table_1.setBounds(0, 506, 449, 36);
 		panel.add(table_1);
 		table_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
+		TableColumn columna = table_1.getColumn("IVA");
+		columna.setPreferredWidth(100);
+		
 		JTextArea textDescripcion = new JTextArea();
-		textDescripcion.setBounds(10, 263, 439, 60);
+		textDescripcion.setBounds(0, 263, 449, 60);
 		textDescripcion.append("Descripción");
 		textDescripcion.append(System.getProperty("line.separator"));
 		textDescripcion.append(proyecto.getDescripcion());
@@ -327,7 +339,7 @@ public class FacturaEmitida extends JFrame {
 		
 		table_2 = new JTable(modelo3);
 		table_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		table_2.setBounds(10, 334, 439, 161);
+		table_2.setBounds(0, 334, 449, 161);
 		panel.add(table_2);
 		
 		

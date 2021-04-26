@@ -15,7 +15,7 @@ public class AccionesClientes {
 	public Boolean grabarCliente(ClientesDTO entrada) {
 		try{
 			Connection connection=accService.getConexion();						
-		    PreparedStatement stmt = connection.prepareStatement("INSERT INTO clientes VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		    PreparedStatement stmt = connection.prepareStatement("INSERT INTO clientes VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			stmt.setString(1, entrada.getNif());
 			stmt.setString(2,entrada.getNombre());
 			stmt.setString(3,entrada.getDireccion());
@@ -34,6 +34,7 @@ public class AccionesClientes {
 			stmt.setString(16,entrada.getObservaciones());
 			stmt.setString(17,entrada.getActivo());
 			stmt.setInt(18,entrada.getIdEmpresa());
+			stmt.setString(19,entrada.getIban());
 			
 			stmt.executeUpdate();
 			stmt.close();
@@ -100,6 +101,7 @@ public class AccionesClientes {
 				salida.setObservaciones(result.getString("observaciones"));
 				salida.setActivo(result.getString("activo"));
 				salida.setIdEmpresa(result.getInt("id_empresa"));
+				salida.setIban(result.getString("iban"));
 				stmt.close();
 				connection.close();
 				return salida;
@@ -134,7 +136,7 @@ public class AccionesClientes {
 		try{
 			Connection connection=accService.getConexion();						
 		    PreparedStatement stmt = connection.prepareStatement("UPDATE clientes set CIF = ?, Direccion = ?, Poblacion = ?, Provincia = ?,CP=?,"
-		    		+ "Telefono1=?, Telefono2=?, Telefono3=?, Persona_contacto=?,mail=?,web=?,fp=?,dia_pago=?,modo_pago=?,observaciones=?,activo=? WHERE id_cliente = ?");
+		    		+ "Telefono1=?, Telefono2=?, Telefono3=?, Persona_contacto=?,mail=?,web=?,fp=?,dia_pago=?,modo_pago=?,observaciones=?,activo=?,iban=? WHERE id_cliente = ?");
 			stmt.setString(1, cliente.getNif());
 			stmt.setString(2,cliente.getDireccion());
 			stmt.setString(3,cliente.getPoblacion());
@@ -151,7 +153,8 @@ public class AccionesClientes {
 			stmt.setString(14,cliente.getModaPago());
 			stmt.setString(15,cliente.getObservaciones());
 			stmt.setString(16,cliente.getActivo());
-			stmt.setInt(17, cliente.getIdCliente());
+			stmt.setInt(18, cliente.getIdCliente());
+			stmt.setString(17,cliente.getIban());
 			
 			stmt.executeUpdate();
 			stmt.close();
@@ -163,12 +166,12 @@ public class AccionesClientes {
 		}
 	}
 
-	public int buscaCliente(String nomBuscado) {
+	public int buscaCliente(String nomBuscado, int empresa) {
 		int salida;
 		try {
 			Connection connection=accService.getConexion();
 			ResultSet result =null;	
-			String peticion = "SELECT id_cliente FROM clientes WHERE Nombre = '"+nomBuscado+"'";
+			String peticion = "SELECT id_cliente FROM clientes WHERE Nombre = '"+nomBuscado+"' AND id_empresa = '"+empresa+"'";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			//result.next();
@@ -261,6 +264,7 @@ public class AccionesClientes {
 				salida.setObservaciones(result.getString("observaciones"));
 				salida.setActivo(result.getString("activo"));
 				salida.setIdEmpresa(result.getInt("id_empresa"));
+				salida.setIban(result.getString("iban"));
 				stmt.close();
 				connection.close();
 				return salida;
@@ -272,6 +276,50 @@ public class AccionesClientes {
 			}
 		}catch(Exception ex){
 			System.out.println("Error en buscaCliente: "+ex.getMessage().toString());
+			return null;
+		}	
+	}
+
+	public ClientesDTO infoCliente(String nombre, Integer idEmpresa) {
+		ClientesDTO salida = new ClientesDTO();
+		try {
+			Connection connection=accService.getConexion();
+			ResultSet result =null;	
+			String peticion = "SELECT * FROM clientes WHERE Nombre = '"+nombre+"' AND id_empresa = "+idEmpresa+"";
+			Statement stmt = connection.createStatement();
+			result = stmt.executeQuery(peticion);
+			if (result.next()){
+				salida.setIdCliente(result.getInt("id_cliente"));
+				salida.setNif(result.getString("CIF"));
+				salida.setNombre(result.getString("Nombre"));
+				salida.setDireccion(result.getString("Direccion"));
+				salida.setPoblacion(result.getString("Poblacion"));
+				salida.setProvincia(result.getString("Provincia"));
+				salida.setCp(result.getInt("CP"));
+				salida.setTelefono1(result.getInt("Telefono1"));
+				salida.setTelefono2(result.getInt("Telefono2"));
+				salida.setTelefono3(result.getInt("Telefono3"));
+				salida.setPersonaContacto(result.getString("Persona_contacto"));
+				salida.setMail(result.getString("mail"));
+				salida.setWeb(result.getString("web"));
+				salida.setFp(result.getString("fp"));
+				salida.setDiaPago(result.getInt("dia_pago"));
+				salida.setModaPago(result.getString("modo_pago"));
+				salida.setObservaciones(result.getString("observaciones"));
+				salida.setActivo(result.getString("activo"));
+				salida.setIdEmpresa(result.getInt("id_empresa"));
+				salida.setIban(result.getString("iban"));
+				stmt.close();
+				connection.close();
+				return salida;
+			} else {
+				salida.setIdCliente(0);
+				stmt.close();
+				connection.close();
+				return salida;
+			}
+		}catch(Exception ex){
+			System.out.println("Error en infoCliente: "+ex.getMessage().toString());
 			return null;
 		}	
 	}

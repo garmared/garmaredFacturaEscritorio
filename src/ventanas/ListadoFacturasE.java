@@ -320,7 +320,7 @@ public class ListadoFacturasE {
 	private DatosFacturas llenaJtable(ResultSet rs) {
 		datosFact = new DatosFacturas();
 		try {
-			datosFact.setProyecto(accProyecto.buscaDescripcion(rs.getInt("id_proyecto"),sesionGlobal.getIdEmpresa()));
+			datosFact.setProyecto(accProyecto.buscaNombre(rs.getInt("id_proyecto"),sesionGlobal.getIdEmpresa()));
 			datosFact.setNombreCliente(accClientes.buscaNombre(rs.getInt("id_cliente")));
 			datosFact.setConcepto(accConcepto.buscaDescripcion(rs.getInt("id_concepto")));
 			datosFact.setCoste(accCostes.buscaDescripcion(rs.getInt("id_coste")));

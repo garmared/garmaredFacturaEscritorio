@@ -276,7 +276,7 @@ public class VentanaProyectos {
 				varFecha = (ano+mes+dia);
 				entrada.setFechaCierre(Integer.valueOf(varFecha));
 				String variable = (String) comboCliente.getSelectedItem().toString();
-				entrada.setCliente(accClientes.buscaCliente(variable));
+				entrada.setCliente(accClientes.buscaCliente(variable, sesionGlobal.getIdEmpresa()));
 				variable = (String) comboCoste.getSelectedItem().toString();
 				entrada.setCoste(accCostes.buscaCoste(variable));
 				
@@ -457,7 +457,7 @@ public class VentanaProyectos {
 		proyecto.setWeb(textWeb.getText());
 		
 		String variable = (String) comboCliente.getSelectedItem().toString();
-		proyecto.setCliente(accClientes.buscaCliente(variable));
+		proyecto.setCliente(accClientes.buscaCliente(variable, sesionGlobal.getIdEmpresa()));
 		variable = (String) comboCoste.getSelectedItem().toString();
 		proyecto.setCoste(accCostes.buscaIdCoste(variable));
 		proyecto.setEmpresa(sesionGlobal.getIdEmpresa());
@@ -521,6 +521,6 @@ public class VentanaProyectos {
 		textMargen.setText(" ");
 		textObservaciones.setText(" ");
 		textWeb.setText(" ");
-		
+		sesionGlobal.setIdentificador(0);
 	}
 }

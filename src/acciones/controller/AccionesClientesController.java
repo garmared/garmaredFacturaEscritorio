@@ -17,7 +17,13 @@ public interface AccionesClientesController {
 	// accion para actualizar un cliente a partir del identificador
 	public Boolean updateCliente(ClientesDTO cliente);
 	// accion para buscar el identificador de un cliente a partir del nombre
-	public int buscaCliente(String nomBuscado);
+	public int buscaCliente(String nomBuscado, int empresa);
 	// accion para buscar el nombre de un cliente a partir del identificador
 	public String buscaNombre(Integer cliente);
+	//
+	public ArrayList<String> consultaPoblacion(Integer idEmpresa);
+	
+	public ClientesDTO buscaCliente(Integer identificador, Integer empresa);
+	
+	public ClientesDTO infoCliente(String variable, Integer idEmpresa);
 }

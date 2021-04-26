@@ -3,6 +3,10 @@ package ventanas;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +25,7 @@ import com.toedter.calendar.JDateChooser;
 import acciones.dto.ClientesDTO;
 import acciones.dto.FacturasDTO;
 import acciones.dto.ObjetoJComboBox;
+import acciones.dto.ProyectosDTO;
 import acciones.dto.ServiceDTO;
 import acciones.service.impl.AccionesClientesImpl;
 import acciones.service.impl.AccionesConceptosImpl;
@@ -30,7 +35,7 @@ import acciones.service.impl.AccionesFacturaImpl;
 import acciones.service.impl.AccionesProyectosImpl;
 import plantillas.FacturaEmitida;
 
-public class VentanaFacturasE extends JFrame {
+public class VentanaFacturasE extends JFrame implements ItemListener {
 
 	private JFrame frame;
 	private JDateChooser textVencimiento;
@@ -104,41 +109,41 @@ public class VentanaFacturasE extends JFrame {
 		frame.getContentPane().add(textVencimiento);
 		
 		JLabel lblProyecto = new JLabel("Proyecto");
-		lblProyecto.setBounds(10, 101, 96, 14);
+		lblProyecto.setBounds(10, 133, 96, 14);
 		frame.getContentPane().add(lblProyecto);
 		
 		JLabel lblCliente = new JLabel("Cliente");
-		lblCliente.setBounds(10, 129, 48, 14);
+		lblCliente.setBounds(10, 102, 48, 14);
 		frame.getContentPane().add(lblCliente);
 		
 		comboProyecto = new JComboBox();
-		comboProyecto.setBounds(128, 95, 96, 22);
+		comboProyecto.setBounds(128, 127, 96, 22);
 		frame.getContentPane().add(comboProyecto);
 		comboProyecto.addItem("----");
 		
-		ArrayList<ObjetoJComboBox> proyectos = accProyecto.consultaProyectos(sesionGlobal.getIdEmpresa());
-		
-		if (proyectos != null) {
-			for (int i = 0; i < proyectos.size(); i++) {
-				comboProyecto.addItem(proyectos.get(i));
-			}
-		}
+//		ArrayList<ObjetoJComboBox> proyectos = accProyecto.consultaProyectos(sesionGlobal.getIdEmpresa());
+//		
+//		if (proyectos != null) {
+//			for (int i = 0; i < proyectos.size(); i++) {
+//				comboProyecto.addItem(proyectos.get(i));
+//			}
+//		}
 		
 		comboCliente = new JComboBox();
-		comboCliente.setBounds(128, 122, 96, 22);
+		comboCliente.setBounds(128, 95, 96, 22);
 		frame.getContentPane().add(comboCliente);
 		comboCliente.addItem("----");
 		
-		ArrayList<ObjetoJComboBox> clientes = accClientes.consultaClientes(sesionGlobal.getIdEmpresa());
-		
-		if (clientes != null) {
-			for (int i = 0; i < clientes.size(); i++) {
-				comboCliente.addItem(clientes.get(i));
-			}
-		}
-		
+//		ArrayList<ObjetoJComboBox> clientes = accClientes.consultaClientes(sesionGlobal.getIdEmpresa());
+//		
+//		if (clientes != null) {
+//			for (int i = 0; i < clientes.size(); i++) {
+//				comboCliente.addItem(clientes.get(i));
+//			}
+//		}
+
 		comboConcepto = new JComboBox();
-		comboConcepto.setBounds(128, 150, 96, 22);
+		comboConcepto.setBounds(128, 158, 96, 22);
 		frame.getContentPane().add(comboConcepto);
 		comboConcepto.addItem("----");
 		ArrayList<ObjetoJComboBox> conceptos = accConceptos.consultaConceptos(sesionGlobal.getIdEmpresa());
@@ -150,7 +155,7 @@ public class VentanaFacturasE extends JFrame {
 		}
 	
 		comboCoste = new JComboBox();
-		comboCoste.setBounds(128, 176, 96, 22);
+		comboCoste.setBounds(128, 191, 96, 22);
 		frame.getContentPane().add(comboCoste);
 		comboCoste.addItem("----");
 		
@@ -164,68 +169,68 @@ public class VentanaFacturasE extends JFrame {
 		
 			
 		JLabel lblConcepto = new JLabel("Concepto");
-		lblConcepto.setBounds(10, 157, 96, 14);
+		lblConcepto.setBounds(10, 165, 96, 14);
 		frame.getContentPane().add(lblConcepto);
 		
 		JLabel lblCoste = new JLabel("Coste");
-		lblCoste.setBounds(10, 182, 48, 14);
+		lblCoste.setBounds(10, 197, 48, 14);
 		frame.getContentPane().add(lblCoste);
 		
 		JLabel lblIrpf = new JLabel("IRPF");
-		lblIrpf.setBounds(10, 215, 48, 14);
+		lblIrpf.setBounds(10, 230, 48, 14);
 		frame.getContentPane().add(lblIrpf);
 		
 		textIrpf = new JTextField();
 		textIrpf.setColumns(10);
-		textIrpf.setBounds(128, 209, 96, 20);
+		textIrpf.setBounds(128, 224, 96, 20);
 		frame.getContentPane().add(textIrpf);
 		
 		JLabel lblDescuento = new JLabel("Descuento");
-		lblDescuento.setBounds(10, 245, 75, 14);
+		lblDescuento.setBounds(10, 263, 75, 14);
 		frame.getContentPane().add(lblDescuento);
 		
 		textDescuento = new JTextField();
 		textDescuento.setColumns(10);
-		textDescuento.setBounds(128, 239, 96, 20);
+		textDescuento.setBounds(128, 257, 96, 20);
 		frame.getContentPane().add(textDescuento);
 		
 		JLabel lblIban = new JLabel("IBAN");
-		lblIban.setBounds(10, 273, 75, 14);
+		lblIban.setBounds(10, 288, 75, 14);
 		frame.getContentPane().add(lblIban);
 		
 		textIban = new JTextField();
 		textIban.setColumns(10);
-		textIban.setBounds(128, 267, 96, 20);
+		textIban.setBounds(128, 282, 96, 20);
 		frame.getContentPane().add(textIban);
 		
 		JLabel lblTasa = new JLabel("Tasa");
-		lblTasa.setBounds(10, 360, 42, 14);
+		lblTasa.setBounds(10, 372, 42, 14);
 		frame.getContentPane().add(lblTasa);
 		
 		textTasa = new JTextField();
 		textTasa.setColumns(10);
-		textTasa.setBounds(128, 357, 96, 20);
+		textTasa.setBounds(128, 369, 96, 20);
 		frame.getContentPane().add(textTasa);
 		
 		JLabel lblBaseImponible = new JLabel("Base Imponible");
-		lblBaseImponible.setBounds(10, 304, 96, 14);
+		lblBaseImponible.setBounds(10, 313, 96, 23);
 		frame.getContentPane().add(lblBaseImponible);
 		
 		textBaseImponible = new JTextField();
 		textBaseImponible.setColumns(10);
-		textBaseImponible.setBounds(128, 298, 96, 20);
+		textBaseImponible.setBounds(128, 307, 96, 29);
 		frame.getContentPane().add(textBaseImponible);
 		
 		JLabel lblIva = new JLabel("IVA");
-		lblIva.setBounds(10, 332, 75, 14);
+		lblIva.setBounds(10, 347, 75, 14);
 		frame.getContentPane().add(lblIva);
 		
 		textIva = new JTextField();
 		textIva.setColumns(10);
-		textIva.setBounds(128, 326, 96, 20);
+		textIva.setBounds(128, 341, 96, 20);
 		frame.getContentPane().add(textIva);
 		
-		JLabel lblPagado = new JLabel("Pagado");
+		JLabel lblPagado = new JLabel("Estado");
 		lblPagado.setBounds(276, 268, 48, 14);
 		frame.getContentPane().add(lblPagado);
 		
@@ -237,10 +242,10 @@ public class VentanaFacturasE extends JFrame {
 		comboPagado.addItem("Pendiente");
 		comboPagado.addItem("Pagado");
 		
-		final JLabel lblError = new JLabel("");
-		lblError.setBounds(10, 375, 414, 14);
-		frame.getContentPane().add(lblError);
-		
+		comboCliente.addItemListener(this);
+		comboProyecto.addItemListener(this);
+							
+			
 		JButton btnAltaFactura = new JButton("Alta Factura");
 		btnAltaFactura.setBounds(37, 400, 105, 23);
 		frame.getContentPane().add(btnAltaFactura);
@@ -334,6 +339,10 @@ public class VentanaFacturasE extends JFrame {
 		
 
 		JButton btnPrint = new JButton("Vista preliminar");
+		if (sesionGlobal.getIdentificador() > 0) {
+			btnPrint.setEnabled(true);
+		}else {btnPrint.setEnabled(false);}
+		
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sesionGlobal.setInt5(factura.getCliente());
@@ -383,7 +392,6 @@ public class VentanaFacturasE extends JFrame {
 						} else {
 							limpiaPantalla();
 							llenaCamposPantalla(factura);
-							lblError.setText("");
 						}
 					
 				}				
@@ -397,6 +405,29 @@ public class VentanaFacturasE extends JFrame {
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
 	
+	protected void llenaDeProyecto() {
+		try {
+			String variable = (String) comboProyecto.getSelectedItem().toString();
+			ProyectosDTO proyecto = accProyecto.infoProyecto(variable, sesionGlobal.getIdEmpresa());
+			textIban.setText(proyecto.getIban());
+		} catch (Exception ex) {
+			textIban.setText("");
+		}
+	}
+
+	protected void llenaDeCliente() {
+		String variable = (String) comboCliente.getSelectedItem().toString();
+		ClientesDTO cliente = accClientes.infoCliente(variable,sesionGlobal.getIdEmpresa()); 
+		ArrayList<ObjetoJComboBox> cadena = accProyecto.consultaProyectos(cliente.getIdCliente(),sesionGlobal.getIdEmpresa());
+		comboProyecto.removeAllItems();
+		comboProyecto.addItem("----");
+		if (cadena != null) {
+			for (int i = 0; i < cadena.size(); i++) {
+				comboProyecto.addItem(cadena.get(i));
+			}
+		}
+	}
+
 	private void llenaCamposPantalla(FacturasDTO entrada) {
 		//llenamos los campos de pantalla con el DTO de clientes
 		idFactura = entrada.getIdFactura();
@@ -431,7 +462,7 @@ public class VentanaFacturasE extends JFrame {
 		comboConcepto.getModel().setSelectedItem(valorCombo);
 		valorCombo = accCostes.buscaDescripcion(entrada.getCoste());
 		comboCoste.getModel().setSelectedItem(valorCombo);
-		valorCombo = accProyecto.buscaDescripcion(entrada.getProyecto(),sesionGlobal.getIdEmpresa());
+		valorCombo = accProyecto.buscaNombre(entrada.getProyecto(),sesionGlobal.getIdEmpresa());
 		comboProyecto.getModel().setSelectedItem(valorCombo);
 		comboPagado.getModel().setSelectedItem(entrada.getPagado());
 	}
@@ -474,7 +505,7 @@ public class VentanaFacturasE extends JFrame {
 		factura.setVencimiento(Integer.valueOf(varFecha));				
 		
 		String variable = (String) comboCliente.getSelectedItem().toString();
-		factura.setCliente(accClientes.buscaCliente(variable));
+		factura.setCliente(accClientes.buscaCliente(variable,sesionGlobal.getIdEmpresa()));
 		
 		variable = (String) comboConcepto.getSelectedItem().toString();
 		factura.setConcepto(accConceptos.buscaConcepto(variable));
@@ -506,5 +537,17 @@ public class VentanaFacturasE extends JFrame {
 		comboCoste.getModel().setSelectedItem("----");
 		comboProyecto.getModel().setSelectedItem("----");
 		comboPagado.getModel().setSelectedItem("----");
+		sesionGlobal.setIdentificador(0);
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		if (e.getSource()==comboCliente) {
+			llenaDeCliente();
+		}
+		if (e.getSource()==comboProyecto) {
+			llenaDeProyecto();
+		}
+		
 	}
 }

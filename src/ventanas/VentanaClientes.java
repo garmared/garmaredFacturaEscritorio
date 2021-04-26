@@ -74,6 +74,7 @@ public class VentanaClientes {
 	AccionesClientesImpl accClientes = new AccionesClientesImpl();
 	AccionesServiceImpl accService = new AccionesServiceImpl();
 	AccionesConstantesImpl accConstantes = new AccionesConstantesImpl();
+	private JTextField textIban;
 	/**
 	 * Create the application.
 	 */
@@ -390,47 +391,19 @@ public class VentanaClientes {
 		btnBuscar.setBounds(468, 92, 89, 23);
 		frame.getContentPane().add(btnBuscar,BorderLayout.EAST);
 		
+		JLabel lblIban = new JLabel("IBAN");
+		lblIban.setBounds(292, 233, 48, 14);
+		frame.getContentPane().add(lblIban);
+		
+		textIban = new JTextField();
+		textIban.setColumns(10);
+		textIban.setBounds(366, 230, 167, 20);
+		frame.getContentPane().add(textIban);
+		
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
 	
-	public void ocultarCampos() {
-		//ocultamos todos los campos y etiquetas de pantalla excepto el NOMBRE
-		lblError.setText("");
-		textNif.setVisible(false);
-		textDireccion.setVisible(false);
-		textPoblacion.setVisible(false);
-		textProvincia.setVisible(false);
-		textTelefono1.setVisible(false);
-		textTelefono2.setVisible(false);
-		textTelefono3.setVisible(false);
-		textPersonaContact.setVisible(false);
-		textWeb.setVisible(false);
-		textMail.setVisible(false);
-		textFP.setVisible(false);
-		textDiaPago.setVisible(false);
-		textMP.setVisible(false);
-		textObserv.setVisible(false);
-		textCP.setVisible(false);
-		lblNif.setVisible(false);
-		lblDireccin.setVisible(false);
-		lblPoblacin.setVisible(false);
-		lblProvincia.setVisible(false);
-		lblTelfono.setVisible(false);
-		lblMvil.setVisible(false);
-		lblMvil1.setVisible(false);
-		lblPersonaContacto.setVisible(false);
-		lblCorreo.setVisible(false);
-		lblFPago.setVisible(false);
-		lblWeb.setVisible(false);
-		lblDiaPago.setVisible(false);
-		lblObservaciones.setVisible(false);
-		lblModalidadDePago.setVisible(false);
-		lblCP.setVisible(false);
-		lblActivo.setVisible(false);
-		rdbtnSi.setVisible(false);
-		rdbtnNo.setVisible(false);
-	}
 	
 	public void activaCampos() {
 		//mostramos todos los campos y etiquetas de pantalla
@@ -490,6 +463,7 @@ public class VentanaClientes {
 		textMP.getModel().setSelectedItem(nombre);
 		textObserv.setText(entrada.getObservaciones());
 		textCP.setText(String.valueOf(entrada.getCp()));
+		textIban.setText(entrada.getIban());
 		if (entrada.getActivo().equals("S")) {
 			rdbtnNo.setSelected(false);
 			rdbtnSi.setSelected(true);
@@ -522,6 +496,7 @@ public class VentanaClientes {
 		temporal = (String) textMP.getSelectedItem().toString();
 		cliente.setModaPago(accConstantes.buscaCodigo("MODP",temporal));
 		cliente.setObservaciones(textObserv.getText());
+		cliente.setIban(textIban.getText());
 		if (rdbtnSi.isSelected() == true) {
 			cliente.setActivo("S");
 		} else {cliente.setActivo("N");}
@@ -530,22 +505,23 @@ public class VentanaClientes {
 	}
 	
 	private void limpiaPantalla() {
-		textNif.setText(" ");
-		textNombre.setText(" ");
-		textDireccion.setText(" ");
-		textPoblacion.setText(" ");
-		textProvincia.setText(" ");
-		textTelefono1.setText(" ");
-		textTelefono2.setText(" ");
-		textTelefono3.setText(" ");
-		textPersonaContact.setText(" ");
-		textMail.setText(" ");
-		textWeb.setText(" ");
-		textDiaPago.setText(" ");
-		textObserv.setText(" ");
-		textCP.setText(" ");
+		textNif.setText("");
+		textNombre.setText("");
+		textDireccion.setText("");
+		textPoblacion.setText("");
+		textProvincia.setText("");
+		textTelefono1.setText("");
+		textTelefono2.setText("");
+		textTelefono3.setText("");
+		textPersonaContact.setText("");
+		textMail.setText("");
+		textWeb.setText("");
+		textDiaPago.setText("");
+		textObserv.setText("");
+		textCP.setText("");
 		rdbtnNo.setSelected(false);
 		rdbtnSi.setSelected(false);
+		textIban.setText("");
 	}
 
 	private void llenaFP() {

@@ -35,8 +35,8 @@ public class AccionesClientesImpl implements AccionesClientesController{
 		return accClientes.updateCliente(cliente);
 	}
 
-	public int buscaCliente(String nomBuscado) {
-		return accClientes.buscaCliente(nomBuscado);
+	public int buscaCliente(String nomBuscado, int empresa) {
+		return accClientes.buscaCliente(nomBuscado, empresa);
 	}
 
 	public String buscaNombre(Integer cliente) {
@@ -68,6 +68,11 @@ public class AccionesClientesImpl implements AccionesClientesController{
 	public ClientesDTO buscaCliente(Integer identificador, Integer empresa) {
 		// TODO Auto-generated method stub
 		return accClientes.buscaCliente(identificador,empresa);
+	}
+
+	public ClientesDTO infoCliente(String variable, Integer idEmpresa) {
+		// TODO Auto-generated method stub
+		return accClientes.infoCliente(variable,idEmpresa);
 	}
 	
 }
