@@ -48,7 +48,7 @@ public class AccionesConceptosImpl implements AccionesConceptosController{
 	public Boolean grabarConceptoProyecto(ArrayList<ConceptosDTO> conceptos) {
 		// TODO Auto-generated method stub
 		ConceptosDTO entrada= conceptos.get(0);
-		Boolean seguir = accConceptos.deleteConceptoProyecto(entrada.getIdProyecto());
+		Boolean seguir = accConceptos.deleteConceptoProyecto(entrada.getIdProyecto(), entrada.getIdEmpresa());
 		if (seguir) {
 			seguir = accConceptos.grabarConcepProyecto(conceptos);
 		}

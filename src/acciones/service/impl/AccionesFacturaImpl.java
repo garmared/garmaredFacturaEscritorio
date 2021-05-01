@@ -3,6 +3,7 @@ package acciones.service.impl;
 import java.util.ArrayList;
 
 import acciones.controller.AccionesFacturaController;
+import acciones.dto.ConceptosDTO;
 import acciones.dto.FacturasDTO;
 import acciones.repository.AccionesFactura;
 
@@ -137,4 +138,13 @@ public class AccionesFacturaImpl implements AccionesFacturaController {
 		order = " group by id_proveedor";
 		consulta = select + where;
 		return consulta = consulta + order;	}
+
+	public String creaConsultaPagos(FacturasDTO entrada) {
+		String consulta, select, where, order;
+		select = "select id_Empresa, idPago, idProyeto, importe, fecha, vencimiento, estado, tipo, observaciones from pagos ";
+		where = "WHERE id_Empresa = "+entrada.getIdEmpresa()+" AND tipo = ";
+		order = " order by idPago";
+		consulta = select + where;
+		return consulta = consulta + order;
+	}
 }

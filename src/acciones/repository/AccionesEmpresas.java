@@ -97,7 +97,7 @@ public class AccionesEmpresas{
 			Connection connection=accService.getConexion();
 			ResultSet result =null;
 			ArrayList<ObjetoJComboBox> salida= new ArrayList<ObjetoJComboBox>();
-			String peticion = "SELECT id_empresa, Nombre FROM empresas WHERE tipo = '"+tipo+"' AND empresa = "+empresa+" ORDER BY Nombre";
+			String peticion = "SELECT id_empresa, Nombre FROM empresas WHERE tipo = '"+tipo+"' AND id_empresa = "+empresa+" ORDER BY Nombre";
 			Statement stmt = connection.createStatement();
 			result = stmt.executeQuery(peticion);
 			if (result.next());{

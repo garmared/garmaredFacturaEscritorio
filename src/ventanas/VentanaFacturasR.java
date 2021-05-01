@@ -115,7 +115,7 @@ public class VentanaFacturasR {
 		}
 		
 		comboConcepto = new JComboBox();
-		comboConcepto.setBounds(128, 150, 96, 22);
+		comboConcepto.setBounds(128, 126, 96, 22);
 		frame.getContentPane().add(comboConcepto);
 		comboConcepto.addItem("----");
 		ArrayList<ObjetoJComboBox> conceptos = accConceptos.consultaConceptos(sesionGlobal.getIdEmpresa());
@@ -127,7 +127,7 @@ public class VentanaFacturasR {
 		}
 	
 		comboCoste = new JComboBox();
-		comboCoste.setBounds(128, 176, 96, 22);
+		comboCoste.setBounds(128, 152, 96, 22);
 		frame.getContentPane().add(comboCoste);
 		comboCoste.addItem("----");
 		
@@ -140,7 +140,7 @@ public class VentanaFacturasR {
 		}
 		
 		comboProveedor = new JComboBox();
-		comboProveedor.setBounds(128, 202, 96, 22);
+		comboProveedor.setBounds(128, 178, 96, 22);
 		frame.getContentPane().add(comboProveedor);
 		comboProveedor.addItem("----");
 		
@@ -153,42 +153,42 @@ public class VentanaFacturasR {
 		}
 			
 		JLabel lblConcepto = new JLabel("Concepto");
-		lblConcepto.setBounds(10, 157, 96, 14);
+		lblConcepto.setBounds(10, 133, 96, 14);
 		frame.getContentPane().add(lblConcepto);
 		
 		JLabel lblCoste = new JLabel("Coste");
-		lblCoste.setBounds(10, 182, 48, 14);
+		lblCoste.setBounds(10, 158, 48, 14);
 		frame.getContentPane().add(lblCoste);
 		
 		JLabel lblProveedor = new JLabel("Proveedor");
-		lblProveedor.setBounds(10, 207, 75, 14);
+		lblProveedor.setBounds(10, 183, 75, 14);
 		frame.getContentPane().add(lblProveedor);
 		
 		JLabel lblIrpf = new JLabel("IRPF");
-		lblIrpf.setBounds(10, 233, 48, 14);
+		lblIrpf.setBounds(10, 209, 48, 14);
 		frame.getContentPane().add(lblIrpf);
 		
 		textIrpf = new JTextField();
 		textIrpf.setColumns(10);
-		textIrpf.setBounds(128, 227, 96, 20);
+		textIrpf.setBounds(128, 203, 96, 20);
 		frame.getContentPane().add(textIrpf);
 		
 		JLabel lblDescuento = new JLabel("Descuento");
-		lblDescuento.setBounds(10, 263, 75, 14);
+		lblDescuento.setBounds(10, 239, 75, 14);
 		frame.getContentPane().add(lblDescuento);
 		
 		textDescuento = new JTextField();
 		textDescuento.setColumns(10);
-		textDescuento.setBounds(128, 257, 96, 20);
+		textDescuento.setBounds(128, 233, 96, 20);
 		frame.getContentPane().add(textDescuento);
 		
 		JLabel lblIban = new JLabel("IBAN");
-		lblIban.setBounds(10, 291, 75, 14);
+		lblIban.setBounds(10, 267, 75, 14);
 		frame.getContentPane().add(lblIban);
 		
 		textIban = new JTextField();
 		textIban.setColumns(10);
-		textIban.setBounds(128, 285, 96, 20);
+		textIban.setBounds(128, 261, 96, 20);
 		frame.getContentPane().add(textIban);
 		
 		JLabel lblTasa = new JLabel("Tasa");
@@ -201,29 +201,29 @@ public class VentanaFacturasR {
 		frame.getContentPane().add(textTasa);
 		
 		JLabel lblBaseImponible = new JLabel("Base Imponible");
-		lblBaseImponible.setBounds(10, 322, 96, 14);
+		lblBaseImponible.setBounds(10, 298, 96, 14);
 		frame.getContentPane().add(lblBaseImponible);
 		
 		textBaseImponible = new JTextField();
 		textBaseImponible.setColumns(10);
-		textBaseImponible.setBounds(128, 316, 96, 20);
+		textBaseImponible.setBounds(128, 292, 96, 20);
 		frame.getContentPane().add(textBaseImponible);
 		
 		JLabel lblIva = new JLabel("IVA");
-		lblIva.setBounds(10, 350, 75, 14);
+		lblIva.setBounds(10, 326, 75, 14);
 		frame.getContentPane().add(lblIva);
 		
 		textIva = new JTextField();
 		textIva.setColumns(10);
-		textIva.setBounds(128, 344, 96, 20);
+		textIva.setBounds(128, 320, 96, 20);
 		frame.getContentPane().add(textIva);
 		
 		JLabel lblPagado = new JLabel("Pagado");
-		lblPagado.setBounds(276, 350, 48, 14);
+		lblPagado.setBounds(276, 323, 48, 14);
 		frame.getContentPane().add(lblPagado);
 		
 		comboPagado = new JComboBox();
-		comboPagado.setBounds(328, 346, 96, 23);
+		comboPagado.setBounds(328, 319, 96, 23);
 		frame.getContentPane().add(comboPagado);
 		comboPagado.addItem("----");
 		comboPagado.addItem("Abono");
@@ -365,6 +365,30 @@ public class VentanaFacturasR {
 		});
 		btnBuscar.setBounds(335, 89, 89, 23);
 		frame.getContentPane().add(btnBuscar);
+		
+		JButton btnGestinPagos = new JButton("Gesti\u00F3n Pagos");
+		if (sesionGlobal.getIdentificador() > 0) {
+			btnGestinPagos.setEnabled(true);
+		}else {btnGestinPagos.setEnabled(false);}
+		btnGestinPagos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentanaPagos ventana = new VentanaPagos(sesionGlobal);
+			}
+		});
+		btnGestinPagos.setBounds(286, 176, 138, 23);
+		frame.getContentPane().add(btnGestinPagos);
+		
+		JButton btnDesgloseCuotas = new JButton("Desglose Cuotas");
+		if (sesionGlobal.getIdentificador() > 0) {
+			btnDesgloseCuotas.setEnabled(true);
+		}else {btnDesgloseCuotas.setEnabled(false);}
+		btnDesgloseCuotas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentanaCuotas ventana = new VentanaCuotas(sesionGlobal);
+			}
+		});
+		btnDesgloseCuotas.setBounds(286, 207, 138, 23);
+		frame.getContentPane().add(btnDesgloseCuotas);
 			
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
@@ -478,5 +502,6 @@ public class VentanaFacturasR {
 		comboProveedor.getModel().setSelectedItem("----");
 		comboProyecto.getModel().setSelectedItem("----");
 		comboPagado.getModel().setSelectedItem("----");
+		sesionGlobal.setIdentificador(0);
 	}
 }

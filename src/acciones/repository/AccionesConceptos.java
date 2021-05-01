@@ -189,11 +189,12 @@ public class AccionesConceptos{
 		}
 	}
 
-	public Boolean deleteConceptoProyecto(Integer idProyecto) {
+	public Boolean deleteConceptoProyecto(Integer idProyecto, Integer idEmpresa) {
 		try{
 			Connection connection=accService.getConexion();
-			PreparedStatement stmt = connection.prepareStatement("DELETE FROM conceptoproyecto WHERE idProyecto = ?");
+			PreparedStatement stmt = connection.prepareStatement("DELETE FROM conceptoproyecto WHERE idProyecto = ? AND empresa = ?");
 		    stmt.setInt(1,idProyecto);
+		    stmt.setInt(2,idEmpresa);
 			stmt.executeUpdate();
 			stmt.close();
 			connection.close();

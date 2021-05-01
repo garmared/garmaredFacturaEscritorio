@@ -1,6 +1,7 @@
 package plantillas;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 import acciones.controller.imprimir;
 import acciones.dto.ClientesDTO;
@@ -41,6 +43,8 @@ public class FacturaEmitida extends JFrame {
 	private JLabel lblFactura;
 	static ServiceDTO sesionGlobal;
 	EmpresasDTO empresa;
+	FacturasDTO factura;
+	ClientesDTO cliente;
 	AccionesEmpresasImpl accEmpresas = new AccionesEmpresasImpl();
 	AccionesClientesImpl accClientes = new AccionesClientesImpl();
 	AccionesFacturaImpl accFacturas = new AccionesFacturaImpl();
@@ -77,16 +81,15 @@ public class FacturaEmitida extends JFrame {
 		frame.getContentPane().setLayout(null);
 		frame.setBounds(0,10,1000,900);
 		EmpresasDTO empresa = new EmpresasDTO();
-		ClientesDTO cliente = new ClientesDTO();
-		FacturasDTO factura = new FacturasDTO();
+		cliente = new ClientesDTO();
+		factura = new FacturasDTO();
 		ProyectosDTO proyecto = new ProyectosDTO();
-		ArrayList<ConceptosDTO> concepto = new ArrayList();
+		
 		
 		empresa=obtenerDatosEmpresa(sesionGlobal.getIdEmpresa());
 		cliente=obtenerDatosCliente(sesionGlobal.getInt5());
 		factura=obtenerDatosFactura(sesionGlobal.getIdentificador());
 		proyecto=obtenerDatosProyecto(factura.getProyecto());
-		concepto=obtenerConceptosProyecto(factura.getProyecto(),sesionGlobal.getIdEmpresa());
 		
 		panel = new JPanel();
 		panel.setBounds(0, 11, 459, 750);
@@ -224,6 +227,167 @@ public class FacturaEmitida extends JFrame {
 		textNif.setText("NIF : "+empresa.getNif()+"");
 		textNif.setColumns(10);
 		
+		llenaTextoFijo();
+		
+		
+		Double total = llenaImportes();
+		llenaPago(total);
+				
+		JTextArea textDescripcion = new JTextArea();
+		textDescripcion.setBounds(0, 263, 449, 60);
+		textDescripcion.append("Descripción");
+		textDescripcion.append(System.getProperty("line.separator"));
+		textDescripcion.append(proyecto.getDescripcion());
+		panel.add(textDescripcion);
+		
+		llenaConceptos();
+		
+		
+		frame.getContentPane().add(btnImprimir);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
+		btnVolver.setBounds(540, 394, 141, 21);
+		frame.getContentPane().add(btnVolver);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+	}
+
+	private Double llenaImportes() {
+		//me obliga a definir la columna y a entrar los títulos como row. No sé pq
+		DefaultTableModel modelo2 = new DefaultTableModel();
+
+		modelo2.addColumn("Base Imponible");
+		modelo2.addColumn("IVA");
+		modelo2.addColumn("Total Factura");
+		String [] indetificador2 = new String[5];
+		indetificador2[0] = "Base Imponible";
+		indetificador2[1] = "IVA";
+		indetificador2[2] = "Total Factura";
+		int ind = 3;
+		Double importeIRPF = (double) 0;
+		Double importeTasa = (double) 0;
+		if (factura.getIrpf()>0) {
+			modelo2.addColumn("IRPF");
+			indetificador2[ind] = "IRPF";
+			ind++;
+			importeIRPF = factura.getIrpf();
+		}
+		if (factura.getTasa()>0) {
+			modelo2.addColumn("Tasa");
+			indetificador2[ind] = "Tasa";
+			ind++;
+			importeTasa = factura.getTasa();
+		}
+		
+		Double importeIva = factura.getBaseImpo() * (factura.getIva()/100);
+		Double importeTotal = factura.getBaseImpo() + importeIva + importeIRPF + importeTasa;
+		Double importePagar = importeTotal + importeIva + importeIRPF + importeTasa;
+		modelo2.addRow(indetificador2);
+		
+		Double valores[] = new Double[5];
+		valores[0] = (double) Math.round((factura.getBaseImpo()*100.0)/100.0);
+		valores[1] = (double) Math.round((importeIva*100.0)/100.0);
+		valores[2] = (double) Math.round((importeTotal*100.0)/100.0);
+		ind=3;
+		if (factura.getIrpf()>0) {
+			valores[ind] = (double) Math.round((importeIRPF*100.0)/100.0);
+			ind++;
+		}
+		if (factura.getTasa()>0) {
+			valores[ind] = (double) Math.round((importeTasa*100.0)/100.0);
+			ind++;
+		}
+		modelo2.addRow(valores);
+		
+		table_1 = new JTable(modelo2);
+		//table_1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		resizeColumnWidth(table_1);
+		table_1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table_1.setBounds(0, 506, 449, 36);
+		panel.add(table_1);
+		table_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		return importePagar;
+			
+	}
+	
+	private void resizeColumnWidth(JTable table) {
+	    //Se obtiene el modelo de la columna
+	    TableColumnModel columnModel = table.getColumnModel();
+	    //Se obtiene el total de las columnas
+	    for (int column = 0; column < table.getColumnCount(); column++) {
+	        //Establecemos un valor minimo para el ancho de la columna
+	        int width = 150; //Min Width
+	        //Obtenemos el numero de filas de la tabla
+	        for (int row = 0; row < table.getRowCount(); row++) {
+	            //Obtenemos el renderizador de la tabla
+	            TableCellRenderer renderer = table.getCellRenderer(row, column);
+	            //Creamos un objeto para preparar el renderer
+	            Component comp = table.prepareRenderer(renderer, row, column);
+	            //Establecemos el width segun el valor maximo del ancho de la columna
+	            width = Math.max(comp.getPreferredSize().width + 1, width);
+
+	        }
+	        //Se establece una condicion para no sobrepasar el valor de 300
+	        //Esto es Opcional
+	        if (width > 300) {
+	            width = 300;
+	        }
+	        //Se establece el ancho de la columna
+	        columnModel.getColumn(column).setPreferredWidth(width);
+	    }
+	}
+
+	private void llenaPago(Double total) {
+		
+		DefaultTableModel modelo = new DefaultTableModel();
+		Object [] identificador1 = new Object[]{"Numero de cuenta", "Forma de pago", "Vencimiento", "TOTAL a pagar"};
+		modelo.setColumnIdentifiers(identificador1);
+		String fecha = String.valueOf(factura.getVencimiento());
+		char[] digitos = fecha.toCharArray();
+		String vencimiento = ""+digitos[6]+digitos[7]+"/"+digitos[4]+digitos[5]+"/"+digitos[0]+digitos[1]+digitos[2]+digitos[3];
+		modelo.addRow(identificador1);
+		String modoPago = accConstantes.nombreConstante("MODP", Integer.valueOf(cliente.getFp()));
+		modelo.addRow(new Object [] {empresa.getIban(),modoPago,vencimiento,(double) Math.round((total*100.0)/100.0)});
+		table = new JTable(modelo);
+		table.setModel(modelo);
+		table.setBorder(new LineBorder(new Color(0, 0, 0)));
+		table.setBounds(0, 542, 449, 36);
+		
+		panel.add(table);
+		
+	}
+
+	private void llenaConceptos() {
+		ArrayList<ConceptosDTO> concepto = new ArrayList();
+		concepto=obtenerConceptosProyecto(factura.getProyecto(),sesionGlobal.getIdEmpresa());
+
+		DefaultTableModel modelo3 = new DefaultTableModel();
+		Object[] identificador3 = new Object[]{"Concepto", "Importe"};
+		modelo3.setColumnIdentifiers(identificador3);
+		modelo3.addRow(identificador3);
+		if (concepto != null) {
+			Double importe=null;
+			for (int i = 0; i < concepto.size(); i++) {
+				importe = (double) Math.round((concepto.get(i).getImporte()*100.0)/100.0);
+				modelo3.addRow(new Object[] {concepto.get(i).getDescripcion(), importe});
+			}
+		}
+		
+		table_2 = new JTable(modelo3);
+		table_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		table_2.setBounds(0, 334, 449, 161);
+		panel.add(table_2);
+		
+		
+	}
+
+	private void llenaTextoFijo() {
+		
 		JTextArea textMerca = new JTextArea();
 		textMerca.setFont(new Font("Monospaced", Font.PLAIN, 6));
 		textMerca.setBounds(0, 582, 455, 86);
@@ -247,114 +411,6 @@ public class FacturaEmitida extends JFrame {
 		textMerca.append("Inscrita en el Registro Mercantil de "+empresa.getRegMercantil()+" Tomo "+empresa.getTomo()+", Folio "+empresa.getFolio()+" Hoja "+empresa.getHoja()+", Inscripción "+empresa.getInscripcion()+"");
 		panel.add(textMerca);
 		
-		DefaultTableModel modelo = new DefaultTableModel();
-		Object [] identificador1 = new Object[]{"Numero de cuenta", "Forma de pago", "Vencimiento"};
-		modelo.setColumnIdentifiers(identificador1);
-		fecha = String.valueOf(factura.getVencimiento());
-		digitos = fecha.toCharArray();
-		String vencimiento = ""+digitos[6]+digitos[7]+"/"+digitos[4]+digitos[5]+"/"+digitos[0]+digitos[1]+digitos[2]+digitos[3];
-		modelo.addRow(identificador1);
-		String modoPago = accConstantes.nombreConstante("MODP", Integer.valueOf(cliente.getFp()));
-		modelo.addRow(new Object [] {empresa.getIban(),modoPago,vencimiento});
-		table = new JTable(modelo);
-		table.setModel(modelo);
-		table.setBorder(new LineBorder(new Color(0, 0, 0)));
-		table.setBounds(0, 542, 449, 36);
-		
-		panel.add(table);
-		
-		DefaultTableModel modelo2 = new DefaultTableModel();
-
-		String [] indetificador2 = new String[6];
-		indetificador2[0] = "Base Imponible";
-		indetificador2[1] = "IVA";
-		indetificador2[2] = "Total Factura";
-		int ind = 3;
-		Double importeIRPF = (double) 0;
-		Double importeTasa = (double) 0;
-		if (factura.getIrpf()>0) {
-			indetificador2[ind] = "IRPF";
-			ind++;
-			importeIRPF = factura.getIrpf();
-		}
-		if (factura.getTasa()>0) {
-			indetificador2[ind] = "Tasa";
-			ind++;
-			importeTasa = factura.getTasa();
-		}
-		indetificador2[5] = "Total a Pagar";
-		
-		modelo2.setColumnIdentifiers(indetificador2);
-		modelo2.addColumn("Base Imponible");
-		modelo2.addColumn("IVA");
-		modelo2.addColumn("Total Factura");
-		modelo2.addColumn("IRPF");
-		modelo2.addColumn("Tasa");
-		modelo2.addColumn("Total a Pagar");
-		
-		Double importeIva = factura.getBaseImpo() * (factura.getIva()/100);
-		Double importeTotal = factura.getBaseImpo() + importeIva + importeIRPF + importeTasa;
-		Double importePagar = importeTotal + importeIva + importeIRPF + importeTasa;
-		modelo2.addRow(indetificador2);
-		
-		Double valores[] = new Double[6];
-		valores[0] = factura.getBaseImpo();
-		valores[1] = importeIva;
-		valores[2] = importeTotal;
-		ind=3;
-		if (factura.getIrpf()>0) {
-			valores[ind] = importeIRPF;
-			ind++;
-		}
-		if (factura.getTasa()>0) {
-			valores[ind] = importeTasa;
-			ind++;
-		}
-		valores[5] = importePagar;
-		modelo2.addRow(valores);
-		table_1 = new JTable(modelo2);
-		table_1.setBounds(0, 506, 449, 36);
-		panel.add(table_1);
-		table_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		
-		TableColumn columna = table_1.getColumn("IVA");
-		columna.setPreferredWidth(100);
-		
-		JTextArea textDescripcion = new JTextArea();
-		textDescripcion.setBounds(0, 263, 449, 60);
-		textDescripcion.append("Descripción");
-		textDescripcion.append(System.getProperty("line.separator"));
-		textDescripcion.append(proyecto.getDescripcion());
-		panel.add(textDescripcion);
-		
-		DefaultTableModel modelo3 = new DefaultTableModel();
-		Object[] identificador3 = new Object[]{"Concepto", "Importe"};
-		modelo3.setColumnIdentifiers(identificador3);
-		modelo3.addRow(identificador3);
-		if (concepto != null) {
-			for (int i = 0; i < concepto.size(); i++) {
-				modelo3.addRow(new Object[] {concepto.get(i).getDescripcion(), concepto.get(i).getImporte()});
-			}
-		}
-		
-		table_2 = new JTable(modelo3);
-		table_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		table_2.setBounds(0, 334, 449, 161);
-		panel.add(table_2);
-		
-		
-		frame.getContentPane().add(btnImprimir);
-		
-		JButton btnVolver = new JButton("Volver");
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.dispose();
-			}
-		});
-		btnVolver.setBounds(540, 394, 141, 21);
-		frame.getContentPane().add(btnVolver);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 	}
 
 	private ArrayList<ConceptosDTO> obtenerConceptosProyecto(Integer proyecto, Integer empresa) {
