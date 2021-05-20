@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-04-2021 a las 18:47:21
+-- Tiempo de generación: 20-05-2021 a las 17:35:27
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 8.0.3
 
@@ -46,29 +46,31 @@ CREATE TABLE `clientes` (
   `modo_pago` char(1) COLLATE utf8_spanish2_ci NOT NULL,
   `observaciones` varchar(255) COLLATE utf8_spanish2_ci NOT NULL,
   `activo` char(1) COLLATE utf8_spanish2_ci NOT NULL,
-  `id_empresa` int(4) NOT NULL
+  `id_empresa` int(4) NOT NULL,
+  `iban` char(24) COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `clientes`
 --
 
-INSERT INTO `clientes` (`id_cliente`, `CIF`, `Nombre`, `Direccion`, `Poblacion`, `Provincia`, `CP`, `Telefono1`, `Telefono2`, `Telefono3`, `Persona_contacto`, `mail`, `web`, `fp`, `dia_pago`, `modo_pago`, `observaciones`, `activo`, `id_empresa`) VALUES
-(2, '46350800', 'Edu', 'Aqui', '1', '1', 05258, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'N', 0),
-(3, '46350000D', 'Juan Palomo', 'Palomares 12', 'Barcelona', 'Barcelona', 08036, 936585452, 656525252, 658696585, 'Jacinta', 'notiene@correo.es', 'notien.es', '1', 1, '1', 'prueba', 'S', 0),
-(8, '1', 'Luis', 'Urgell', 'Barcelona', 'Barcelona', 01231, 324342, 43423, 324234, 'Pedro', 'ddddd', 'j.com', '1', 1, '1', 'sa', 'S', 0),
-(10, '1', 'Ejemplo1', '1', '1', '1', 00001, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 7),
-(12, '1', 'cliente1', 'alli', 'alli', '1', 00001, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8),
-(14, '1', 'cliente3', 'alli', 'alli', '323', 12312, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8),
-(15, '1', 'cliente5', 'alli', 'alli', '1', 00001, 6666, 1, 1, '1', 'notiene@correo.es', '1', '1', 1, '1', '1', 'S', 8),
-(16, '1', 'cliente4', 'alli', 'alli', '1', 00001, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8),
-(17, '43242', 'eeee', 'ee', 'ee', 'ee', 00022, 698545452, 22, 22, '32dsf', 'dfsfsd', 'fsdfs', '1', 1, '1', 'dsfsdf', 'S', 8),
-(18, '1', 'cliente2', 'alli', 'alli', '1', 00001, 6666, 1, 1, '1', 'notiene@correo.es', '1', '1', 1, '1', '1', 'S', 8),
-(19, '34583834', 'Juan', 'esa calle', 'Barcelona', 'Barcelona', 03423, 453453, 34423, 34234, 'Alex', 'no tiene', '1', '1', 1, '1', '1', 'S', 12),
-(20, '7897', 'E', '879', '879', '9879', 00979, 652545421, 797, 979, '97', '79', '97', '1', 8, '2', '8', 'S', 8),
-(21, '324234', 'Pedro', '3', '3', '3', 00003, 3, 3, 3, '3', '3', '3', '3', 3, '3', '3', 'S', 8),
-(22, '123123', 'Prueba FP', 'sdfsdf', 'dfsdf', 'fsdfsd', 04324, 34234, 432423, 43242, 'efsdf', 'fsdfs', 'fsdfs', '4', 1, '2', '2123', 'S', 8),
-(23, '32434234', '43242', '432423', '43242', '432423', 04234, 42342, 42342, 43242, '423', '423', '432', '1', 42342, '1', '42432', 'S', 12);
+INSERT INTO `clientes` (`id_cliente`, `CIF`, `Nombre`, `Direccion`, `Poblacion`, `Provincia`, `CP`, `Telefono1`, `Telefono2`, `Telefono3`, `Persona_contacto`, `mail`, `web`, `fp`, `dia_pago`, `modo_pago`, `observaciones`, `activo`, `id_empresa`, `iban`) VALUES
+(2, '46350800', 'Edu', 'Aqui', '1', '1', 05258, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'N', 0, ''),
+(3, '46350000D', 'Juan Palomo', 'Palomares 12', 'Barcelona', 'Barcelona', 08036, 936585452, 656525252, 658696585, 'Jacinta', 'notiene@correo.es', 'notien.es', '1', 1, '1', 'prueba', 'S', 0, ''),
+(8, '1', 'Luis', 'Urgell', 'Barcelona', 'Barcelona', 01231, 324342, 43423, 324234, 'Pedro', 'ddddd', 'j.com', '1', 1, '1', 'sa', 'S', 0, ''),
+(10, '1', 'Ejemplo1', '1', '1', '1', 00001, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 7, ''),
+(12, '1', 'cliente1', 'alli', 'alli', '1', 00001, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8, ''),
+(14, '1', 'cliente3', 'alli', 'alli', '323', 12312, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8, ''),
+(15, '1', 'cliente5', 'alli', 'alli', '1', 00001, 6666, 1, 1, '1', 'notiene@correo.es', '1', '1', 1, '1', '1', 'S', 8, ''),
+(16, '1', 'cliente4', 'alli', 'alli', '1', 00001, 1, 1, 1, '1', '1', '1', '1', 1, '1', '1', 'S', 8, ''),
+(17, '43242', 'eeee', 'ee', 'ee', 'ee', 00022, 698545452, 22, 22, '32dsf', 'dfsfsd', 'fsdfs', '1', 1, '1', 'dsfsdf', 'S', 8, ''),
+(18, '1', 'cliente2', 'alli', 'alli', '1', 00001, 6666, 1, 1, '1', 'notiene@correo.es', '1', '1', 1, '1', '1', 'S', 8, ''),
+(19, '34583834', 'Juan', 'esa calle', 'Barcelona', 'Barcelona', 03423, 453453, 34423, 34234, 'Alex', 'no tiene', '1', '1', 1, '1', '1', 'S', 12, 'ES9123141412432432'),
+(20, '7897', 'E', '879', '879', '9879', 00979, 652545421, 797, 979, '97', '79', '97', '1', 8, '2', '8', 'S', 8, ''),
+(21, '324234', 'Pedro', '3', '3', '3', 00003, 3, 3, 3, '3', '3', '3', '3', 3, '3', '3', 'S', 8, ''),
+(22, '123123', 'Prueba FP', 'sdfsdf', 'dfsdf', 'fsdfsd', 04324, 34234, 432423, 43242, 'efsdf', 'fsdfs', 'fsdfs', '4', 1, '2', '2123', 'S', 8, ''),
+(23, '32434234', '43242', '432423', '43242', '432423', 04234, 42342, 42342, 43242, '423', '423', '432', '1', 42342, '1', '42432', 'S', 12, ''),
+(24, '13213546H', 'Pedro', 'Villarroel 123', 'Barcelona', 'Barcelona', 08025, 658745254, 362542254, 2525424, 'Juan', 'notiene', 'notiene', '1', 1, '1', ' ', 'S', 12, 'ES344375874358335934');
 
 -- --------------------------------------------------------
 
@@ -101,7 +103,11 @@ INSERT INTO `conceptoproyecto` (`idProyecto`, `idConcepto`, `importe`, `empresa`
 (13, 'Piedras', '12.0000', 8, '12.00'),
 (15, 'Ladrillos', '12300.0000', 12, '10.00'),
 (15, 'Ventanas', '1222.0000', 12, '21.00'),
-(15, 'parquet', '500.0000', 12, '10.00');
+(15, 'parquet', '500.0000', 12, '10.00'),
+(16, 'ladrillos', '1231.0000', 12, '10.00'),
+(16, 'ventanas', '2563.0000', 12, '21.00'),
+(16, 'pladur', '258.0000', 12, '10.00'),
+(12, 'gggjgj', '1212.0000', 12, '12.00');
 
 -- --------------------------------------------------------
 
@@ -309,7 +315,9 @@ INSERT INTO `factura` (`id_factura`, `id_empresa`, `fecha`, `vencimiento`, `id_p
 (19, 12, 20210310, 20210328, 12, 19, 6, 9, 0, '12.00', '12.00', '212', '12.0000', '12.00', '12.00', 'Abono'),
 (20, 8, 20210319, 20210328, 10, 12, 7, 7, 0, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Pendiente'),
 (21, 8, 20210302, 20210331, 10, 18, 5, 8, 0, '1.00', '1.00', '1', '1.0000', '1.00', '1.00', 'Abono'),
-(22, 8, 20210309, 20210330, 10, 0, 6, 10, 10, '12.00', '12.00', '12', '12.0000', '12.00', '12.00', 'Pendiente');
+(22, 8, 20210309, 20210330, 10, 0, 6, 10, 10, '12.00', '12.00', '12', '12.0000', '12.00', '12.00', 'Pendiente'),
+(23, 12, 20210426, 20210429, 18, 24, 6, 9, 0, '0.00', '12.00', 'ES98342342', '12.0000', '12.00', '12.00', 'Pendiente'),
+(24, 12, 20210427, 20210430, 12, 0, 6, 9, 12, '125.00', '12.00', '12', '12.0000', '12.00', '12.00', 'Abono');
 
 -- --------------------------------------------------------
 
@@ -318,6 +326,7 @@ INSERT INTO `factura` (`id_factura`, `id_empresa`, `fecha`, `vencimiento`, `id_p
 --
 
 CREATE TABLE `pagos` (
+  `id_Empresa` int(4) NOT NULL,
   `idPago` int(3) NOT NULL,
   `idProyecto` int(4) NOT NULL,
   `importe` decimal(20,4) NOT NULL,
@@ -327,6 +336,15 @@ CREATE TABLE `pagos` (
   `tipo` text CHARACTER SET ucs2 COLLATE ucs2_spanish2_ci NOT NULL,
   `observaciones` text COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `pagos`
+--
+
+INSERT INTO `pagos` (`id_Empresa`, `idPago`, `idProyecto`, `importe`, `fecha`, `vencimiento`, `estado`, `tipo`, `observaciones`) VALUES
+(12, 31, 24, '3123.0000', 3123, 23123, '', '2', 'hola'),
+(12, 32, 24, '213.0000', 1213, 2131, '', '3', '1313'),
+(12, 33, 24, '123.0000', 20220101, 20210101, '', '1', 'pago');
 
 -- --------------------------------------------------------
 
@@ -399,10 +417,13 @@ INSERT INTO `proyectos` (`id_proyecto`, `nombre`, `id_empresa`, `fecha_ini`, `fe
 (6, 'Villarroel 162', 8, 11130820, 11130821, 11130821, 12, 'reforma baño de la calle villarroel 162', 'dsfsd', 6, '122115', 'otro', '12.0000', '1.00'),
 (10, 'Prueba', 8, 20210105, 20220112, 20220412, 16, 'proyecto 1', '2', 10, '1', '1', '23.0000', '1.00'),
 (11, 'Proyecto Juan', 8, 20210105, 20220112, 20220412, 12, 'proyecto 1', '2', 7, '1', '1', '23.0000', '1.00'),
-(12, '', 12, 20210305, 20210307, 20210312, 19, 'erwerw', '1', 9, '2131', '2132', '1212.0000', '12.00'),
+(12, 'proyecto 1', 12, 20210305, 20210307, 20210312, 19, 'erwerw', '1', 9, '2131', '2132', '1212.0000', '12.00'),
 (13, '', 8, 20210319, 20210327, 20210319, 16, '14342', '1', 7, '1', '1', '1.0000', '1.00'),
 (14, 'Torre Elvira', 8, 20210316, 20210316, 20210327, 12, 'fdssdf', 'f', 6, '1', 'f', '1.0000', '1.00'),
-(15, 'Oficina calle Corcega', 12, 20210414, 20220414, 20220414, 19, 'Remodelación de la oficina de Juan', 'no tiene', 9, 'ES9321000100101111111111', 'obra de la oficina', '123000.0000', '12.00');
+(15, 'Oficina calle Corcega', 12, 20210414, 20220414, 20220414, 19, 'Remodelación de la oficina de Juan', 'no tiene', 9, 'ES9321000100101111111111', 'obra de la oficina', '123000.0000', '12.00'),
+(16, 'Proyecto 1', 12, 20210416, 20220122, 20220423, 24, 'Es una obra', 'notiene', 9, 'ES34234234', ' ', '150000.0000', '10.00'),
+(17, 'proyecto 2', 12, 20210421, 20210421, 20210421, 24, 'jhkjhkh ', 'f', 9, 'es545345', 'f', '1231231.0000', '12.00'),
+(18, 'Jaca', 12, 20210401, 20220423, 20220429, 24, 'Pones puertas', 'no', 9, 'ES98342342', 'no', '1900.0000', '12.00');
 
 -- --------------------------------------------------------
 
@@ -502,6 +523,12 @@ ALTER TABLE `factura`
   ADD UNIQUE KEY `id_factura` (`id_factura`) USING BTREE;
 
 --
+-- Indices de la tabla `pagos`
+--
+ALTER TABLE `pagos`
+  ADD PRIMARY KEY (`idPago`);
+
+--
 -- Indices de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
@@ -527,7 +554,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id_cliente` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_cliente` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `conceptos`
@@ -557,7 +584,13 @@ ALTER TABLE `empresas`
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `id_factura` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_factura` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT de la tabla `pagos`
+--
+ALTER TABLE `pagos`
+  MODIFY `idPago` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
@@ -569,7 +602,7 @@ ALTER TABLE `proveedores`
 -- AUTO_INCREMENT de la tabla `proyectos`
 --
 ALTER TABLE `proyectos`
-  MODIFY `id_proyecto` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_proyecto` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
